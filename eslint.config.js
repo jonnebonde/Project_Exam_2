@@ -28,6 +28,7 @@ export default [
     rules: {
       "prettier/prettier": "error",
       semi: ["error", "always"],
+      quotes: ["error", "double"],
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs["jsx-runtime"].rules,

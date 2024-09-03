@@ -4,5 +4,6 @@
   "trailingComma": "es5",
   "tabWidth": 2,
   "endOfLine": "auto",
-  "bracketSpacing": true
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false
 }
