@@ -6,7 +6,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import eslintPluginPrettier from "eslint-plugin-prettier";
 
 export default [
-  { ignores: ["dist"] },
+  { ignores: ["dist", "package.json", "package-lock.json", "node_modules"] },
   {
     files: ["**/*.{js,jsx}"],
     languageOptions: {
