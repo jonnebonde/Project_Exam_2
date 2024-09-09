@@ -11,11 +11,13 @@ function Header() {
 
 function Layout() {
   return (
-    <div>
-      <Header />
-      <Outlet />
+    <>
+      <div className="wrapper">
+        <Header />
+        <Outlet />
+      </div>
       <Footer />
-    </div>
+    </>
   );
 }
 
