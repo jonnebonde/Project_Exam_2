@@ -4,13 +4,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#4A90E2",
+        primary: "#1D4ED8",
         primary_bg_color: "#F5F5F5",
         secondary_bg_color: "#FFFFFF",
         bg_cards: "rgba(255, 255, 255, 0.6)",
         text_color: "#333333",
         secondary_text_color: "#444444",
         error_color: "#E74C3C",
+      },
+      screens: {
+        mobile: "350px",
       },
       fontFamily: {
         sans: ["Poppins", "Roboto", "sans-serif"],

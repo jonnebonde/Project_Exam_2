@@ -17,7 +17,7 @@ function Home() {
     error,
     data: data,
   } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["venues"],
     queryFn: FetchAllProducts,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
@@ -29,10 +29,10 @@ function Home() {
   console.log(data);
 
   return (
-    <>
-      <h1>Holidaze</h1>
+    <div className="text-centrer">
+      <h1>Holidaze venues</h1>
       <p>Find your holiday destination</p>
-    </>
+    </div>
   );
 }
 
