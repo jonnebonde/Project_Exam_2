@@ -1,0 +1,56 @@
+.navbar {
+  background-color: getColour(secondary-background-color) !important;
+
+  &-brand {
+    color: getColour(black);
+  }
+
+  &-nav {
+    .nav-link-login,
+    .nav-link-register {
+      display: block;
+      font-family: roboto;
+      border-radius: 5px;
+      width: 72px;
+      height: 32px;
+      text-decoration: none;
+      display: grid;
+      place-items: center;
+    }
+
+    .nav-link-login {
+      background-color: getColour(white) !important;
+      border: 2px solid getColour(primary-color) !important;
+      margin-right: 1rem;
+
+      @media screen and (max-width: get-breakpoint(sm)) {
+        margin-right: 0;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .nav-link-register {
+      background-color: getColour(primary-color) !important;
+      color: getColour(white) !important;
+    }
+
+    @media screen and (max-width: get-breakpoint(sm)) {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      right: 0;
+      display: grid;
+      place-items: center;
+      background-color: getColour(white) !important;
+      padding: 1rem;
+    }
+  }
+
+  a {
+    text-align: center;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
