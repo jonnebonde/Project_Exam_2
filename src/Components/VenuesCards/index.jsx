@@ -2,11 +2,13 @@ import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+// finne ut av å sentre cards på mobil størrelse
+
 function VenueCards(data) {
   return (
-    <Row sm={1} md={3} lg={4} xxl={5} className="cards g-4">
+    <Row xs={1} sm={2} md={3} lg={4} xxl={5} className="cards g-4">
       {data.data.map((venue) => (
-        <Col key={venue.id}>
+        <Col key={venue.id} className="">
           <Card className="venue-card" key={venue.id}>
             <Card.Img
               variant="top"
