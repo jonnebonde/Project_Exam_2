@@ -4,7 +4,7 @@ import VenueCards from "../../Components/VenuesCards";
 
 import Container from "react-bootstrap/Container";
 
-async function FetchAllProducts() {
+async function FetchAllVenues() {
   const response = await fetch(base_Url + "?_owner=true&_bookings=true");
 
   if (!response.ok) {
@@ -21,7 +21,7 @@ function Home() {
     data: data,
   } = useQuery({
     queryKey: ["venues"],
-    queryFn: FetchAllProducts,
+    queryFn: FetchAllVenues,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -32,9 +32,7 @@ function Home() {
   console.log(data);
 
   return (
-    <Container className="text-center">
-      <h1>Holidaze venues</h1>
-      <p>Find your holiday destination</p>
+    <Container>
       <VenueCards data={data.data} />
     </Container>
   );
