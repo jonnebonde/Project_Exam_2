@@ -5,6 +5,13 @@
     color: getColour(black);
   }
 
+  &-container {
+    @media screen and (max-width: 330px) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
   &-nav {
     .nav-link-login,
     .nav-link-register {
@@ -22,27 +29,11 @@
       background-color: getColour(white) !important;
       border: 2px solid getColour(primary-color) !important;
       margin-right: 1rem;
-
-      @media screen and (max-width: get-breakpoint(sm)) {
-        margin-right: 0;
-        margin-bottom: 1rem;
-      }
     }
 
     .nav-link-register {
       background-color: getColour(primary-color) !important;
       color: getColour(white) !important;
-    }
-
-    @media screen and (max-width: get-breakpoint(sm)) {
-      position: absolute;
-      width: 100%;
-      left: 0;
-      right: 0;
-      display: grid;
-      place-items: center;
-      background-color: getColour(white) !important;
-      padding: 1rem;
     }
   }
 
@@ -53,4 +44,20 @@
       text-decoration: underline;
     }
   }
+}
+
+.profile-dropdown {
+  cursor: pointer;
+}
+
+.profile-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
+
+.profile-image:hover {
+  border-color: #007bff;
 }

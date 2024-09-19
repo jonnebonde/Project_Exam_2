@@ -1,7 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { base_Url } from "../../Constants/API";
+import VenueCards from "../../Components/VenuesCards";
 
-async function FetchAllProducts() {
+import Container from "react-bootstrap/Container";
+
+async function FetchAllVenues() {
   const response = await fetch(base_Url + "?_owner=true&_bookings=true");
 
   if (!response.ok) {
@@ -18,7 +21,7 @@ function Home() {
     data: data,
   } = useQuery({
     queryKey: ["venues"],
-    queryFn: FetchAllProducts,
+    queryFn: FetchAllVenues,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -29,10 +32,9 @@ function Home() {
   console.log(data);
 
   return (
-    <div className="text-centrer">
-      <h1>Holidaze venues</h1>
-      <p>Find your holiday destination</p>
-    </div>
+    <Container>
+      <VenueCards data={data.data} />
+    </Container>
   );
 }
 
