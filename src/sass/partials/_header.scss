@@ -25,7 +25,8 @@
       place-items: center;
     }
 
-    .nav-link-login {
+    .nav-link-login,
+    .login-form-submit-button {
       background-color: getColour(white) !important;
       border: 2px solid getColour(primary-color) !important;
       margin-right: 1rem;

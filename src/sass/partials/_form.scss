@@ -1,5 +1,14 @@
 .login-form {
   background-color: getColour("white");
-  height: 500px;
-  width: 500px;
+  height: 450px;
+  width: 490px;
+
+  &-submit-button {
+    background-color: getColour("primary-color") !important;
+    font-family: getColour("primary-font");
+  }
+
+  @media screen and (max-width: 550px) {
+    width: 100%;
+  }
 }
