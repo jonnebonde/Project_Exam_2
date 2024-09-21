@@ -5,7 +5,9 @@ import VenueCards from "../../Components/VenuesCards";
 import Container from "react-bootstrap/Container";
 
 async function FetchAllVenues() {
-  const response = await fetch(base_Url + "?_owner=true&_bookings=true");
+  const response = await fetch(
+    base_Url + "holidaze/venues?_owner=true&_bookings=true"
+  );
 
   if (!response.ok) {
     throw new Error("There was an error fetching the listings");
