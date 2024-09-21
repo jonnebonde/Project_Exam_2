@@ -9,7 +9,7 @@ function VenueCards(data) {
     <Row xs={1} sm={2} md={3} lg={4} xxl={5} className="cards g-4">
       {data.data.map((venue) => (
         <Col key={venue.id} className="">
-          <Card className="venue-card" key={venue.id}>
+          <Card className="venue-card m-auto" key={venue.id}>
             <Card.Img
               variant="top"
               src={

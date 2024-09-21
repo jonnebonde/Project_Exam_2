@@ -12,11 +12,14 @@
     }
   }
 
+  .active {
+    text-decoration: underline !important;
+  }
+
   &-nav {
     .nav-link-login,
     .nav-link-register {
-      display: block;
-      font-family: roboto;
+      font-family: $font-secondary;
       border-radius: 5px;
       width: 72px;
       height: 32px;
