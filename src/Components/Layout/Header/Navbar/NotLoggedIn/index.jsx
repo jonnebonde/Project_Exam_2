@@ -1,15 +1,16 @@
-import { Link } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 
 function NavbarNotLoggedIn() {
+  const location = useLocation();
   return (
-    <Nav>
-      <Link to="/Login" className="nav-link-login">
+    <Nav activeKey={location.pathname}>
+      <NavLink to="/Login" className="nav-link-login">
         Login
-      </Link>
-      <Link to="/Register" className="nav-link-register">
+      </NavLink>
+      <NavLink to="/Register" className="nav-link-register">
         Register
-      </Link>
+      </NavLink>
     </Nav>
   );
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
@@ -6,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useSubmitForm } from "../../Hooks/SubmitForm";
+import { useSubmitForm } from "../../Hooks/LoginRegisterForm";
 import { base_Url } from "../../Constants/API";
 
 const schema = yup
@@ -35,7 +36,7 @@ function LoginPage() {
 
   const onSubmit = (formData) => {
     const url = base_Url + "auth/login";
-    mutate({ url, formData });
+    mutate({ url, formData, isRegistration: false });
   };
 
   return (
@@ -88,7 +89,7 @@ function LoginPage() {
 
         <Button
           type="submit"
-          className="w-100 mt-3"
+          className="w-100 mt-3 login-form-submit-button"
           disabled={status === "pending"}
         >
           {status === "pending" ? "Logging in..." : "Login"}
@@ -100,9 +101,10 @@ function LoginPage() {
           </div>
         )}
 
-        <div className="text-center mt-5">
-          <p>Don have an account?</p>
-          <Link to="/register" className="nav-link-login">
+        <div className="text-center mt-5 d-grid">
+          <p>Don't have an account?</p>
+
+          <Link to="/register" className="change-form-button m-auto">
             Register
           </Link>
         </div>
