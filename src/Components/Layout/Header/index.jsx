@@ -3,11 +3,11 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import NavbarNotLoggedIn from "./Navbar/NotLoggedIn";
 import NavbarLoggedIn from "./Navbar/LoggedIn";
-import { globalState } from "../../../Hooks/GlobalStates"; // Use Zustand store for authentication
+import { globalStates } from "../../../Hooks/GlobalStates"; // Use Zustand store for authentication
 
 function Header() {
   // Access the user from Zustand (it will pull from localStorage on initial load if available)
-  const user = globalState((state) => state.user);
+  const user = globalStates((state) => state.user);
 
   return (
     <Navbar className="bg-body-tertiary">

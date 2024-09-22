@@ -1,10 +1,10 @@
 import { Nav } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate } from "react-router-dom";
-import { globalState } from "../../../../../Hooks/GlobalStates";
+import { globalStates } from "../../../../../Hooks/GlobalStates";
 
 function NavbarLoggedIn() {
-  const logout = globalState((state) => state.logout);
+  const logout = globalStates((state) => state.logout);
   const navigate = useNavigate();
 
   const logOut = () => {
