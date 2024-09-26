@@ -16,8 +16,4 @@ export const globalStates = create((set) => ({
     localStorage.removeItem("userData");
     set(() => ({ user: null }));
   },
-
-  searchQuery: "", // Initial state for search query
-  setSearchQuery: (query) => set(() => ({ searchQuery: query })), // Action to set the search query
-  resetSearchQuery: () => set(() => ({ searchQuery: "" })), // Action to reset the search query
 }));

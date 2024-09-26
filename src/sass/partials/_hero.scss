@@ -1,0 +1,11 @@
+.search-bar-container {
+  .input-group {
+    width: 100% !important;
+    padding: 1rem !important;
+    background-color: white !important;
+
+    @media screen and (min-width: get-breakpoint(lg)) {
+      width: 50% !important;
+    }
+  }
+}

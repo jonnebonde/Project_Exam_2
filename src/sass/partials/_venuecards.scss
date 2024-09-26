@@ -1,6 +1,13 @@
 .venue-card {
   max-width: 250px;
 
+  .card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
   img {
     width: 100%;
     object-fit: cover;
