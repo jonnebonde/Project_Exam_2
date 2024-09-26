@@ -11,7 +11,7 @@ function VenueCards(data) {
       {data.data.map((venue) => (
         <Col key={venue.id} className="">
           <Link to={`/venue/${venue.id}`} className="venue-card">
-            <Card className="venue-card m-auto mb-4" key={venue.id}>
+            <Card claName="venue-card m-auto mb-4" key={venue.id}>
               <Card.Img
                 variant="top"
                 src={
