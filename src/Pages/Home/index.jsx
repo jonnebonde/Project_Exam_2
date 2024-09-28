@@ -1,35 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
 import { base_Url } from "../../Constants/API";
-import VenueCards from "../../Components/VenuesCards";
-import { useState } from "react";
-import heroImage from "../../assets/Images/hero_section.jpg";
-
+import useFetchData from "../../Hooks/Api/Get/NoAuth";
 import Container from "react-bootstrap/Container";
-import { Button, InputGroup, Form } from "react-bootstrap";
-
-async function FetchAllVenues() {
-  const response = await fetch(
-    base_Url + "holidaze/venues?_owner=true&_bookings=true&sortOrder=asc"
-  );
-
-  if (!response.ok) {
-    throw new Error("There was an error fetching the listings");
-  }
-
-  return response.json();
-}
+import HeroSection from "../../Components/HeroSection";
+import { useState } from "react";
+import VenueCards from "../../Components/VenuesCards";
 
 function Home() {
-  const {
-    isPending,
-    error,
-    data: venues,
-  } = useQuery({
-    queryKey: ["venues"],
-    queryFn: FetchAllVenues,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
+  const url =
+    base_Url + "holidaze/venues?_owner=true&_bookings=true&sortOrder=asc";
 
+  const { isPending, error, data: venues } = useFetchData(url, "venues");
   const [search, setSearch] = useState("");
 
   const handleSearchFieldChange = (event) => {
@@ -53,40 +33,34 @@ function Home() {
       })
     : venues?.data;
 
-  if (isPending)
-    return <Container className="text-center my-5">Loading...</Container>;
+  if (isPending) {
+    return (
+      <Container className="text-center my-5">
+        <HeroSection
+          search={search}
+          resetSearch={resetSearch}
+          handleSearchFieldChange={handleSearchFieldChange}
+        />
+        Loading...
+      </Container>
+    );
+  }
 
-  if (error) return "An error has occurred:" + error.message;
-
-  console.log(filteredVenues);
+  if (error) {
+    return (
+      <Container className="text-center my-5">
+        An error has occurred, please try again
+      </Container>
+    );
+  }
 
   return (
     <Container>
-      <Container
-        className="search-bar-container mb-5 d-flex justify-content-center align-items-center flex-column text-center"
-        fluid
-        style={{
-          backgroundImage: `url(${heroImage})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          height: "350px",
-          color: "white",
-        }}
-      >
-        <h1 className="text-white">Holidaze</h1>
-        <h3 className="text-white">Your Destination for Dream Venues.</h3>
-        <InputGroup>
-          {" "}
-          <Form.Control
-            type="text"
-            placeholder="Search by venue name or location"
-            value={search}
-            onChange={handleSearchFieldChange}
-          />
-          <Button onClick={resetSearch}>Reset Filter</Button>
-        </InputGroup>
-      </Container>
+      <HeroSection
+        search={search}
+        resetSearch={resetSearch}
+        handleSearchFieldChange={handleSearchFieldChange}
+      />
       {filteredVenues.length === 0 ? (
         <p>No venues found...</p>
       ) : (

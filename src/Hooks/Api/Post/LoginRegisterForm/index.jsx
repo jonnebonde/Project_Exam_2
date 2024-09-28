@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { globalStates } from "../../Hooks/GlobalStates"; // Import Zustand store
-import { base_Url } from "../../Constants/API";
+import { globalStates } from "../../../GlobalStates";
+import { base_Url } from "../../../../Constants/API";
 
 export function useSubmitForm() {
   const navigate = useNavigate();
-  const login = globalStates((state) => state.login); // Access Zustand login action
+  const login = globalStates((state) => state.login);
 
   const mutation = useMutation({
     mutationFn: async ({ url, formData, isRegistration }) => {
@@ -23,7 +23,7 @@ export function useSubmitForm() {
 
       const data = await response.json();
 
-      // If it's a registration, log in the user after successful registration
+      // Log in user after successful registration
       if (isRegistration) {
         const { email, password } = formData;
         await loginUser({ email, password });
@@ -54,7 +54,6 @@ export function useSubmitForm() {
 
     const loginData = await response.json();
 
-    // Use Zustand's login action to update both Zustand state and localStorage
     login(loginData.data);
 
     navigate("/");
