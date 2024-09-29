@@ -34,6 +34,3 @@ $grid-breakpoints: (
 @function get-breakpoint($breakpoint) {
   @return map-get($grid-breakpoints, $breakpoint);
 }
-
-$font-primary: "Poppins", sans-serif;
-$font-secondary: "Roboto", serif;

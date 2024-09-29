@@ -12,12 +12,9 @@ function Header() {
   return (
     <Navbar className="bg-body-tertiary">
       <Container className="navbar-container">
-        {/* Brand Link */}
         <Link className="navbar-brand fs-2" to="/">
           Holidaze
         </Link>
-
-        {/* Conditionally render the logged-in or not-logged-in navbar */}
         {user ? <NavbarLoggedIn /> : <NavbarNotLoggedIn />}
       </Container>
     </Navbar>

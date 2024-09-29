@@ -14,3 +14,20 @@ body {
 .wrapper {
   flex: 1 0 auto;
 }
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus,
+  &:active {
+    overflow: visible;
+    white-space: normal;
+  }
+}
+
+.padding {
+  padding: 12px;
+}

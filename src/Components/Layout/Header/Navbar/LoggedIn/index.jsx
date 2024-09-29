@@ -8,29 +8,38 @@ function NavbarLoggedIn() {
   const navigate = useNavigate();
 
   const logOut = () => {
-    logout();
-    navigate("/");
+    const confirmed = window.confirm("Are you sure you want to log out?");
+
+    if (confirmed) {
+      logout();
+      navigate("/");
+    }
   };
+
+  const user = globalStates((state) => state.user);
 
   return (
     <Nav>
       <Dropdown align="end">
         <Dropdown.Toggle
           id="dropdown-basic"
-          as="div"
+          as="button"
           className="profile-dropdown"
         >
           <img
-            src="https://picsum.photos/200/300"
-            alt="Profile"
+            src={user.avatar.url}
+            alt={user.avatar.alt}
             className="profile-image rounded-circle"
           />
         </Dropdown.Toggle>
 
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={logOut}>logout</Dropdown.Item>
-          <Dropdown.Item>Another action</Dropdown.Item>
-          <Dropdown.Item>Something else</Dropdown.Item>
+        <Dropdown.Menu className="navbar-dropdown-menu text-align-start">
+          <Dropdown.Item href="/user">My profile</Dropdown.Item>
+          <Dropdown.Item href="/user">My bookings</Dropdown.Item>
+          {user.venueManager && (
+            <Dropdown.Item href="/venue_manager">My venues</Dropdown.Item>
+          )}
+          <Dropdown.Item onClick={logOut}>Logout</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </Nav>

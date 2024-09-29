@@ -5,6 +5,8 @@
     color: getColour(black);
   }
 
+  // finne ut om vi kan droppe flex direction columnn hvis brukeren er logged inn
+
   &-container {
     @media screen and (max-width: get-breakpoint(xs)) {
       display: flex;
@@ -52,16 +54,38 @@
 
 .profile-dropdown {
   cursor: pointer;
+  border: none !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 100% !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+
+  &::after {
+    display: none;
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+
+    &:hover {
+      border-color: #007bff;
+    }
+  }
 }
 
-.profile-image {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid #ddd;
-}
+.navbar-dropdown-menu {
+  left: auto !important;
 
-.profile-image:hover {
-  border-color: #007bff;
+  .dropdown-item {
+    margin-bottom: 0.2rem;
+
+    &:last-child {
+      margin-top: 1rem;
+    }
+  }
 }

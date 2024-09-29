@@ -3,16 +3,18 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
 
+// If time leftover make so that its showing 2 smaller venue cards on mobile view
+
 function VenueCards(data) {
   return (
-    <Row xs={2} sm={2} md={3} lg={4} xxl={5} className="cards g-4">
+    <Row xs={1} sm={2} md={3} lg={4} xxl={5} className="cards g-4">
       {data.data.map((venue) => (
         <Col key={venue.id} className="mb-4">
-          <Link
-            to={`/venue/${venue.id}`}
-            className="venue-card text-decoration-none "
-          >
-            <Card className="venue-card m-auto" key={venue.id}>
+          <Card className="venue-card m-auto" key={venue.id}>
+            <Link
+              to={`/venue/${venue.id}`}
+              className=" text-decoration-none link-dark "
+            >
               <Card.Img
                 variant="top"
                 src={
@@ -27,20 +29,23 @@ function VenueCards(data) {
                 }
               />
               <Card.Body>
-                <Card.Title>{venue.name}</Card.Title>
-                <Card.Text>
+                <Card.Title className="text-truncate">{venue.name}</Card.Title>
+                <Card.Text
+                  className={
+                    !venue.location.city && !venue.location.country
+                      ? "padding"
+                      : " "
+                  }
+                >
                   {venue.location.city || venue.location.country
-                    ? `${venue.location.city ? venue.location.city : ""}${
-                        venue.location.country
-                          ? `, ${venue.location.country}`
-                          : ""
-                      }`
-                    : "Not location available"}
+                    ? `${venue.location.city ? venue.location.city : ""}${venue.location.country ? `, ${venue.location.country}` : ""}`
+                    : " "}
                 </Card.Text>
+
                 <Card.Text>{venue.price}£ per night</Card.Text>
               </Card.Body>
-            </Card>
-          </Link>
+            </Link>
+          </Card>
         </Col>
       ))}
     </Row>
