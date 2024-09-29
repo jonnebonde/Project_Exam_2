@@ -1,5 +1,22 @@
 .venue-card {
-  max-width: 250px;
+  max-width: 250px !important;
+  box-shadow: 0 0.5rem 1rem getColour(black, 0.15) !important;
+
+  &:hover,
+  &:focus,
+  &:active {
+    box-shadow: 0 4px 4px getColour(black, 0.25) !important;
+  }
+
+  &:hover .card-title,
+  &:focus .card-title,
+  &:active .card-title {
+    text-decoration: underline !important;
+  }
+
+  a {
+    color: getColour("black") !important;
+  }
 
   img {
     width: 100%;

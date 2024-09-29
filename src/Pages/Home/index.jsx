@@ -1,52 +1,76 @@
-import { useQuery } from "@tanstack/react-query";
 import { base_Url } from "../../Constants/API";
-import VenueCards from "../../Components/VenuesCards";
-import SearchVenues from "../../Components/SearchVenues";
-import { globalStates } from "../../Hooks/GlobalStates";
-
+import useFetchData from "../../Hooks/Api/Get/NoAuth";
 import Container from "react-bootstrap/Container";
-
-async function FetchAllVenues() {
-  const response = await fetch(
-    base_Url + "holidaze/venues?_owner=true&_bookings=true"
-  );
-
-  if (!response.ok) {
-    throw new Error("There was an error fetching the listings");
-  }
-
-  return response.json();
-}
+import HeroSection from "../../Components/HeroSection";
+import { useState } from "react";
+import VenueCards from "../../Components/VenuesCards";
 
 function Home() {
-  const {
-    isPending,
-    error,
-    data: venues,
-  } = useQuery({
-    queryKey: ["venues"],
-    queryFn: FetchAllVenues,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
+  const url =
+    base_Url + "holidaze/venues?_owner=true&_bookings=true&sortOrder=asc";
 
-  const searchQuery = globalStates((state) => state.searchQuery);
+  const { isPending, error, data: venues } = useFetchData(url, "venues");
+  const [search, setSearch] = useState("");
 
-  // Filter venues based on search query (by name or location)
-  const filteredVenues = venues?.data?.filter((venue) => {
-    const query = searchQuery.toLowerCase();
-    return venue.name.toLowerCase().includes(query);
-  });
+  const handleSearchFieldChange = (event) => {
+    setSearch(event.target.value);
+  };
 
-  if (isPending) return <div>Loading...</div>;
+  const resetSearch = () => {
+    setSearch("");
+  };
 
-  if (error) return "An error has occurred:" + error.message;
+  const filteredVenues = search
+    ? venues?.data?.filter((venue) => {
+        const query = search.toLowerCase();
+        const venueTitle = venue.name.toLowerCase().includes(query);
+        const venueCity =
+          venue.location?.city?.toLowerCase().includes(query) || false;
+        const venueCountry =
+          venue.location?.country?.toLowerCase().includes(query) || false;
 
-  console.log(filteredVenues);
+        return venueTitle || venueCity || venueCountry;
+      })
+    : venues?.data;
+
+  if (isPending) {
+    return (
+      <Container className="text-center my-5">
+        <HeroSection
+          search={search}
+          resetSearch={resetSearch}
+          handleSearchFieldChange={handleSearchFieldChange}
+        />
+        Loading...
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="text-center my-5">
+        <HeroSection
+          search={search}
+          resetSearch={resetSearch}
+          handleSearchFieldChange={handleSearchFieldChange}
+        />
+        an error has occurred, please try again
+      </Container>
+    );
+  }
 
   return (
     <Container>
-      <SearchVenues />
-      <VenueCards data={filteredVenues} />
+      <HeroSection
+        search={search}
+        resetSearch={resetSearch}
+        handleSearchFieldChange={handleSearchFieldChange}
+      />
+      {filteredVenues.length === 0 ? (
+        <p>No venues found...</p>
+      ) : (
+        <VenueCards data={filteredVenues} />
+      )}
     </Container>
   );
 }
