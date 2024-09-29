@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 function useFetchData(url, queryKey) {
-  const { isPending, error, data } = useQuery({
+  const { isPending, error, data, refetch } = useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
       const response = await fetch(url);
@@ -12,11 +12,12 @@ function useFetchData(url, queryKey) {
 
       return response.json();
     },
+
     staleTime: 1000 * 60 * 5,
     retry: 2,
   });
 
-  return { isPending, error, data };
+  return { isPending, error, data, refetch };
 }
 
 export default useFetchData;
