@@ -49,7 +49,12 @@ function Home() {
   if (error) {
     return (
       <Container className="text-center my-5">
-        An error has occurred, please try again
+        <HeroSection
+          search={search}
+          resetSearch={resetSearch}
+          handleSearchFieldChange={handleSearchFieldChange}
+        />
+        an error has occurred, please try again
       </Container>
     );
   }
