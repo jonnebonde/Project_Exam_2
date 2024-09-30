@@ -6,11 +6,9 @@ function HeadLine(props) {
 }
 
 HeadLine.propTypes = {
-  level: PropTypes.number.isRequired, // Heading level (1-6)
-  className: PropTypes.string, // Custom CSS class names
-  text: PropTypes.string.isRequired, // Heading text content
+  level: PropTypes.number.isRequired,
+  className: PropTypes.string,
+  text: PropTypes.string.isRequired,
 };
-
-// Default props in case they're not provided
 
 export default HeadLine;
