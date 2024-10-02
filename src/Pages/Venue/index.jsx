@@ -48,38 +48,18 @@ function VenuePage() {
   };
 
   // Handle confirmation and booking submission
-  const handleBookingConfirmation = async () => {
+  const handleBookingConfirmation = () => {
     const bookingDetails = {
-      dateFrom: selectedDates[0],
-      dateTo: selectedDates[1],
+      dateFrom: new Date(selectedDates[0]),
+      dateTo: new Date(selectedDates[1]),
       guests: guests,
+      venueId: id,
     };
-
-    // API Call to send booking details
-    try {
-      const response = await fetch(`${base_Url}holidaze/bookings`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingDetails),
-      });
-
-      if (!response.ok) {
-        throw new Error("Booking failed");
-      }
-
-      const data = await response.json();
-      console.log("Booking successful:", data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
-    // Close the modal after booking
-    setShowModal(false);
+    console.log(bookingDetails);
   };
-
+  console.log(selectedDates);
   // Handle modal cancellation
+
   const handleCancel = () => {
     setShowModal(false);
     setSelectedDates([null, null]); // Clear the form
@@ -134,8 +114,8 @@ function VenuePage() {
           {/* Booking Date Picker */}
           <VenueBookingPicker
             bookedDates={venue?.data?.bookings}
-            setSelectedDates={setSelectedDates}
-            selectedDates={selectedDates}
+            onDateChange={(dates) => setSelectedDates(dates)}
+            value={selectedDates}
           />
           {/* Guest Selection */}
 

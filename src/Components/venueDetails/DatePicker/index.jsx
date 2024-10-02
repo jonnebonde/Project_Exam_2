@@ -8,12 +8,15 @@ import "react-multi-date-picker/styles/colors/teal.css"; // Import required styl
 // Extend dayjs with the isBetween plugin
 dayjs.extend(isBetween);
 
-function VenueBookingPicker({ bookedDates }) {
-  const [selectedDates, setSelectedDates] = useState([null, null]);
+function VenueBookingPicker({ bookedDates, onDateChange, value }) {
   const [errorMessage, setErrorMessage] = useState(""); // For error message
 
   // Helper function to check if a date is within the booked range
   const isBooked = (date) => {
+    const today = dayjs();
+    if (dayjs(date).isBefore(today)) {
+      return true;
+    }
     return bookedDates.some(({ dateFrom, dateTo }) => {
       const from = dayjs(dateFrom);
       const to = dayjs(dateTo);
@@ -43,22 +46,19 @@ function VenueBookingPicker({ bookedDates }) {
         setErrorMessage(
           "You cannot select a range that includes booked dates."
         );
-        setSelectedDates([null, null]); // Reset the selection
       } else {
         setErrorMessage(""); // Clear the error
-        setSelectedDates(dates); // Accept the selection
+        onDateChange(dates); // Call the onDateChange prop with the new dates
       }
     } else {
-      setSelectedDates(dates); // If no range is selected, just set the selected dates
+      onDateChange(dates); // Call the onDateChange prop with the new dates
     }
   };
-
-  console.log(selectedDates);
 
   return (
     <>
       <DatePicker
-        value={selectedDates}
+        value={value}
         onChange={handleDateChange} // Custom date change handler
         range // Enable range selection
         mobile={true} // Mobile-friendly
@@ -71,9 +71,10 @@ function VenueBookingPicker({ bookedDates }) {
           return props;
         }}
         style={{ width: "100%", margin: "0 auto" }} // Custom width for the date picker
-        format="YYYY/MM/DD" // Custom date format
+        format="DD/MM/YYYY" // Custom date format
         placeholder="Select booking range" // Placeholder text
         minDate={dayjs()} // Set the minimum date to today
+        highlightToday={true} // Highlight the current date
       />
 
       {/* Display error message if any */}
@@ -89,6 +90,8 @@ VenueBookingPicker.propTypes = {
       dateTo: PropTypes.string.isRequired,
     })
   ),
+  onDateChange: PropTypes.func.isRequired,
+  value: PropTypes.array.isRequired,
 };
 
 export default VenueBookingPicker;
