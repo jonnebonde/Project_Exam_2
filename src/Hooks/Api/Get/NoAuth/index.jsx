@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 function useFetchData(url, queryKey) {
-  const { isPending, error, data, refetch } = useQuery({
+  const { isPending, error, data } = useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
       const response = await fetch(url);
@@ -17,7 +17,7 @@ function useFetchData(url, queryKey) {
     retry: 2,
   });
 
-  return { isPending, error, data, refetch };
+  return { isPending, error, data };
 }
 
 export default useFetchData;

@@ -57,7 +57,7 @@ function VenuePage() {
     };
     console.log(bookingDetails);
   };
-  console.log(selectedDates);
+
   // Handle modal cancellation
 
   const handleCancel = () => {

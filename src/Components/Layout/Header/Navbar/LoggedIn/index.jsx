@@ -1,4 +1,4 @@
-import { Nav } from "react-bootstrap";
+import { Nav, Image } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate } from "react-router-dom";
 import { globalStates } from "../../../../../Hooks/GlobalStates";
@@ -26,7 +26,7 @@ function NavbarLoggedIn() {
           as="button"
           className="profile-dropdown"
         >
-          <img
+          <Image
             src={user.avatar.url}
             alt={user.avatar.alt}
             className="profile-image rounded-circle"

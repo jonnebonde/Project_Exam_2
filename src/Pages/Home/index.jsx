@@ -34,26 +34,12 @@ function Home() {
     : venues?.data;
 
   if (isPending) {
-    return (
-      <Container className="text-center my-5">
-        <HeroSection
-          search={search}
-          resetSearch={resetSearch}
-          handleSearchFieldChange={handleSearchFieldChange}
-        />
-        Loading...
-      </Container>
-    );
+    return <Container>Loading...</Container>;
   }
 
   if (error) {
     return (
       <Container className="text-center my-5">
-        <HeroSection
-          search={search}
-          resetSearch={resetSearch}
-          handleSearchFieldChange={handleSearchFieldChange}
-        />
         an error has occurred, please try again
       </Container>
     );
