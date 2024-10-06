@@ -3,12 +3,15 @@ import PropTypes from "prop-types";
 import DatePicker from "react-multi-date-picker";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import "react-multi-date-picker/styles/colors/teal.css"; // Import required styles
+import "react-multi-date-picker/styles/colors/teal.css";
 
-// Extend dayjs with the isBetween plugin
+// I got help from AI on the mostpart of this code.
+
 dayjs.extend(isBetween);
 
 function VenueBookingPicker({ bookedDates, onDateChange, value }) {
+  console.log(bookedDates, value);
+
   const [errorMessage, setErrorMessage] = useState(""); // For error message
 
   // Helper function to check if a date is within the booked range
@@ -47,11 +50,11 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
           "You cannot select a range that includes booked dates."
         );
       } else {
-        setErrorMessage(""); // Clear the error
-        onDateChange(dates); // Call the onDateChange prop with the new dates
+        setErrorMessage("");
+        onDateChange(dates);
       }
     } else {
-      onDateChange(dates); // Call the onDateChange prop with the new dates
+      onDateChange(dates);
     }
   };
 
@@ -59,25 +62,24 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
     <>
       <DatePicker
         value={value}
-        onChange={handleDateChange} // Custom date change handler
-        range // Enable range selection
-        mobile={true} // Mobile-friendly
+        onChange={handleDateChange}
+        range
+        mobile={true}
         mapDays={({ date }) => {
           let props = {};
           if (isBooked(date)) {
-            props.disabled = true; // Disable the booked date
-            props.style = { color: "#ccc", textDecoration: "line-through" }; // Optional: Style the disabled date
+            props.disabled = true;
+            props.style = { color: "#ccc", textDecoration: "line-through" };
           }
           return props;
         }}
-        style={{ width: "100%", margin: "0 auto" }} // Custom width for the date picker
-        format="DD/MM/YYYY" // Custom date format
-        placeholder="Select booking range" // Placeholder text
-        minDate={dayjs()} // Set the minimum date to today
-        highlightToday={true} // Highlight the current date
+        style={{ width: "100%", margin: "0 auto" }}
+        format="DD/MM/YYYY"
+        placeholder="Select booking range"
+        minDate={dayjs()}
+        highlightToday={true}
       />
 
-      {/* Display error message if any */}
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
     </>
   );

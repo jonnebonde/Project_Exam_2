@@ -3,10 +3,11 @@ import { base_Url } from "../../Constants/API";
 import { useParams } from "react-router-dom";
 import HeadLine from "../../Components/HeroSection/Headline";
 import { useQuery } from "@tanstack/react-query";
-import AmenitiesList from "../../Components/venueDetails/AmenitiesList";
-import VenueBookingPicker from "../../Components/venueDetails/DatePicker";
 import { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import useMutationDataAuth from "../../Hooks/Api/Get/Auth/PostPutDelete";
+import VenueDetails from "../../Components/venueDetails/VenueDetails";
+import VenueBookingForm from "../../Components/venueDetails/VenueBookingForm";
+import VenueConfirmationMOdal from "../../Components/venueDetails/BookingModal";
 
 async function FetchVenueDetails(id) {
   const response = await fetch(
@@ -21,6 +22,10 @@ async function FetchVenueDetails(id) {
 }
 
 function VenuePage() {
+  const postBooking = useMutationDataAuth(
+    base_Url + "holidaze/bookings",
+    "POST"
+  );
   const { id } = useParams();
 
   const {
@@ -52,10 +57,12 @@ function VenuePage() {
     const bookingDetails = {
       dateFrom: new Date(selectedDates[0]),
       dateTo: new Date(selectedDates[1]),
-      guests: guests,
+      guests: Number(guests) || guests,
       venueId: id,
     };
     console.log(bookingDetails);
+
+    postBooking.mutate(bookingDetails);
   };
 
   // Handle modal cancellation
@@ -76,69 +83,16 @@ function VenuePage() {
 
   return (
     <Container>
-      <Row>
-        <Col>
-          <HeadLine
-            level={1}
-            className="text-black fw-semibold text-center mt-5 mb-2"
-            text={venue?.data?.name}
-          />
-        </Col>
-      </Row>
-      <Row xs={1} sm={1} md={2}>
-        <Col>
-          <img
-            src={
-              venue?.data?.media && venue?.data?.media[0]?.url
-                ? venue?.data?.media[0]?.url
-                : "https://via.placeholder.com/150"
-            }
-            alt={
-              venue?.data?.media && venue?.data?.media[0]?.alt_text
-                ? venue?.data?.media[0]?.alt_text
-                : "No alt text provided"
-            }
-            style={{ width: "100%", height: "auto" }}
-          />
-        </Col>
-        <Col>
-          <p>{venue?.data?.description}</p>
-          <HeadLine
-            level={4}
-            className="text-black fw-semibold"
-            text="Amenities"
-          />
-          <AmenitiesList amenities={venue?.data?.meta} />
-          <p>Max total guests: {venue?.data?.maxGuests}</p>
-          <p>${venue?.data?.price}/night</p>
-          {/* Booking Date Picker */}
-          <VenueBookingPicker
-            bookedDates={venue?.data?.bookings}
-            onDateChange={(dates) => setSelectedDates(dates)}
-            value={selectedDates}
-          />
-          {/* Guest Selection */}
+      <VenueDetails venue={venue} />
+      <VenueBookingForm
+        venue={venue.data}
+        selectedDates={selectedDates}
+        setSelectedDates={setSelectedDates}
+        guests={guests}
+        handleGuestChange={handleGuestChange}
+        onReserveClick={handleReserveClick}
+      />
 
-          <Form.Group controlId="guestInput">
-            <Form.Label>Guests (Max: {venue?.data?.maxGuests})</Form.Label>
-            <Form.Control
-              type="number"
-              value={guests}
-              onChange={handleGuestChange}
-              placeholder="Enter number of guests"
-              max={venue?.data?.maxGuests}
-            />
-          </Form.Group>
-          {/* Reserve Button */}
-          <Button
-            variant="primary"
-            className="mt-3"
-            onClick={handleReserveClick}
-          >
-            Reserve
-          </Button>
-        </Col>
-      </Row>
       <Row>
         <Col>
           <HeadLine level={5} className="text-black fw-semibold" text="Owner" />
@@ -146,30 +100,13 @@ function VenuePage() {
         </Col>
       </Row>
 
-      {/* Modal for Booking Confirmation */}
-      <Modal show={showModal} onHide={handleCancel}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Your Booking</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>
-            <strong>Selected Dates:</strong>{" "}
-            {selectedDates[0]?.format("YYYY/MM/DD")} -{" "}
-            {selectedDates[1]?.format("YYYY/MM/DD")}
-          </p>
-          <p>
-            <strong>Number of Guests:</strong> {guests}
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancel}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleBookingConfirmation}>
-            Confirm Booking
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <VenueConfirmationMOdal
+        showModal={showModal}
+        handleCancel={handleCancel}
+        handleBookingConfirmation={handleBookingConfirmation}
+        selectedDates={selectedDates}
+        guests={guests}
+      />
     </Container>
   );
 }
