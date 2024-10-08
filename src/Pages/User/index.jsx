@@ -1,19 +1,27 @@
+import { useState } from "react";
 import { base_Url } from "../../Constants/API";
 import { globalStates } from "../../Hooks/GlobalStates";
-import useFetchDataAuth from "../../Hooks/Api/Get/Auth/GET";
+import useGetDataAuth from "../../Hooks/Api/Get/Auth/GET";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import HeadLine from "../../Components/HeroSection/Headline";
 import UserInfo from "../../Components/user/UserInfo";
+import EditUserForm from "../../Components/user/EditUserForm";
 
 function UserPage() {
   const user = globalStates((state) => state.user);
 
-  const { isPending, error, data } = useFetchDataAuth(
+  const {
+    isPending,
+    error,
+    data: userData,
+  } = useGetDataAuth(
     `${base_Url}holidaze/profiles/${user.name}?_bookings=true&_owner=true`,
     "userData"
   );
 
-  console.log(data, isPending, error);
+  console.log(userData, isPending, error);
+
+  const [showModal, setShowModal] = useState(false);
 
   if (isPending) {
     return <Container>Loading...</Container>;
@@ -25,12 +33,16 @@ function UserPage() {
 
   return (
     <Container>
-      <Row xs={1} lg={2} className="my-5">
-        <Col className="text-center">
+      <Row xs={1} lg={2}>
+        <Col className="text-center my-5">
           <HeadLine level={1} text="My Profile" />
           <Image
-            src={user.avatar.url}
-            alt={user.avatar.alt}
+            src={
+              userData?.data.avatar?.url || "https://via.placeholder.com/150"
+            }
+            alt={
+              userData?.data.avatar?.alt || "Placeholder image for user avatar"
+            }
             fluid
             style={{
               width: "200px",
@@ -39,14 +51,20 @@ function UserPage() {
               objectFit: "cover",
             }}
           />
-          <UserInfo user={user} />
-
-          <Button className="mt-3">Edit Profile</Button>
+          <UserInfo user={userData?.data} />
+          <Button className="mt-3" onClick={() => setShowModal(true)}>
+            Edit Profile
+          </Button>
         </Col>
-        <Col className="text-center">
-          <h1>Bookings</h1>
+        <Col className="text-center my">
+          <HeadLine level={1} text="My Bookings" />
         </Col>
       </Row>
+      <EditUserForm
+        user={userData?.data}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
     </Container>
   );
 }

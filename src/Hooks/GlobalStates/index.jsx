@@ -11,6 +11,18 @@ export const globalStates = create((set) => ({
     set(() => ({ user: userData }));
   },
 
+  UpdateUser: (updatedFields) => {
+    set((state) => {
+      // Merge existing user data with the updated fields
+      const updatedUser = { ...state.user, ...updatedFields };
+
+      // Update localStorage with the new data
+      localStorage.setItem("userData", JSON.stringify(updatedUser));
+
+      return { user: updatedUser };
+    });
+  },
+
   // Action to log out the user, clear Zustand state, and remove from localStorage
   logout: () => {
     localStorage.removeItem("userData");

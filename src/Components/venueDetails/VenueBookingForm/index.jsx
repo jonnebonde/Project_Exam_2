@@ -36,7 +36,12 @@ function VenueBookingForm({
         variant="primary"
         className="mt-3"
         onClick={onReserveClick}
-        disabled={!selectedDates[0] || !selectedDates[1] || guests < 1}
+        disabled={
+          !selectedDates[0] ||
+          !selectedDates[1] ||
+          guests < 1 ||
+          guests > venue?.maxGuests
+        }
       >
         Reserve
       </Button>

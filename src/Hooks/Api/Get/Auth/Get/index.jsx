@@ -5,7 +5,7 @@ function useGetDataAuth(url, queryKey) {
   const token = globalStates((state) => state.user.accessToken);
   const apiKey = import.meta.env.VITE_API_KEY;
 
-  const { isLoading, error, data } = useQuery({
+  const { isPending, error, data } = useQuery({
     queryKey: [queryKey],
     queryFn: async () => {
       const response = await fetch(url, {
@@ -17,6 +17,8 @@ function useGetDataAuth(url, queryKey) {
         },
       });
 
+      console.log(response);
+
       if (!response.ok) {
         throw new Error("There was an error fetching the data");
       }
@@ -27,7 +29,7 @@ function useGetDataAuth(url, queryKey) {
     retry: 2,
   });
 
-  return { isLoading, error, data };
+  return { isPending, error, data };
 }
 
 export default useGetDataAuth;

@@ -8,6 +8,7 @@ import useMutationDataAuth from "../../Hooks/Api/Get/Auth/PostPutDelete";
 import VenueDetails from "../../Components/venueDetails/VenueDetails";
 import VenueBookingForm from "../../Components/venueDetails/VenueBookingForm";
 import VenueConfirmationMOdal from "../../Components/venueDetails/BookingModal";
+import ImageSlider from "../../Components/venueDetails/ImageSlider";
 
 async function FetchVenueDetails(id) {
   const response = await fetch(
@@ -83,15 +84,31 @@ function VenuePage() {
 
   return (
     <Container>
-      <VenueDetails venue={venue} />
-      <VenueBookingForm
-        venue={venue.data}
-        selectedDates={selectedDates}
-        setSelectedDates={setSelectedDates}
-        guests={guests}
-        handleGuestChange={handleGuestChange}
-        onReserveClick={handleReserveClick}
-      />
+      <Row>
+        <Col>
+          <HeadLine
+            level={1}
+            className="text-black fw-semibold text-center mt-5 mb-2"
+            text={venue?.data?.name}
+          />
+        </Col>
+      </Row>
+      <Row xs={1} sm={1} md={2}>
+        <Col>
+          <ImageSlider images={venue?.data?.media} />
+        </Col>
+        <Col>
+          <VenueDetails venue={venue} />
+          <VenueBookingForm
+            venue={venue.data}
+            selectedDates={selectedDates}
+            setSelectedDates={setSelectedDates}
+            guests={guests}
+            handleGuestChange={handleGuestChange}
+            onReserveClick={handleReserveClick}
+          />
+        </Col>
+      </Row>
 
       <Row>
         <Col>

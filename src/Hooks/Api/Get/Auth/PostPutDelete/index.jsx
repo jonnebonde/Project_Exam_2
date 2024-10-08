@@ -26,6 +26,7 @@ function useMutationDataAuth(url, method = "POST") {
       return response.json();
     },
     onSuccess: () => {
+      console.log("Mutation successful");
       queryClient.invalidateQueries(); // Invalidate queries to trigger refetch
     },
     onError: (error) => {
