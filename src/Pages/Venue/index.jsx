@@ -1,9 +1,11 @@
-import { Container, Row, Col } from "react-bootstrap";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { Container, Row, Col, Alert, Button } from "react-bootstrap";
 import { base_Url } from "../../Constants/API";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import HeadLine from "../../Components/HeroSection/Headline";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { globalStates } from "../../Hooks/GlobalStates"; // Assuming you have globalStates for accessToken
 import useMutationDataAuth from "../../Hooks/Api/Auth/PostPutDelete";
 import VenueDetails from "../../Components/venueDetails/VenueDetails";
 import VenueBookingForm from "../../Components/venueDetails/VenueBookingForm";
@@ -23,11 +25,14 @@ async function FetchVenueDetails(id) {
 }
 
 function VenuePage() {
-  const postBooking = useMutationDataAuth(
-    base_Url + "holidaze/bookings",
-    "POST"
-  );
   const { id } = useParams();
+  const navigate = useNavigate(); // For navigation to login/register
+  const user = globalStates((state) => state.user); // Get the user info (which includes accessToken)
+  const accessToken = user?.accessToken;
+
+  const postBooking = accessToken
+    ? useMutationDataAuth(base_Url + "holidaze/bookings", "POST")
+    : null; // Set to null if no accessToken
 
   const {
     isPending,
@@ -50,7 +55,12 @@ function VenuePage() {
 
   // Handle reservation button click (opens the modal)
   const handleReserveClick = () => {
-    setShowModal(true);
+    if (!accessToken) {
+      // Show login/register alert when not logged in
+      alert("Please login or register to make a booking.");
+    } else {
+      setShowModal(true);
+    }
   };
 
   // Handle confirmation and booking submission
@@ -67,7 +77,6 @@ function VenuePage() {
   };
 
   // Handle modal cancellation
-
   const handleCancel = () => {
     setShowModal(false);
     setSelectedDates([null, null]); // Clear the form
@@ -99,14 +108,30 @@ function VenuePage() {
         </Col>
         <Col>
           <VenueDetails venue={venue} />
-          <VenueBookingForm
-            venue={venue.data}
-            selectedDates={selectedDates}
-            setSelectedDates={setSelectedDates}
-            guests={guests}
-            handleGuestChange={handleGuestChange}
-            onReserveClick={handleReserveClick}
-          />
+          {!accessToken ? (
+            // Display this if the user is not logged in
+            <Alert variant="warning" className="text-center">
+              You must{" "}
+              <Button variant="link" onClick={() => navigate("/login")}>
+                login
+              </Button>{" "}
+              or{" "}
+              <Button variant="link" onClick={() => navigate("/register")}>
+                register
+              </Button>{" "}
+              to book this venue.
+            </Alert>
+          ) : (
+            // Show booking form if user is logged in
+            <VenueBookingForm
+              venue={venue.data}
+              selectedDates={selectedDates}
+              setSelectedDates={setSelectedDates}
+              guests={guests}
+              handleGuestChange={handleGuestChange}
+              onReserveClick={handleReserveClick}
+            />
+          )}
         </Col>
       </Row>
 
@@ -117,13 +142,15 @@ function VenuePage() {
         </Col>
       </Row>
 
-      <VenueConfirmationMOdal
-        showModal={showModal}
-        handleCancel={handleCancel}
-        handleBookingConfirmation={handleBookingConfirmation}
-        selectedDates={selectedDates}
-        guests={guests}
-      />
+      {accessToken && (
+        <VenueConfirmationMOdal
+          showModal={showModal}
+          handleCancel={handleCancel}
+          handleBookingConfirmation={handleBookingConfirmation}
+          selectedDates={selectedDates}
+          guests={guests}
+        />
+      )}
     </Container>
   );
 }
