@@ -1,6 +1,4 @@
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
+import { Button, Form, Container } from "react-bootstrap";
 import backgroundImage from "../../assets/Images/beach_with_sunset.jpg";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -72,7 +70,7 @@ function RegisterPage() {
             type="text"
             placeholder="Enter name"
             {...register("name")}
-            isInvalid={errors.username}
+            isInvalid={errors.name}
           />
           {errors.username && (
             <Form.Control.Feedback type="invalid">
@@ -80,7 +78,6 @@ function RegisterPage() {
             </Form.Control.Feedback>
           )}
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -95,7 +92,6 @@ function RegisterPage() {
             </Form.Control.Feedback>
           )}
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -110,7 +106,6 @@ function RegisterPage() {
             </Form.Control.Feedback>
           )}
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formConfirmPassword">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
@@ -132,7 +127,6 @@ function RegisterPage() {
             {...register("venueManager")}
           />
         </Form.Group>
-
         <Button
           type="submit"
           className="w-100 mt-3"
@@ -140,13 +134,11 @@ function RegisterPage() {
         >
           {status === "pending" ? "Registering..." : "Register"}
         </Button>
-
         {isError && (
           <div className="text-danger mt-2">
             {"An error occurred, please try again."}
           </div>
         )}
-
         <div className="text-center mt-5">
           <p>Already have an account?</p>
           <Link to="/login" className="change-form-button m-auto">

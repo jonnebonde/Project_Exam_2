@@ -1,8 +1,10 @@
 import Container from "react-bootstrap/Container";
 import heroImage from "../../assets/Images/hero_section.jpg";
 import PropTypes from "prop-types";
-import SearchVenues from "./SearchVenues";
 import Headline from "../HeroSection/Headline";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import Button from "react-bootstrap/Button";
 
 function HeroSection({ search, resetSearch, handleSearchFieldChange }) {
   return (
@@ -20,11 +22,16 @@ function HeroSection({ search, resetSearch, handleSearchFieldChange }) {
         text="Find your Dream Venue."
       />
 
-      <SearchVenues
-        search={search}
-        resetSearch={resetSearch}
-        handleSearchFieldChange={handleSearchFieldChange}
-      />
+      <InputGroup>
+        {" "}
+        <Form.Control
+          type="text"
+          placeholder="Search by venue name or location"
+          value={search}
+          onChange={handleSearchFieldChange}
+        />
+        <Button onClick={resetSearch}>Reset</Button>
+      </InputGroup>
     </Container>
   );
 }
