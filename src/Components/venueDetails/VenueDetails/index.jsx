@@ -1,6 +1,6 @@
 import HeadLine from "../../HeroSection/Headline";
 import AmenitiesList from "../AmenitiesList";
-import { propTypes } from "react-bootstrap/esm/Image";
+import propTypes from "prop-types";
 
 function VenueDetails({ venue }) {
   return (
