@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { base_Url } from "../../Constants/API";
 import { globalStates } from "../../Hooks/GlobalStates";
-import useGetDataAuth from "../../Hooks/Api/Get/Auth/GET";
+import useGetDataAuth from "../../Hooks/Api/Auth/GET";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import HeadLine from "../../Components/HeroSection/Headline";
 import UserInfo from "../../Components/user/UserInfo";

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import HeadLine from "../../Components/HeroSection/Headline";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import useMutationDataAuth from "../../Hooks/Api/Get/Auth/PostPutDelete";
+import useMutationDataAuth from "../../Hooks/Api/Auth/PostPutDelete";
 import VenueDetails from "../../Components/venueDetails/VenueDetails";
 import VenueBookingForm from "../../Components/venueDetails/VenueBookingForm";
 import VenueConfirmationMOdal from "../../Components/venueDetails/BookingModal";

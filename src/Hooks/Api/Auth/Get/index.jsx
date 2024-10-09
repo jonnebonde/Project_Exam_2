@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { globalStates } from "../../../../GlobalStates";
+import { globalStates } from "../../../GlobalStates";
 
 function useGetDataAuth(url, queryKey) {
   const token = globalStates((state) => state.user.accessToken);

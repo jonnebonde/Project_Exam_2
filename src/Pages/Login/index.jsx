@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useSubmitForm } from "../../Hooks/Api/Post/LoginRegisterForm";
+import { useSubmitForm } from "../../Hooks/Api/NoAuth/Post/LoginRegisterForm";
 import { base_Url } from "../../Constants/API";
 
 const schema = yup

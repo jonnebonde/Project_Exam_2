@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import useMutationDataAuth from "../../../Hooks/Api/Get/Auth/PostPutDelete";
+import useMutationDataAuth from "../../../Hooks/Api/Auth/PostPutDelete";
 import { base_Url } from "../../../Constants/API";
 import { globalStates } from "../../../Hooks/GlobalStates";
 

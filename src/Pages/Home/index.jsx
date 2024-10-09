@@ -1,5 +1,5 @@
 import { base_Url } from "../../Constants/API";
-import useFetchData from "../../Hooks/Api/Get/NoAuth";
+import useFetchData from "../../Hooks/Api/NoAuth/Get";
 import Container from "react-bootstrap/Container";
 import HeroSection from "../../Components/HeroSection";
 import { useState } from "react";

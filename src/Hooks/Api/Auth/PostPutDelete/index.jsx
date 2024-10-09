@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { globalStates } from "../../../../GlobalStates";
+import { globalStates } from "../../../GlobalStates";
 
 // Custom hook for mutations with auth token and API key
 function useMutationDataAuth(url, method = "POST") {
