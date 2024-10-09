@@ -12,10 +12,10 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="venue/:id" element={<VenuePage />} />{" "}
-        <Route path="Register" element={<RegisterPage />} />
-        <Route path="Login" element={<LoginPage />} />
-        <Route path="User" element={<UserPage />} />
-        <Route path="Venue_manager" element={"Venue manager"} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="user" element={<UserPage />} />
+        <Route path="venue_manager" element={"Venue manager"} />
       </Route>
     </Routes>
   );
