@@ -5,7 +5,7 @@ import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import HeadLine from "../../Components/HeroSection/Headline";
 import UserInfo from "../../Components/user/UserInfo";
 import EditUserForm from "../../Components/user/EditUserForm";
-import useGetDataAuth from "../../Hooks/Api/Auth/GET";
+import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 
 function UserPage() {
   const user = globalStates((state) => state.user);
