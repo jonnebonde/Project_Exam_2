@@ -19,8 +19,6 @@ function UserPage() {
     "userData"
   );
 
-  console.log(userData, isPending, error);
-
   const [showModal, setShowModal] = useState(false);
 
   if (isPending) {
