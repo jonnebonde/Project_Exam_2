@@ -1,6 +1,5 @@
 import { Modal, Button, Image, Form, Alert } from "react-bootstrap";
 import propTypes from "prop-types";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -12,9 +11,13 @@ import { globalStates } from "../../../Hooks/GlobalStates";
 
 const schema = yup
   .object({
-    avatarUrl: yup.string().url("Must be a valid URL").required(),
-    avatarAlt: yup.string().optional(),
     bio: yup.string().optional(),
+    avatar: yup
+      .object({
+        url: yup.string().url("Must be a valid URL").required(),
+        alt: yup.string().optional(),
+      })
+      .required(),
     venueManager: yup.boolean().optional(),
   })
   .required();
@@ -28,47 +31,45 @@ function EditUserForm({ user, showModal, setShowModal }) {
   const { status } = putUserData;
   const updateUser = globalStates((state) => state.UpdateUser);
 
-  console.log(status);
-  console.log(user);
-
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      avatarUrl: user?.avatar?.url || "",
-      avatarAlt: user?.avatar?.alt || "",
+      avatar: {
+        url: user?.avatar?.url || "",
+        alt: user?.avatar?.alt || "",
+      },
       bio: user?.bio || "",
       venueManager: user?.venueManager || false,
     },
     resolver: yupResolver(schema),
   });
 
+  const watchAvatarUrl = watch("avatar.url");
+
   const onSubmit = (formData) => {
-    console.log(formData);
-    putUserData.mutate(formData); // Perform form submission actions here
+    console.log("Submitted data:", formData);
+    putUserData.mutate(formData, {
+      onSuccess: () => {
+        updateUser({
+          avatar: {
+            url: formData.avatar.url,
+            alt: formData.avatar.alt,
+          },
+          bio: formData.bio,
+          venueManager: formData.venueManager,
+        });
+        setTimeout(() => {
+          reset();
+          setShowModal(false);
+        }, 2000);
+      },
+    }); // Perform form submission actions here
   };
-
-  useEffect(() => {
-    if (status === "success") {
-      console.log("Data successfully submitted");
-      updateUser({
-        avatar: {
-          url: user.avatar.url,
-          alt: user.avatar.url,
-        },
-        bio: user.bio,
-        venueManager: user.venueManager,
-      });
-
-      setTimeout(() => {
-        reset();
-        setShowModal(false);
-      }, 2000);
-    }
-  }, [status, reset, setShowModal, updateUser, user]);
 
   // Close modal and reset form
   const handleClose = () => {
@@ -83,7 +84,7 @@ function EditUserForm({ user, showModal, setShowModal }) {
       </Modal.Header>
       <Modal.Body className="d-flex flex-column align-items-center">
         <Image
-          src={user?.avatar?.url}
+          src={watchAvatarUrl}
           alt={user?.avatar?.alt}
           style={{
             width: "100px",
@@ -93,29 +94,29 @@ function EditUserForm({ user, showModal, setShowModal }) {
           }}
         />
         <Form
-          className="w-100 d-flex flex-column "
+          className="w-100 d-flex flex-column"
           onSubmit={handleSubmit(onSubmit)}
         >
           <Form.Group className="mb-3" controlId="formBasicImage">
-            <Form.Label>Avatar</Form.Label>
+            <Form.Label>Avatar URL</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter an image URL"
-              {...register("avatarUrl")}
-              isInvalid={!!errors.avatarUrl}
+              {...register("avatar.url")}
+              isInvalid={!!errors.avatar?.url}
             />
-            {errors.avatarUrl && (
+            {errors.avatar?.url && (
               <Form.Control.Feedback type="invalid">
-                {errors.avatarUrl.message}
+                {errors.avatar.url.message}
               </Form.Control.Feedback>
             )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicAltText">
-            <Form.Label>Avatar alt text</Form.Label>
+            <Form.Label>Avatar Alt Text</Form.Label>
             <Form.Control
               type="text"
               placeholder="Describe the image"
-              {...register("avatarAlt")}
+              {...register("avatar.alt")}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicBioText">
@@ -141,7 +142,7 @@ function EditUserForm({ user, showModal, setShowModal }) {
           )}
           {status === "error" && (
             <Alert variant="danger" className="w-100">
-              SomeThing went wrong
+              Something went wrong
             </Alert>
           )}
           <Button

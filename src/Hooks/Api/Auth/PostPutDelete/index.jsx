@@ -23,6 +23,8 @@ function useMutationDataAuth(url, method = "POST") {
         throw new Error(`Error: ${method} request failed`);
       }
 
+      console.log(response);
+
       return response.json();
     },
     onSuccess: () => {

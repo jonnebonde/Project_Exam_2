@@ -2,8 +2,6 @@ import { ListGroup, ListGroupItem } from "react-bootstrap";
 import HeadLine from "../../../Components/HeroSection/Headline";
 
 function UserInfo(user) {
-  console.log(user);
-
   return (
     <ListGroup className="text-start mt-3 m-auto">
       <ListGroupItem>
