@@ -1,21 +1,23 @@
 import { useState } from "react";
 import { base_Url } from "../../Constants/API";
-import { globalStates } from "../../Hooks/GlobalStates";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import HeadLine from "../../Components/HeroSection/Headline";
 import UserInfo from "../../Components/user/UserInfo";
 import EditUserForm from "../../Components/user/EditUserForm";
 import useGetDataAuth from "../../Hooks/Api/Auth/Get";
+import { useParams } from "react-router-dom";
 
 function UserPage() {
-  const user = globalStates((state) => state.user);
+  const { name } = useParams();
+
+  console.log(name);
 
   const {
     isPending,
     error,
     data: userData,
   } = useGetDataAuth(
-    `${base_Url}holidaze/profiles/${user.name}?_bookings=true&_owner=true`,
+    `${base_Url}holidaze/profiles/${name}?_bookings=true&_owner=true`,
     "userData"
   );
 

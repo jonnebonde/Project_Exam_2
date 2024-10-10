@@ -26,8 +26,8 @@ async function FetchVenueDetails(id) {
 
 function VenuePage() {
   const { id } = useParams();
-  const navigate = useNavigate(); // For navigation to login/register
-  const user = globalStates((state) => state.user); // Get the user info (which includes accessToken)
+  const navigate = useNavigate();
+  const user = globalStates((state) => state.user);
   const accessToken = user?.accessToken;
 
   const postBooking = accessToken
