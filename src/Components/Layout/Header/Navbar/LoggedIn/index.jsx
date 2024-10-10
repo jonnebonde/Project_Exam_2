@@ -1,6 +1,6 @@
 import { Nav, Image } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { globalStates } from "../../../../../Hooks/GlobalStates";
 
 function NavbarLoggedIn() {
@@ -18,6 +18,8 @@ function NavbarLoggedIn() {
 
   const user = globalStates((state) => state.user);
 
+  console.log(user);
+
   return (
     <Nav>
       <Dropdown align="end">
@@ -34,7 +36,9 @@ function NavbarLoggedIn() {
         </Dropdown.Toggle>
 
         <Dropdown.Menu className="navbar-dropdown-menu text-align-start">
-          <Dropdown.Item href={`/user/${user.name}`}>My profile</Dropdown.Item>
+          <Dropdown.Item>
+            <Link to={`/user/${user.name}`}>My profile</Link>
+          </Dropdown.Item>
           <Dropdown.Item href={`/user/${user.name}`}>My bookings</Dropdown.Item>
           {user.venueManager && (
             <Dropdown.Item href="/venue_manager">My venues</Dropdown.Item>

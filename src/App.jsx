@@ -14,7 +14,7 @@ function App() {
         <Route path="venue/:id" element={<VenuePage />} />{" "}
         <Route path="register" element={<RegisterPage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route path="user/:name" element={<UserPage />} />
+        <Route path="user/:name" element={<UserPage />} />{" "}
         <Route path="venue_manager" element={"Venue manager"} />
       </Route>
     </Routes>
