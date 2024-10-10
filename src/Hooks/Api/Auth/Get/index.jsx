@@ -17,8 +17,6 @@ function useGetDataAuth(url, queryKey) {
         },
       });
 
-      console.log(response);
-
       if (!response.ok) {
         throw new Error("There was an error fetching the data");
       }

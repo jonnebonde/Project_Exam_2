@@ -18,8 +18,6 @@ function NavbarLoggedIn() {
 
   const user = globalStates((state) => state.user);
 
-  console.log(user);
-
   return (
     <Nav>
       <Dropdown align="end">

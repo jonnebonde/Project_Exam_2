@@ -9,7 +9,6 @@ import { useParams } from "react-router-dom";
 
 function UserPage() {
   const { name } = useParams();
-  console.log(name);
 
   const {
     isPending,
