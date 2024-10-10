@@ -36,10 +36,12 @@ function NavbarLoggedIn() {
         </Dropdown.Toggle>
 
         <Dropdown.Menu className="navbar-dropdown-menu text-align-start">
-          <Dropdown.Item>
-            <Link to={`/user/${user.name}`}>My profile</Link>
+          <Dropdown.Item as={Link} to={`/user/${user.name}`}>
+            My profile
           </Dropdown.Item>
-          <Dropdown.Item href={`/user/${user.name}`}>My bookings</Dropdown.Item>
+          <Dropdown.Item as={Link} to={`/user/${user.name}`}>
+            My bookings
+          </Dropdown.Item>
           {user.venueManager && (
             <Dropdown.Item href="/venue_manager">My venues</Dropdown.Item>
           )}
