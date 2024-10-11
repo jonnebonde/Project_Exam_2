@@ -22,7 +22,6 @@ const isValidImageUrl = async (url) => {
 
 const schema = yup
   .object({
-    bio: yup.string().optional(),
     avatar: yup
       .object({
         url: yup
@@ -162,19 +161,11 @@ function EditUserForm({ user, showModal, setShowModal }) {
             )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicAltText">
-            <Form.Label>Avatar Alt Text</Form.Label>
+            <Form.Label>Avatar Alt Text - Optional</Form.Label>
             <Form.Control
               type="text"
               placeholder="Describe the image"
               {...register("avatar.alt")}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicBioText">
-            <Form.Label>Bio</Form.Label>
-            <Form.Control
-              as="textarea"
-              placeholder="Type your bio"
-              {...register("bio")}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">

@@ -6,6 +6,7 @@ import UserInfo from "../../Components/user/UserInfo";
 import EditUserForm from "../../Components/user/EditUserForm";
 import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 import { useParams } from "react-router-dom";
+import BookingCards from "../../Components/user/BookingCards";
 
 function UserPage() {
   const { name } = useParams();
@@ -29,9 +30,11 @@ function UserPage() {
     return <Container>{error}</Container>;
   }
 
+  console.log(userData);
+
   return (
     <Container>
-      <Row xs={1} lg={2}>
+      <Row>
         <Col className="text-center my-5">
           <HeadLine level={1} text="My Profile" />
           <Image
@@ -43,9 +46,8 @@ function UserPage() {
             }
             fluid
             style={{
-              width: "200px",
-              maxHeight: "200px",
-              height: "auto",
+              width: "150px",
+              maxHeight: "150px",
               objectFit: "cover",
             }}
           />
@@ -54,10 +56,9 @@ function UserPage() {
             Edit Profile
           </Button>
         </Col>
-        <Col className="text-center my">
-          <HeadLine level={1} text="My Bookings" />
-        </Col>
       </Row>
+      <HeadLine level={1} text="My Bookings" className="text-center" />
+      <BookingCards booking={userData?.data.bookings} />
       <EditUserForm
         user={userData?.data}
         showModal={showModal}

@@ -37,9 +37,6 @@ function NavbarLoggedIn() {
           <Dropdown.Item as={Link} to={`/user/${user.name}`}>
             My profile
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to={`/user/${user.name}`}>
-            My bookings
-          </Dropdown.Item>
           {user.venueManager && (
             <Dropdown.Item href="/venue_manager">My venues</Dropdown.Item>
           )}

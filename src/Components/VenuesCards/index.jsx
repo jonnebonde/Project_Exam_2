@@ -30,16 +30,10 @@ function VenueCards(data) {
               />
               <Card.Body>
                 <Card.Title className="text-truncate">{venue.name}</Card.Title>
-                <Card.Text
-                  className={
-                    !venue.location.city && !venue.location.country
-                      ? "padding"
-                      : " "
-                  }
-                >
+                <Card.Text className="text-truncate">
                   {venue.location.city || venue.location.country
                     ? `${venue.location.city ? venue.location.city : ""}${venue.location.country ? `, ${venue.location.country}` : ""}`
-                    : " "}
+                    : "Location not available "}
                 </Card.Text>
 
                 <Card.Text>{venue.price}£ per night</Card.Text>
