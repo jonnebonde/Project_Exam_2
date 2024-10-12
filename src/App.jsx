@@ -15,7 +15,6 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="user/:name" element={<UserPage />} />{" "}
-        <Route path="venue_manager" element={"Venue manager"} />
       </Route>
     </Routes>
   );

@@ -1,0 +1,10 @@
+.booking-card {
+  max-width: 350px !important;
+  box-shadow: 0 0.5rem 1rem getColour(black, 0.15) !important;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+    height: 120px;
+  }
+}

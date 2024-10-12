@@ -76,10 +76,9 @@ function VenuePage() {
     postBooking.mutate(bookingDetails);
   };
 
-  // Handle modal cancellation
   const handleCancel = () => {
     setShowModal(false);
-    setSelectedDates([null, null]); // Clear the form
+    setSelectedDates([null, null]);
     setGuests(0);
   };
 
@@ -102,14 +101,13 @@ function VenuePage() {
           />
         </Col>
       </Row>
-      <Row xs={1} sm={1} md={2}>
-        <Col>
+      <Row xs={1} sm={1} md={1} lg={2}>
+        <Col className="venue-image-container">
           <ImageSlider images={venue?.data?.media} />
         </Col>
         <Col>
           <VenueDetails venue={venue} />
           {!accessToken ? (
-            // Display this if the user is not logged in
             <Alert variant="warning" className="text-center">
               You must{" "}
               <Button variant="link" onClick={() => navigate("/login")}>
@@ -121,8 +119,11 @@ function VenuePage() {
               </Button>{" "}
               to book this venue.
             </Alert>
+          ) : user.name === venue.data.owner.name ? (
+            <Alert variant="warning" className="text-center">
+              You are the owner of this venue and cannot book it.
+            </Alert>
           ) : (
-            // Show booking form if user is logged in
             <VenueBookingForm
               venue={venue.data}
               selectedDates={selectedDates}

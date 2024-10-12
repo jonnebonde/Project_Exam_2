@@ -24,6 +24,7 @@ export const globalStates = create((set) => ({
   },
 
   // Action to log out the user, clear Zustand state, and remove from localStorage
+
   logout: () => {
     localStorage.removeItem("userData");
     set(() => ({ user: null }));

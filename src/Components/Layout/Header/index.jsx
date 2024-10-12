@@ -15,6 +15,9 @@ function Header() {
         <Link className="navbar-brand fs-2" to="/">
           Holidaze
         </Link>
+        <Link className="navbar-brand " to="/">
+          Home
+        </Link>
         {user ? <NavbarLoggedIn /> : <NavbarNotLoggedIn />}
       </Container>
     </Navbar>

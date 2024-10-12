@@ -189,7 +189,7 @@ function EditUserForm({ user, showModal, setShowModal }) {
           <Button
             variant="primary"
             type="submit"
-            disabled={putUserData.status === "pending"}
+            disabled={putUserData.status === "pending" || !watchAvatarUrl}
           >
             {putUserData.status === "pending"
               ? "Updating..."
