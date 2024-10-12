@@ -7,18 +7,9 @@ import useMutationDataAuth from "../../../Hooks/Api/Auth/PostPutDelete";
 import { base_Url } from "../../../Constants/API";
 import { globalStates } from "../../../Hooks/GlobalStates";
 import { useEffect, useState } from "react";
+import { isValidImageUrl } from "../../../Utilities/ValidateImage";
 
 // Function to validate if a URL is an image
-const isValidImageUrl = async (url) => {
-  try {
-    const response = await fetch(url, { method: "HEAD" });
-    const contentType = response.headers.get("content-type");
-    return contentType && contentType.startsWith("image/");
-    // eslint-disable-next-line no-unused-vars
-  } catch (error) {
-    return false;
-  }
-};
 
 const schema = yup
   .object({

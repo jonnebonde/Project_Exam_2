@@ -20,7 +20,7 @@ function UserPage() {
     "userData"
   );
 
-  const [showModal, setShowModal] = useState(false);
+  const [showEditUserModal, setShowEditUserModal] = useState(false);
 
   if (isPending) {
     return <Container>Loading...</Container>;
@@ -31,12 +31,14 @@ function UserPage() {
   }
 
   console.log(userData);
+  // fortsette sette opp forms for venues
 
   return (
     <Container>
       <Row>
         <Col className="text-center my-5">
           <HeadLine level={1} text="My Profile" />
+
           <Image
             src={
               userData?.data.avatar?.url || "https://via.placeholder.com/150"
@@ -50,18 +52,25 @@ function UserPage() {
             }}
           />
           <UserInfo user={userData?.data} />
-          <Button className="mt-3" onClick={() => setShowModal(true)}>
+          <Button onClick={() => setShowEditUserModal(true)}>
             Edit Profile
           </Button>
         </Col>
       </Row>
+      {userData?.data.venueManager && (
+        <Row>
+          <Col className="text-end">
+            <Button className="mb-3">New Venue</Button>
+          </Col>
+        </Row>
+      )}
       <Tabs
-        defaultActiveKey="Bookings"
-        id="fill-tab-example"
+        defaultActiveKey="bookings"
+        id="justify-tab-example"
         className="mb-3"
         fill
       >
-        <Tab eventKey="home" title="My Bookings">
+        <Tab eventKey="bookings" title="My Bookings">
           {userData?.data.bookings && userData?.data.bookings.length > 0 ? (
             <BookingCards booking={userData?.data.bookings} />
           ) : (
@@ -72,23 +81,26 @@ function UserPage() {
             />
           )}
         </Tab>
-        <Tab eventKey="venues" title="My Venues">
-          {userData?.data.venues && userData?.data.venues.length > 0 ? (
-            <p>venues</p>
-          ) : (
-            <HeadLine
-              level={4}
-              text="No venues found"
-              className="text-center"
-            />
-          )}
-        </Tab>
+
+        {userData?.data.venueManager && (
+          <Tab eventKey="venues" title="My Venues">
+            {userData?.data.venues && userData?.data.venues.length > 0 ? (
+              <p>venues</p>
+            ) : (
+              <HeadLine
+                level={4}
+                text="No venues found"
+                className="text-center"
+              />
+            )}
+          </Tab>
+        )}
       </Tabs>
 
       <EditUserForm
         user={userData?.data}
-        showModal={showModal}
-        setShowModal={setShowModal}
+        showModal={showEditUserModal}
+        setShowModal={setShowEditUserModal}
       />
     </Container>
   );
