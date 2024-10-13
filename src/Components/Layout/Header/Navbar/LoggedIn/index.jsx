@@ -1,22 +1,23 @@
-import { Nav, Image } from "react-bootstrap";
-import Dropdown from "react-bootstrap/Dropdown";
+import { Nav, Image, Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { globalStates } from "../../../../../Hooks/GlobalStates";
+import { UserDataStore } from "../../../../../Hooks/GlobalStates/UserData";
+import { useQueryClient } from "@tanstack/react-query";
 
 function NavbarLoggedIn() {
-  const logout = globalStates((state) => state.logout);
+  const logout = UserDataStore((state) => state.logout);
+  const user = UserDataStore((state) => state.user);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const logOut = () => {
     const confirmed = window.confirm("Are you sure you want to log out?");
 
     if (confirmed) {
+      queryClient.clear();
       logout();
       navigate("/");
     }
   };
-
-  const user = globalStates((state) => state.user);
 
   return (
     <Nav>
@@ -32,16 +33,14 @@ function NavbarLoggedIn() {
             className="profile-image rounded-circle"
           />
         </Dropdown.Toggle>
-
         <Dropdown.Menu className="navbar-dropdown-menu text-align-start">
           <Dropdown.Item as={Link} to={`/user/${user.name}`}>
             My profile
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to={`/user/${user.name}`}>
-            My bookings
-          </Dropdown.Item>
           {user.venueManager && (
-            <Dropdown.Item href="/venue_manager">My venues</Dropdown.Item>
+            <Dropdown.Item as={Link} to={`/venue-manager/${user.name}`}>
+              My venues
+            </Dropdown.Item>
           )}
           <Dropdown.Item onClick={logOut}>Logout</Dropdown.Item>
         </Dropdown.Menu>

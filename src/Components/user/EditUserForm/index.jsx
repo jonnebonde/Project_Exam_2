@@ -5,16 +5,27 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import useMutationDataAuth from "../../../Hooks/Api/Auth/PostPutDelete";
 import { base_Url } from "../../../Constants/API";
-import { globalStates } from "../../../Hooks/GlobalStates";
+import { UserDataStore } from "../../../Hooks/GlobalStates/UserData";
+import { useEffect, useState } from "react";
+import { isValidImageUrl } from "../../../Utilities/ValidateImage";
 
-// Set up a PUT request and handle response
+// Function to validate if a URL is an image
 
 const schema = yup
   .object({
-    bio: yup.string().optional(),
     avatar: yup
       .object({
-        url: yup.string().url("Must be a valid URL").required(),
+        url: yup
+          .string()
+          .url("Must be a valid URL")
+          .required("Avatar URL is required")
+          .test(
+            "is-image-url",
+            "The URL must point to an image",
+            async (value) => {
+              return await isValidImageUrl(value);
+            }
+          ),
         alt: yup.string().optional(),
       })
       .required(),
@@ -22,14 +33,16 @@ const schema = yup
   })
   .required();
 
-function EditUserForm({ user, showModal, setShowModal }) {
+function EditUserFormModal({ user, showModal, setShowModal }) {
+  const [alertStatus, setAlertStatus] = useState(null);
+  const [previewImage, setPreviewImage] = useState(user?.avatar?.url || "");
+
   const putUserData = useMutationDataAuth(
     `${base_Url}holidaze/profiles/${user?.name}`,
     "PUT"
   );
 
-  const { status } = putUserData;
-  const updateUser = globalStates((state) => state.UpdateUser);
+  const updateUser = UserDataStore((state) => state.UpdateUser);
 
   const {
     register,
@@ -51,8 +64,28 @@ function EditUserForm({ user, showModal, setShowModal }) {
 
   const watchAvatarUrl = watch("avatar.url");
 
+  useEffect(() => {
+    if (watchAvatarUrl) {
+      setPreviewImage(watchAvatarUrl);
+    }
+  }, [watchAvatarUrl]);
+
+  useEffect(() => {
+    if (showModal) {
+      reset({
+        avatar: {
+          url: user?.avatar?.url || "",
+          alt: user?.avatar?.alt || "",
+        },
+        bio: user?.bio || "",
+        venueManager: user?.venueManager || false,
+      });
+
+      setPreviewImage(user?.avatar?.url || "");
+    }
+  }, [showModal, user, reset]);
+
   const onSubmit = (formData) => {
-    console.log("Submitted data:", formData);
     putUserData.mutate(formData, {
       onSuccess: () => {
         updateUser({
@@ -63,18 +96,23 @@ function EditUserForm({ user, showModal, setShowModal }) {
           bio: formData.bio,
           venueManager: formData.venueManager,
         });
-        setTimeout(() => {
-          reset();
-          setShowModal(false);
-        }, 2000);
+
+        setAlertStatus("success");
+        reset();
+        setShowModal(false);
+        setAlertStatus(null);
       },
-    }); // Perform form submission actions here
+      onError: () => {
+        setAlertStatus("error");
+      },
+    });
   };
 
-  // Close modal and reset form
   const handleClose = () => {
-    setShowModal(false);
     reset();
+    setAlertStatus(null);
+    setPreviewImage(user?.avatar?.url || "");
+    setShowModal(false);
   };
 
   return (
@@ -84,8 +122,8 @@ function EditUserForm({ user, showModal, setShowModal }) {
       </Modal.Header>
       <Modal.Body className="d-flex flex-column align-items-center">
         <Image
-          src={watchAvatarUrl}
-          alt={user?.avatar?.alt}
+          src={previewImage || "https://via.placeholder.com/100"}
+          alt={user?.avatar?.alt || "Preview image"}
           style={{
             width: "100px",
             maxHeight: "100px",
@@ -107,24 +145,16 @@ function EditUserForm({ user, showModal, setShowModal }) {
             />
             {errors.avatar?.url && (
               <Form.Control.Feedback type="invalid">
-                {errors.avatar.url.message}
+                {errors.avatar?.url.message}
               </Form.Control.Feedback>
             )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicAltText">
-            <Form.Label>Avatar Alt Text</Form.Label>
+            <Form.Label>Avatar Alt Text - Optional</Form.Label>
             <Form.Control
               type="text"
               placeholder="Describe the image"
               {...register("avatar.alt")}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicBioText">
-            <Form.Label>Bio</Form.Label>
-            <Form.Control
-              as="textarea"
-              placeholder="Type your bio"
-              {...register("bio")}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
@@ -135,12 +165,12 @@ function EditUserForm({ user, showModal, setShowModal }) {
               {...register("venueManager")}
             />
           </Form.Group>
-          {status === "success" && (
+          {alertStatus === "success" && (
             <Alert variant="success" className="w-100">
               Profile updated
             </Alert>
           )}
-          {status === "error" && (
+          {alertStatus === "error" && (
             <Alert variant="danger" className="w-100">
               Something went wrong
             </Alert>
@@ -148,9 +178,11 @@ function EditUserForm({ user, showModal, setShowModal }) {
           <Button
             variant="primary"
             type="submit"
-            disabled={status === "pending"}
+            disabled={putUserData.status === "pending" || !watchAvatarUrl}
           >
-            {status === "pending" ? "Updating..." : "Update profile"}
+            {putUserData.status === "pending"
+              ? "Updating..."
+              : "Update profile"}
           </Button>
         </Form>
       </Modal.Body>
@@ -158,10 +190,10 @@ function EditUserForm({ user, showModal, setShowModal }) {
   );
 }
 
-EditUserForm.propTypes = {
+EditUserFormModal.propTypes = {
   user: propTypes.object,
   showModal: propTypes.bool,
   setShowModal: propTypes.func,
 };
 
-export default EditUserForm;
+export default EditUserFormModal;

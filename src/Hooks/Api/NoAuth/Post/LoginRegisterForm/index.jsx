@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { globalStates } from "../../../../GlobalStates";
+import { UserDataStore } from "../../../../GlobalStates/UserData";
 import { base_Url } from "../../../../../Constants/API";
 
 export function useSubmitForm() {
   const navigate = useNavigate();
-  const login = globalStates((state) => state.login);
+  const login = UserDataStore((state) => state.login);
 
   const mutation = useMutation({
     mutationFn: async ({ url, formData, isRegistration }) => {

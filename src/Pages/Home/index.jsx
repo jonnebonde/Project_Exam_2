@@ -53,7 +53,7 @@ function Home() {
         handleSearchFieldChange={handleSearchFieldChange}
       />
       {filteredVenues.length === 0 ? (
-        <p>No venues found...</p>
+        <p className="text-center">No venues matched your search.</p>
       ) : (
         <VenueCards data={filteredVenues} />
       )}

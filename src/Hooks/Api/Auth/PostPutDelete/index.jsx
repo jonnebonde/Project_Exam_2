@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { globalStates } from "../../../GlobalStates";
+import { UserDataStore } from "../../../GlobalStates/UserData";
 
 // Custom hook for mutations with auth token and API key
 function useMutationDataAuth(url, method = "POST") {
-  const token = globalStates((state) => state.user.accessToken);
+  const token = UserDataStore((state) => state.user.accessToken);
   const apiKey = import.meta.env.VITE_API_KEY;
   const queryClient = useQueryClient(); // to invalidate queries after success
 

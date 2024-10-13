@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { base_Url } from "../../Constants/API";
-import { Container, Row, Col, Image, Button } from "react-bootstrap";
-import HeadLine from "../../Components/HeroSection/Headline";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import UserInfo from "../../Components/user/UserInfo";
-import EditUserForm from "../../Components/user/EditUserForm";
+import EditUserFormModal from "../../Components/user/EditUserForm";
 import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 import { useParams } from "react-router-dom";
+import BookingCards from "../../Components/user/BookingCards";
+import HeadLine from "../../Components/HeroSection/Headline";
 
 function UserPage() {
   const { name } = useParams();
@@ -15,54 +16,52 @@ function UserPage() {
     error,
     data: userData,
   } = useGetDataAuth(
-    `${base_Url}holidaze/profiles/${name}?_bookings=true&_owner=true`,
+    `${base_Url}holidaze/profiles/${name}?_bookings=true&_venues=true`,
     "userData"
   );
 
-  const [showModal, setShowModal] = useState(false);
+  const [showEditUserModal, setShowEditUserModal] = useState(false);
 
   if (isPending) {
-    return <Container>Loading...</Container>;
+    return <Container className="text-center">Loading...</Container>;
   }
 
   if (error) {
-    return <Container>{error}</Container>;
+    return (
+      <Container className="text-center">
+        Something went wrong, please try again
+      </Container>
+    );
   }
-
   return (
     <Container>
-      <Row xs={1} lg={2}>
-        <Col className="text-center my-5">
-          <HeadLine level={1} text="My Profile" />
-          <Image
-            src={
-              userData?.data.avatar?.url || "https://via.placeholder.com/150"
-            }
-            alt={
-              userData?.data.avatar?.alt || "Placeholder image for user avatar"
-            }
-            fluid
-            style={{
-              width: "200px",
-              maxHeight: "200px",
-              height: "auto",
-              objectFit: "cover",
-            }}
+      <Row>
+        <Col className="text-center">
+          <UserInfo
+            user={userData?.data}
+            showEditUserModal={showEditUserModal}
           />
-          <UserInfo user={userData?.data} />
-          <Button className="mt-3" onClick={() => setShowModal(true)}>
+          <Button onClick={() => setShowEditUserModal(true)}>
             Edit Profile
           </Button>
         </Col>
-        <Col className="text-center my">
-          <HeadLine level={1} text="My Bookings" />
-        </Col>
+        <HeadLine level={3} text="My Bookings" className="text-center mt-3" />
+        {userData?.data.bookings && userData?.data.bookings.length > 0 ? (
+          <BookingCards booking={userData?.data.bookings} />
+        ) : (
+          <HeadLine
+            level={4}
+            text="No bookings found"
+            className="text-center mt-3"
+          />
+        )}
+
+        <EditUserFormModal
+          user={userData?.data}
+          showModal={showEditUserModal}
+          setShowModal={setShowEditUserModal}
+        />
       </Row>
-      <EditUserForm
-        user={userData?.data}
-        showModal={showModal}
-        setShowModal={setShowModal}
-      />
     </Container>
   );
 }
