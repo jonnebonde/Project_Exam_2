@@ -55,7 +55,6 @@ function UserPage() {
             className="text-center mt-3"
           />
         )}
-
         <EditUserFormModal
           user={userData?.data}
           showModal={showEditUserModal}

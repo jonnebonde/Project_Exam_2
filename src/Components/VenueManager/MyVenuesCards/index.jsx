@@ -1,10 +1,13 @@
-/* import { Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import { PropTypes } from "prop-types";
+import { useVenueManagerStore } from "../../../Hooks/GlobalStates/VenueManagerVenues";
 
 function MyVenuesCards() {
+  const getManagerVenues = useVenueManagerStore((state) => state.venues);
+
   return (
     <Row xs={1} sm={2} md={2} lg={3} className="cards g-4">
-      {venues?.map((userVenue) => {
+      {getManagerVenues?.map((userVenue) => {
         return (
           <Col key={userVenue.id} className="text-center my-4">
             <Card className="m-auto booking-card ">
@@ -43,4 +46,4 @@ MyVenuesCards.propTypes = {
   venues: PropTypes.array,
 };
 
-export default MyVenuesCards; */
+export default MyVenuesCards;

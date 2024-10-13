@@ -9,8 +9,6 @@ export const ProtectedRoute = ({
 }) => {
   const user = UserDataStore((state) => state.user);
 
-  console.log(user, isVenueManagerRequired, isAuthRequired);
-
   if (isAuthRequired && !user) {
     return <Navigate to="/login" />;
   }
