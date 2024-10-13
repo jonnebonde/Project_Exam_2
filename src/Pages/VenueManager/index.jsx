@@ -5,10 +5,13 @@ import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 import { useVenueManagerStore } from "../../Hooks/GlobalStates/VenueManagerVenues";
 import MyVenuesCards from "../../Components/VenueManager/MyVenuesCards";
 import HeadLine from "../../Components/HeroSection/Headline";
+import NewVenueForm from "../../Components/VenueManager/NewVenueForm";
+import { useState } from "react";
 
 function VenueManagerPage() {
   const { name } = useParams();
   const setManagerVenues = useVenueManagerStore((state) => state.setVenues);
+  const [showNewVenueModal, setShowNewVenueModal] = useState(false);
 
   const {
     isPending,
@@ -31,6 +34,7 @@ function VenueManagerPage() {
     );
   }
   setManagerVenues(myVenues?.data);
+  console.log(myVenues);
 
   return (
     <Container>
@@ -41,14 +45,19 @@ function VenueManagerPage() {
       </Row>
       <Row>
         <Col>
-          <Button>Create Venue</Button>
+          <Button onClick={() => setShowNewVenueModal(true)}>
+            Create Venue
+          </Button>
         </Col>
       </Row>
       <Row>
-        <Col>
-          <MyVenuesCards />
-        </Col>
+        <MyVenuesCards />
       </Row>
+
+      <NewVenueForm
+        showModal={showNewVenueModal}
+        setShowModal={setShowNewVenueModal}
+      />
     </Container>
   );
 }
