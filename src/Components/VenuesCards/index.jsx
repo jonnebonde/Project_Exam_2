@@ -36,7 +36,7 @@ function VenueCards(data) {
                     : "Location not available "}
                 </Card.Text>
 
-                <Card.Text>{venue.price}£ per night</Card.Text>
+                <Card.Text>£{venue.price}/night</Card.Text>
               </Card.Body>
             </Link>
           </Card>

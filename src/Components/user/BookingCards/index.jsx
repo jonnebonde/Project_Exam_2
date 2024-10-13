@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import calculateDaysBetween from "../../../Utilities/DateRange";
 
 function BookingCards({ booking }) {
-  console.log(booking);
-
   return (
     <Row xs={1} sm={2} md={2} lg={3} className="cards g-4">
       {booking?.map((bookingItem) => {
@@ -56,7 +54,7 @@ function BookingCards({ booking }) {
                   Guests: {bookingItem.guests}
                 </Card.Text>
                 <Card.Text className="text-start">
-                  Total price: ${bookingItem.venue.price * daysBetween}
+                  Total price: £{bookingItem.venue.price * daysBetween}
                 </Card.Text>
                 <Link
                   className="btn btn-primary"

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { base_Url } from "../../Constants/API";
-import { Container, Row, Col, Image, Button, Tab, Tabs } from "react-bootstrap";
-import HeadLine from "../../Components/HeroSection/Headline";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import UserInfo from "../../Components/user/UserInfo";
-import EditUserForm from "../../Components/user/EditUserForm";
+import EditUserFormModal from "../../Components/user/EditUserForm";
 import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 import { useParams } from "react-router-dom";
 import BookingCards from "../../Components/user/BookingCards";
+import HeadLine from "../../Components/HeroSection/Headline";
 
 function UserPage() {
   const { name } = useParams();
@@ -23,85 +23,45 @@ function UserPage() {
   const [showEditUserModal, setShowEditUserModal] = useState(false);
 
   if (isPending) {
-    return <Container>Loading...</Container>;
+    return <Container className="text-center">Loading...</Container>;
   }
 
   if (error) {
-    return <Container>{error}</Container>;
+    return (
+      <Container className="text-center">
+        Something went wrong, please try again
+      </Container>
+    );
   }
-
-  console.log(userData);
-  // fortsette sette opp forms for venues
-
   return (
     <Container>
       <Row>
-        <Col className="text-center my-5">
-          <HeadLine level={1} text="My Profile" />
-
-          <Image
-            src={
-              userData?.data.avatar?.url || "https://via.placeholder.com/150"
-            }
-            alt={userData?.data.avatar?.alt || "no alt text provided im afraid"}
-            fluid
-            style={{
-              width: "150px",
-              maxHeight: "150px",
-              objectFit: "cover",
-            }}
+        <Col className="text-center">
+          <UserInfo
+            user={userData?.data}
+            showEditUserModal={showEditUserModal}
           />
-          <UserInfo user={userData?.data} />
           <Button onClick={() => setShowEditUserModal(true)}>
             Edit Profile
           </Button>
         </Col>
-      </Row>
-      {userData?.data.venueManager && (
-        <Row>
-          <Col className="text-end">
-            <Button className="mb-3">New Venue</Button>
-          </Col>
-        </Row>
-      )}
-      <Tabs
-        defaultActiveKey="bookings"
-        id="justify-tab-example"
-        className="mb-3"
-        fill
-      >
-        <Tab eventKey="bookings" title="My Bookings">
-          {userData?.data.bookings && userData?.data.bookings.length > 0 ? (
-            <BookingCards booking={userData?.data.bookings} />
-          ) : (
-            <HeadLine
-              level={4}
-              text="No bookings found"
-              className="text-center"
-            />
-          )}
-        </Tab>
-
-        {userData?.data.venueManager && (
-          <Tab eventKey="venues" title="My Venues">
-            {userData?.data.venues && userData?.data.venues.length > 0 ? (
-              <p>venues</p>
-            ) : (
-              <HeadLine
-                level={4}
-                text="No venues found"
-                className="text-center"
-              />
-            )}
-          </Tab>
+        <HeadLine level={3} text="My Bookings" className="text-center mt-3" />
+        {userData?.data.bookings && userData?.data.bookings.length > 0 ? (
+          <BookingCards booking={userData?.data.bookings} />
+        ) : (
+          <HeadLine
+            level={4}
+            text="No bookings found"
+            className="text-center mt-3"
+          />
         )}
-      </Tabs>
 
-      <EditUserForm
-        user={userData?.data}
-        showModal={showEditUserModal}
-        setShowModal={setShowEditUserModal}
-      />
+        <EditUserFormModal
+          user={userData?.data}
+          showModal={showEditUserModal}
+          setShowModal={setShowEditUserModal}
+        />
+      </Row>
     </Container>
   );
 }

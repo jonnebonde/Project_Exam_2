@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import useMutationDataAuth from "../../../Hooks/Api/Auth/PostPutDelete";
 import { base_Url } from "../../../Constants/API";
-import { globalStates } from "../../../Hooks/GlobalStates";
+import { UserDataStore } from "../../../Hooks/GlobalStates/UserData";
 import { useEffect, useState } from "react";
 import { isValidImageUrl } from "../../../Utilities/ValidateImage";
 
@@ -33,7 +33,7 @@ const schema = yup
   })
   .required();
 
-function EditUserForm({ user, showModal, setShowModal }) {
+function EditUserFormModal({ user, showModal, setShowModal }) {
   const [alertStatus, setAlertStatus] = useState(null);
   const [previewImage, setPreviewImage] = useState(user?.avatar?.url || "");
 
@@ -42,7 +42,7 @@ function EditUserForm({ user, showModal, setShowModal }) {
     "PUT"
   );
 
-  const updateUser = globalStates((state) => state.UpdateUser);
+  const updateUser = UserDataStore((state) => state.UpdateUser);
 
   const {
     register,
@@ -98,11 +98,9 @@ function EditUserForm({ user, showModal, setShowModal }) {
         });
 
         setAlertStatus("success");
-        setTimeout(() => {
-          reset();
-          setShowModal(false);
-          setAlertStatus(null);
-        }, 2000);
+        reset();
+        setShowModal(false);
+        setAlertStatus(null);
       },
       onError: () => {
         setAlertStatus("error");
@@ -192,10 +190,10 @@ function EditUserForm({ user, showModal, setShowModal }) {
   );
 }
 
-EditUserForm.propTypes = {
+EditUserFormModal.propTypes = {
   user: propTypes.object,
   showModal: propTypes.bool,
   setShowModal: propTypes.func,
 };
 
-export default EditUserForm;
+export default EditUserFormModal;

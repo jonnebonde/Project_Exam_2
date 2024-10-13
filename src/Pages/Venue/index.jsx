@@ -5,7 +5,7 @@ import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import HeadLine from "../../Components/HeroSection/Headline";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { globalStates } from "../../Hooks/GlobalStates"; // Assuming you have globalStates for accessToken
+import { UserDataStore } from "../../Hooks/GlobalStates/UserData"; // Assuming you have globalStates for accessToken
 import useMutationDataAuth from "../../Hooks/Api/Auth/PostPutDelete";
 import VenueDetails from "../../Components/venueDetails/VenueDetails";
 import VenueBookingForm from "../../Components/venueDetails/VenueBookingForm";
@@ -27,7 +27,7 @@ async function FetchVenueDetails(id) {
 function VenuePage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const user = globalStates((state) => state.user);
+  const user = UserDataStore((state) => state.user);
   const accessToken = user?.accessToken;
 
   const postBooking = accessToken

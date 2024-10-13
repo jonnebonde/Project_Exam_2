@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { globalStates } from "../../../GlobalStates";
+import { UserDataStore } from "../../../GlobalStates/UserData";
 
 function useGetDataAuth(url, queryKey) {
-  const token = globalStates((state) => state.user.accessToken);
+  const token = UserDataStore((state) => state.user.accessToken);
   const apiKey = import.meta.env.VITE_API_KEY;
 
   const { isPending, error, data } = useQuery({
