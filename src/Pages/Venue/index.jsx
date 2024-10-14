@@ -7,10 +7,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { UserDataStore } from "../../Hooks/GlobalStates/UserData"; // Assuming you have globalStates for accessToken
 import useMutationDataAuth from "../../Hooks/Api/Auth/PostPutDelete";
-import VenueDetails from "../../Components/venueDetails/VenueDetails";
-import VenueBookingForm from "../../Components/venueDetails/VenueBookingForm";
-import VenueConfirmationMOdal from "../../Components/venueDetails/BookingModal";
-import ImageSlider from "../../Components/venueDetails/ImageSlider";
+import VenueDetails from "../../Components/SpecificVenue/VenueDetails";
+import VenueBookingForm from "../../Components/SpecificVenue/VenueBookingForm";
+import VenueConfirmationMOdal from "../../Components/SpecificVenue/BookingModal";
+import ImageSlider from "../../Components/SpecificVenue/ImageSlider";
 
 async function FetchVenueDetails(id) {
   const response = await fetch(
