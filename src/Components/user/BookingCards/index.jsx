@@ -5,9 +5,13 @@ import { Link } from "react-router-dom";
 import calculateDaysBetween from "../../../Utilities/DateRange";
 
 function BookingCards({ booking }) {
+  const sortedBooking = booking?.sort((a, b) => {
+    return new Date(a.dateFrom) - new Date(b.dateFrom);
+  });
+
   return (
     <Row xs={1} sm={2} md={2} lg={3} className="cards g-4">
-      {booking?.map((bookingItem) => {
+      {sortedBooking?.map((bookingItem) => {
         const formattedDateFrom = formatDate(bookingItem?.dateFrom);
         const formattedDateTo = formatDate(bookingItem?.dateTo);
 
