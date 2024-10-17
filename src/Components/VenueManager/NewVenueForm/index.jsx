@@ -131,12 +131,28 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
 
   useEffect(() => {
     if (venue === null) {
-      reset(); // Reset to default values for new venue
+      reset({
+        name: "",
+        description: "",
+        price: "",
+        maxGuests: "",
+        location: {
+          country: "",
+          city: "",
+        },
+        meta: {
+          wifi: false,
+          breakfast: false,
+          parking: false,
+          pets: false,
+        },
+        media: [],
+      });
     }
   }, [venue, reset]);
 
   useEffect(() => {
-    if (venue) {
+    if (venue !== null) {
       reset({
         name: venue.name || "",
         description: venue.description || "",
