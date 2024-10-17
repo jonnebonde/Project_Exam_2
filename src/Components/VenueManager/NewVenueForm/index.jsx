@@ -17,7 +17,7 @@ import * as yup from "yup";
 import useMutationDataAuth from "../../../Hooks/Api/Auth/PostPutDelete";
 import { base_Url } from "../../../Constants/API";
 import { useVenueManagerStore } from "../../../Hooks/GlobalStates/VenueManagerVenues";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { isValidImageUrl } from "../../../Utilities/ValidateImage";
 
 const schema = yup
@@ -26,8 +26,10 @@ const schema = yup
     description: yup.string().required("Description is required"),
     price: yup.number().required("Price is required"),
     maxGuests: yup.number().required("Max Guests is required"),
-    country: yup.string().required("Country is required"),
-    city: yup.string().required("City is required"),
+    location: yup.object({
+      country: yup.string().required("Country is required"),
+      city: yup.string().required("City is required"),
+    }),
     meta: yup
       .object({
         wifi: yup.boolean().optional(),
@@ -38,28 +40,45 @@ const schema = yup
       .optional(),
     media: yup
       .array()
+      .of(
+        yup.object({
+          url: yup
+            .string()
+            .url("Must be a valid URL")
+            .required("Media URL is required")
+            .test(
+              "is-image-url",
+              "The URL must point to an image",
+              async (value) => await isValidImageUrl(value)
+            ),
+          alt: yup.string().optional(),
+        })
+      )
       .min(1, "At least one image is required.")
-      .max(8, "You can add up to 8 images."), // No need to validate individual images here anymore
+      .max(8, "You can add up to 8 images."),
   })
   .required();
 
-function NewVenueForm({ showModal, setShowModal }) {
+function NewVenueForm({ showModal, setShowModal, venue }) {
   const [alertStatus, setAlertStatus] = useState(null);
   const [imageInput, setImageInput] = useState("");
 
+  console.log(venue);
+
   const postNewVenue = useMutationDataAuth(
-    base_Url + "holidaze/venues",
-    "POST"
+    base_Url + (venue ? `holidaze/venues/${venue.id}` : "holidaze/venues"),
+    venue ? "PUT" : "POST" // PUT for editing, POST for new
   );
+
   const addNewVenue = useVenueManagerStore((state) => state.addVenue);
+  const updateVenue = useVenueManagerStore((state) => state.updateVenue);
 
   const {
     register,
     handleSubmit,
     reset,
-    control,
-    setError,
     clearErrors,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -67,8 +86,10 @@ function NewVenueForm({ showModal, setShowModal }) {
       description: "",
       price: "",
       maxGuests: "",
-      country: "",
-      city: "",
+      location: {
+        country: "",
+        city: "",
+      },
       meta: {
         wifi: false,
         breakfast: false,
@@ -80,16 +101,17 @@ function NewVenueForm({ showModal, setShowModal }) {
     resolver: yupResolver(schema),
   });
 
+  // On form submit
   const onSubmit = (data) => {
-    if (data.media.length === 0) {
-      setAlertStatus("no-images");
-      return;
-    }
     console.log("Submitting data:", data);
 
     postNewVenue.mutate(data, {
       onSuccess: () => {
-        addNewVenue(data);
+        if (venue) {
+          addNewVenue(data);
+        } else {
+          updateVenue(data);
+        }
         setAlertStatus("success");
         handleClose();
       },
@@ -107,6 +129,34 @@ function NewVenueForm({ showModal, setShowModal }) {
     name: "media", // This corresponds to the media array in the form
   });
 
+  useEffect(() => {
+    if (venue === null) {
+      reset(); // Reset to default values for new venue
+    }
+  }, [venue, reset]);
+
+  useEffect(() => {
+    if (venue) {
+      reset({
+        name: venue.name || "",
+        description: venue.description || "",
+        price: venue.price || "",
+        maxGuests: venue.maxGuests || "",
+        location: venue.location || {
+          country: venue.location?.country || "",
+          city: venue.location?.city || "",
+        },
+        meta: venue.meta || {
+          wifi: false,
+          breakfast: false,
+          parking: false,
+          pets: false,
+        },
+        media: venue.media || [],
+      });
+    }
+  }, [venue, reset]);
+
   const handleClose = () => {
     reset(); // Reset the form
     setAlertStatus(null);
@@ -116,35 +166,24 @@ function NewVenueForm({ showModal, setShowModal }) {
 
   // Function to handle adding new image URL
   const handleAddImage = async () => {
-    const imageSchema = yup
-      .string()
-      .url("Must be a valid URL")
-      .required("Media URL is required")
-      .test(
-        "is-image-url",
-        "The URL must point to an image",
-        async (value) => await isValidImageUrl(value)
-      );
+    const isValid = await isValidImageUrl(imageInput);
 
-    try {
-      // Validate the image input before adding
-      await imageSchema.validate(imageInput);
-      if (fields.length >= 8) {
-        setAlertStatus("limit");
-      } else {
-        append({ url: imageInput, alt: "Venue image" });
-        setImageInput(""); // Clear input field
-        clearErrors("media"); // Clear previous media validation errors
-      }
-    } catch (error) {
-      setError("media", { type: "manual", message: error.message });
+    if (!isValid) {
+      setAlertStatus("invalid-image");
+    } else if (fields.length >= 8) {
+      setAlertStatus("limit");
+    } else {
+      append({ url: imageInput, alt: "Venue image" });
+      setImageInput(""); // Clear input field after adding
+      clearErrors("media"); // Clear previous media validation errors
+      setAlertStatus(null); // Clear any previous alerts
     }
   };
 
   return (
     <Modal show={showModal} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Add a New Venue</Modal.Title>
+        <Modal.Title>{venue ? "Edit Venue" : "New Venue"}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="d-flex flex-column align-items-center">
         <Form
@@ -192,7 +231,7 @@ function NewVenueForm({ showModal, setShowModal }) {
             <Form.Control
               type="text"
               placeholder="Enter the venue country"
-              {...register("country")}
+              {...register("location.country")}
               isInvalid={errors.country}
             />
           </Form.Group>
@@ -201,7 +240,7 @@ function NewVenueForm({ showModal, setShowModal }) {
             <Form.Control
               type="text"
               placeholder="Enter the venue city"
-              {...register("city")}
+              {...register("location.city")}
               isInvalid={errors.city}
             />
           </Form.Group>
@@ -245,8 +284,8 @@ function NewVenueForm({ showModal, setShowModal }) {
                 placeholder="Enter an image URL"
                 value={imageInput}
                 onChange={(e) => setImageInput(e.target.value)}
-                isInvalid={!!errors.media}
-                disabled={fields.length >= 8}
+                isInvalid={!!errors.media} // Show error for media
+                disabled={fields.length >= 8} // Disable input after reaching limit
               />
               <Button
                 variant="primary"
@@ -264,10 +303,30 @@ function NewVenueForm({ showModal, setShowModal }) {
           </Form.Group>
 
           <Container className="mt-4">
-            <Row className="g-2" xs={4} sm={4} md={4} lg={4} xl={4} xxl={4}>
+            {alertStatus === "limit" && (
+              <Alert variant="warning" className="w-100">
+                You cannot add more than 8 images.
+              </Alert>
+            )}
+            {alertStatus === "no-images" && (
+              <Alert variant="warning" className="w-100">
+                Please add at least one image.
+              </Alert>
+            )}
+            {alertStatus === "invalid-image" && (
+              <Alert variant="warning" className="w-100">
+                The URL does not point to a valid image.
+              </Alert>
+            )}
+            {alertStatus === "limit" && (
+              <Alert variant="warning" className="w-100">
+                You cannot add more than 8 images.
+              </Alert>
+            )}
+            <Row className="g-2" xs={4}>
               {fields.map((image, index) => (
                 <Col key={image.id} className="mb-4">
-                  <Card className="position-relative ">
+                  <Card className="position-relative">
                     <Image src={image.url} thumbnail />
                     <Button
                       variant="danger"
@@ -282,17 +341,6 @@ function NewVenueForm({ showModal, setShowModal }) {
               ))}
             </Row>
           </Container>
-
-          {alertStatus === "limit" && (
-            <Alert variant="warning" className="w-100">
-              You cannot add more than 8 images.
-            </Alert>
-          )}
-          {alertStatus === "no-images" && (
-            <Alert variant="warning" className="w-100">
-              Please add at least one image.
-            </Alert>
-          )}
 
           {/* General Alert Messages */}
           {alertStatus === "success" && (
@@ -312,7 +360,7 @@ function NewVenueForm({ showModal, setShowModal }) {
             type="submit"
             disabled={postNewVenue.status === "loading"}
           >
-            {postNewVenue.status === "loading" ? "Submitting..." : "Submit"}
+            {venue ? "Edit Venue" : "Submit Venue"}
           </Button>
         </Form>
       </Modal.Body>
@@ -326,6 +374,7 @@ NewVenueForm.propTypes = {
   showModal: PropTypes.bool,
   handleClose: PropTypes.func,
   setShowModal: PropTypes.func,
+  venue: PropTypes.object,
 };
 
 export default NewVenueForm;

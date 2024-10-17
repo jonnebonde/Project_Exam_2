@@ -12,6 +12,7 @@ function VenueManagerPage() {
   const { name } = useParams();
   const setManagerVenues = useVenueManagerStore((state) => state.setVenues);
   const [showNewVenueModal, setShowNewVenueModal] = useState(false);
+  const [editingVenue, setEditingVenue] = useState(null);
 
   const {
     isPending,
@@ -36,6 +37,16 @@ function VenueManagerPage() {
   setManagerVenues(myVenues?.data);
   console.log(myVenues);
 
+  const handleEditVenue = (venue) => {
+    setEditingVenue(venue); // Set the venue to edit
+    setShowNewVenueModal(true); // Open the modal
+  };
+
+  const handleCreateVenue = () => {
+    setEditingVenue(null); // No venue means creating a new one
+    setShowNewVenueModal(true);
+  };
+
   return (
     <Container>
       <Row>
@@ -45,18 +56,17 @@ function VenueManagerPage() {
       </Row>
       <Row>
         <Col>
-          <Button onClick={() => setShowNewVenueModal(true)}>
-            Create Venue
-          </Button>
+          <Button onClick={handleCreateVenue}>Create Venue</Button>
         </Col>
       </Row>
       <Row>
-        <MyVenuesCards />
+        <MyVenuesCards onEditVenue={handleEditVenue} />
       </Row>
 
       <NewVenueForm
         showModal={showNewVenueModal}
         setShowModal={setShowNewVenueModal}
+        venue={editingVenue} //
       />
     </Container>
   );

@@ -2,7 +2,7 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import { PropTypes } from "prop-types";
 import { useVenueManagerStore } from "../../../Hooks/GlobalStates/VenueManagerVenues";
 
-function MyVenuesCards() {
+function MyVenuesCards({ onEditVenue }) {
   const getManagerVenues = useVenueManagerStore((state) => state.venues);
 
   return (
@@ -10,7 +10,7 @@ function MyVenuesCards() {
       {getManagerVenues?.map((userVenue) => {
         return (
           <Col key={userVenue.id} className="text-center my-4">
-            <Card className="m-auto booking-card ">
+            <Card className="m-auto booking-card " key={userVenue.id}>
               <Card.Img
                 variant="top"
                 src={userVenue.media[0].url}
@@ -30,7 +30,11 @@ function MyVenuesCards() {
                   £{userVenue.price}/night
                 </Card.Text>
               </Card.Body>
-              <Button variant="primary" className="w-100">
+              <Button
+                variant="primary"
+                className="w-100"
+                onClick={() => onEditVenue(userVenue)}
+              >
                 Edit
               </Button>
               <Button>View Bookings</Button>
@@ -44,6 +48,7 @@ function MyVenuesCards() {
 
 MyVenuesCards.propTypes = {
   venues: PropTypes.array,
+  onEditVenue: PropTypes.func,
 };
 
 export default MyVenuesCards;
