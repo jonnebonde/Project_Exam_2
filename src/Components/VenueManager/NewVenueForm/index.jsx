@@ -63,6 +63,8 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
   const [alertStatus, setAlertStatus] = useState(null);
   const [imageInput, setImageInput] = useState("");
 
+  console.log(venue);
+
   const postNewVenue = useMutationDataAuth(
     base_Url + (venue ? `holidaze/venues/${venue.id}` : "holidaze/venues"),
     venue ? "PUT" : "POST"

@@ -7,12 +7,15 @@ import MyVenuesCards from "../../Components/VenueManager/MyVenuesCards";
 import HeadLine from "../../Components/HeroSection/Headline";
 import NewVenueForm from "../../Components/VenueManager/NewVenueForm";
 import { useState, useEffect } from "react";
+import MyVenuesBookings from "../../Components/VenueManager/MyVenuesBookings";
 
 function VenueManagerPage() {
   const { name } = useParams();
   const setManagerVenues = useVenueManagerStore((state) => state.setVenues);
   const [showNewVenueModal, setShowNewVenueModal] = useState(false);
   const [editingVenue, setEditingVenue] = useState(null);
+  const [showBookings, setShowBookings] = useState(false);
+  const [venueBookings, setVenueBookings] = useState(null);
 
   const {
     isPending,
@@ -51,6 +54,11 @@ function VenueManagerPage() {
     setShowNewVenueModal(true);
   };
 
+  const handleViewBookings = (bookings) => {
+    setVenueBookings(bookings);
+    setShowBookings(true);
+  };
+
   return (
     <Container>
       <Row>
@@ -64,13 +72,22 @@ function VenueManagerPage() {
         </Col>
       </Row>
       <Row>
-        <MyVenuesCards onEditVenue={handleEditVenue} />
+        <MyVenuesCards
+          onEditVenue={handleEditVenue}
+          onViewBookings={handleViewBookings}
+        />
       </Row>
 
       <NewVenueForm
         showModal={showNewVenueModal}
         setShowModal={setShowNewVenueModal}
-        venue={editingVenue} //
+        venue={editingVenue}
+      />
+
+      <MyVenuesBookings
+        showModal={showBookings}
+        setShowModal={setShowBookings}
+        venueBookings={venueBookings}
       />
     </Container>
   );
