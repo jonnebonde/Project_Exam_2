@@ -1,13 +1,16 @@
-/* import { Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import { PropTypes } from "prop-types";
+import { useVenueManagerStore } from "../../../Hooks/GlobalStates/VenueManagerVenues";
 
-function MyVenuesCards() {
+function MyVenuesCards({ onEditVenue, onViewBookings }) {
+  const getManagerVenues = useVenueManagerStore((state) => state.venues);
+
   return (
     <Row xs={1} sm={2} md={2} lg={3} className="cards g-4">
-      {venues?.map((userVenue) => {
+      {getManagerVenues?.map((userVenue) => {
         return (
           <Col key={userVenue.id} className="text-center my-4">
-            <Card className="m-auto booking-card ">
+            <Card className="m-auto booking-card " key={userVenue.id}>
               <Card.Img
                 variant="top"
                 src={userVenue.media[0].url}
@@ -27,10 +30,19 @@ function MyVenuesCards() {
                   £{userVenue.price}/night
                 </Card.Text>
               </Card.Body>
-              <Button variant="primary" className="w-100">
+              <Button
+                variant="primary"
+                className="w-100 mb-4"
+                onClick={() => onEditVenue(userVenue)}
+              >
                 Edit
               </Button>
-              <Button>View Bookings</Button>
+              <Button
+                variant="primary"
+                onClick={() => onViewBookings(userVenue)}
+              >
+                View Bookings
+              </Button>
             </Card>
           </Col>
         );
@@ -41,6 +53,8 @@ function MyVenuesCards() {
 
 MyVenuesCards.propTypes = {
   venues: PropTypes.array,
+  onEditVenue: PropTypes.func,
+  onViewBookings: PropTypes.func,
 };
 
-export default MyVenuesCards; */
+export default MyVenuesCards;
