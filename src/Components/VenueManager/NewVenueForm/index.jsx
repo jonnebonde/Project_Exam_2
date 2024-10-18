@@ -63,15 +63,19 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
   const [alertStatus, setAlertStatus] = useState(null);
   const [imageInput, setImageInput] = useState("");
 
-  console.log(venue);
-
   const postNewVenue = useMutationDataAuth(
     base_Url + (venue ? `holidaze/venues/${venue.id}` : "holidaze/venues"),
-    venue ? "PUT" : "POST" // PUT for editing, POST for new
+    venue ? "PUT" : "POST"
+  );
+
+  const deleteVenueMutation = useMutationDataAuth(
+    base_Url + `holidaze/venues/${venue?.id}`,
+    "DELETE"
   );
 
   const addNewVenue = useVenueManagerStore((state) => state.addVenue);
   const updateVenue = useVenueManagerStore((state) => state.updateVenue);
+  const deleteVenueState = useVenueManagerStore((state) => state.removeVenue);
 
   const {
     register,
@@ -101,7 +105,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     resolver: yupResolver(schema),
   });
 
-  // On form submit
   const onSubmit = (data) => {
     console.log("Submitting data:", data);
 
@@ -121,12 +124,9 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     });
   };
 
-  console.log(errors, "Errors");
-  /*   const watchMediaUrl = watch("newImageUrl"); */
-
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "media", // This corresponds to the media array in the form
+    name: "media",
   });
 
   useEffect(() => {
@@ -173,14 +173,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     }
   }, [venue, reset]);
 
-  const handleClose = () => {
-    reset(); // Reset the form
-    setAlertStatus(null);
-    setShowModal(false); // Close the modal
-    setImageInput(""); // Reset the image input field
-  };
-
-  // Function to handle adding new image URL
   const handleAddImage = async () => {
     const isValid = await isValidImageUrl(imageInput);
 
@@ -190,10 +182,35 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
       setAlertStatus("limit");
     } else {
       append({ url: imageInput, alt: "Venue image" });
-      setImageInput(""); // Clear input field after adding
-      clearErrors("media"); // Clear previous media validation errors
-      setAlertStatus(null); // Clear any previous alerts
+      setImageInput("");
+      clearErrors("media");
+      setAlertStatus(null);
     }
+  };
+
+  const handleDelete = () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this venue?"
+    );
+    if (confirmed) {
+      deleteVenueMutation.mutate(null, {
+        onSuccess: () => {
+          setAlertStatus("deleted");
+          deleteVenueState(venue.id);
+          handleClose();
+        },
+        onError: () => {
+          setAlertStatus("delete-error");
+        },
+      });
+    }
+  };
+
+  const handleClose = () => {
+    reset();
+    setAlertStatus(null);
+    setShowModal(false);
+    setImageInput("");
   };
 
   return (
@@ -371,20 +388,31 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
           )}
 
           {/* Submit Button */}
+
           <Button
             variant="primary"
             type="submit"
             disabled={postNewVenue.status === "loading"}
           >
-            {venue ? "Edit Venue" : "Submit Venue"}
+            {postNewVenue.status === "loading" ? "Loading..." : "Submit"}
           </Button>
+          {venue && (
+            <Button
+              variant="danger"
+              className="mt-5 w-50 m-auto"
+              onClick={handleDelete}
+              disabled={deleteVenueMutation.status === "loading"}
+            >
+              {deleteVenueMutation.status === "loading"
+                ? "Deleting..."
+                : "Delete Venue"}
+            </Button>
+          )}
         </Form>
       </Modal.Body>
     </Modal>
   );
 }
-
-// finne ut av hvorfor image url ikke trigger feilmelding eller submit button.
 
 NewVenueForm.propTypes = {
   showModal: PropTypes.bool,

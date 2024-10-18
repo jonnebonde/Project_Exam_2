@@ -6,7 +6,7 @@ import { useVenueManagerStore } from "../../Hooks/GlobalStates/VenueManagerVenue
 import MyVenuesCards from "../../Components/VenueManager/MyVenuesCards";
 import HeadLine from "../../Components/HeroSection/Headline";
 import NewVenueForm from "../../Components/VenueManager/NewVenueForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function VenueManagerPage() {
   const { name } = useParams();
@@ -23,6 +23,12 @@ function VenueManagerPage() {
     "myVenues"
   );
 
+  useEffect(() => {
+    if (myVenues?.data) {
+      setManagerVenues(myVenues.data);
+    }
+  }, [myVenues, setManagerVenues]);
+
   if (isPending) {
     return <Container className="text-center">Loading...</Container>;
   }
@@ -34,8 +40,6 @@ function VenueManagerPage() {
       </Container>
     );
   }
-  setManagerVenues(myVenues?.data);
-  console.log(myVenues);
 
   const handleEditVenue = (venue) => {
     setEditingVenue(venue); // Set the venue to edit

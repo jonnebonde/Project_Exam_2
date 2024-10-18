@@ -32,7 +32,7 @@ function MyVenuesCards({ onEditVenue }) {
               </Card.Body>
               <Button
                 variant="primary"
-                className="w-100"
+                className="w-100 mb-4"
                 onClick={() => onEditVenue(userVenue)}
               >
                 Edit
