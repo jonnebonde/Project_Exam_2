@@ -22,7 +22,6 @@
     .nav-link-login,
     .nav-link-register {
       font-family: $font-secondary;
-      border-radius: 5px;
       width: 72px;
       height: 32px;
       text-decoration: none;
@@ -62,7 +61,7 @@
   padding: 0 !important;
 
   &::after {
-    display: none;
+    display: none !important;
   }
 
   img {

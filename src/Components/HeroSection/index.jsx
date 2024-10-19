@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 function HeroSection({ search, resetSearch, handleSearchFieldChange }) {
   return (
     <Container
-      className="search-bar-container mb-5 d-flex justify-content-center align-items-center flex-column text-center"
+      className="search-bar-container mb-3 d-flex justify-content-center align-items-center flex-column text-center"
       fluid
       style={{
         backgroundImage: `url(${heroImage})`,
@@ -22,7 +22,7 @@ function HeroSection({ search, resetSearch, handleSearchFieldChange }) {
         text="Find your Dream Venue."
       />
 
-      <InputGroup>
+      <InputGroup className="rounded-1">
         {" "}
         <Form.Control
           type="text"

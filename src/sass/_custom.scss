@@ -2,3 +2,7 @@ $font-primary: "Poppins", sans-serif;
 $font-secondary: "Roboto", serif;
 
 $primary: getColour("primary-color");
+$secondary: getColour("secondary-background-color");
+
+$border-radius: 3px !default;
+$border-radius-sm: 3px !default;

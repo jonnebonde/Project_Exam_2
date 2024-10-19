@@ -52,7 +52,7 @@ function LoginPage() {
       }}
     >
       <Form
-        className="login-form bg-white p-4"
+        className="login-form bg-white p-4 rounded-1"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="login-title mb-3 text-center">Login</h1>

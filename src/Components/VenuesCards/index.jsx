@@ -2,8 +2,7 @@ import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
-
-// If time leftover make so that its showing 2 smaller venue cards on mobile view
+import placeHolder from "../../assets/Images/placeholder.jpg";
 
 function VenueCards(data) {
   return (
@@ -20,13 +19,17 @@ function VenueCards(data) {
                 src={
                   venue.media && venue.media[0] && venue.media[0].url
                     ? venue.media[0].url
-                    : "https://via.placeholder.com/150"
+                    : placeHolder
                 }
                 alt={
                   venue.media && venue.media[0] && venue.media[0].alt_text
                     ? venue.media[0].alt_text
                     : "No alt text provided"
                 }
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = placeHolder;
+                }}
               />
               <Card.Body>
                 <Card.Title className="text-truncate">{venue.name}</Card.Title>
@@ -35,7 +38,6 @@ function VenueCards(data) {
                     ? `${venue.location.city ? venue.location.city : ""}${venue.location.country ? `, ${venue.location.country}` : ""}`
                     : "Location not available "}
                 </Card.Text>
-
                 <Card.Text>£{venue.price}/night</Card.Text>
               </Card.Body>
             </Link>
