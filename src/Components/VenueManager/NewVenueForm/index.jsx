@@ -16,7 +16,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import useMutationDataAuth from "../../../Hooks/Api/Auth/PostPutDelete";
 import { base_Url } from "../../../Constants/API";
-import { useVenueManagerStore } from "../../../Hooks/GlobalStates/VenueManagerVenues";
 import { useState, useEffect } from "react";
 import { isValidImageUrl } from "../../../Utilities/ValidateImage";
 
@@ -63,8 +62,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
   const [alertStatus, setAlertStatus] = useState(null);
   const [imageInput, setImageInput] = useState("");
 
-  console.log(venue);
-
   const postNewVenue = useMutationDataAuth(
     base_Url + (venue ? `holidaze/venues/${venue.id}` : "holidaze/venues"),
     venue ? "PUT" : "POST"
@@ -74,10 +71,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     base_Url + `holidaze/venues/${venue?.id}`,
     "DELETE"
   );
-
-  const addNewVenue = useVenueManagerStore((state) => state.addVenue);
-  const updateVenue = useVenueManagerStore((state) => state.updateVenue);
-  const deleteVenueState = useVenueManagerStore((state) => state.removeVenue);
 
   const {
     register,
@@ -112,11 +105,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
 
     postNewVenue.mutate(data, {
       onSuccess: () => {
-        if (venue) {
-          addNewVenue(data);
-        } else {
-          updateVenue(data);
-        }
         setAlertStatus("success");
         handleClose();
       },
@@ -198,7 +186,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
       deleteVenueMutation.mutate(null, {
         onSuccess: () => {
           setAlertStatus("deleted");
-          deleteVenueState(venue.id);
           handleClose();
         },
         onError: () => {
@@ -319,8 +306,8 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
                 placeholder="Enter an image URL"
                 value={imageInput}
                 onChange={(e) => setImageInput(e.target.value)}
-                isInvalid={!!errors.media} // Show error for media
-                disabled={fields.length >= 8} // Disable input after reaching limit
+                isInvalid={!!errors.media}
+                disabled={fields.length >= 8}
               />
               <Button
                 variant="primary"
@@ -367,7 +354,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
                       variant="danger"
                       size="xs"
                       className="position-absolute top-0 end-0"
-                      onClick={() => remove(index)} // Remove image
+                      onClick={() => remove(index)}
                     >
                       X
                     </Button>
@@ -377,7 +364,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
             </Row>
           </Container>
 
-          {/* General Alert Messages */}
           {alertStatus === "success" && (
             <Alert variant="success" className="w-100">
               Venue successfully added.
@@ -388,8 +374,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
               Something went wrong while adding the venue.
             </Alert>
           )}
-
-          {/* Submit Button */}
 
           <Button
             variant="primary"

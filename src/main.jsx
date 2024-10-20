@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import "./sass/styles.scss";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import "mdb-react-ui-kit/dist/css/mdb.min.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

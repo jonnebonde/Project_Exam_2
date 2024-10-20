@@ -1,20 +1,23 @@
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row, Container } from "react-bootstrap";
 import { PropTypes } from "prop-types";
-import { useVenueManagerStore } from "../../../Hooks/GlobalStates/VenueManagerVenues";
 
-function MyVenuesCards({ onEditVenue, onViewBookings }) {
-  const getManagerVenues = useVenueManagerStore((state) => state.venues);
+function MyVenuesCards({ venues, onEditVenue, onViewBookings }) {
+  if (!venues || venues.length === 0) {
+    return <Container className="text-center mt-5">No venues found.</Container>;
+  }
 
   return (
     <Row xs={1} sm={2} md={2} lg={3} className="cards g-4">
-      {getManagerVenues?.map((userVenue) => {
+      {venues?.map((userVenue, index) => {
+        const venueId = userVenue.id || `temp-${index}`;
+
         return (
-          <Col key={userVenue.id} className="text-center my-4">
-            <Card className="m-auto booking-card " key={userVenue.id}>
+          <Col key={venueId} className="text-center my-4">
+            <Card className="m-auto booking-card">
               <Card.Img
                 variant="top"
-                src={userVenue.media[0].url}
-                alt={userVenue.media[0].alt_text}
+                src={userVenue.media[0]?.url || "path/to/placeholder-image.jpg"}
+                alt={userVenue.media[0]?.alt_text || "No image available"}
               />
               <Card.Body className="flex flex-row">
                 <Card.Title className="text-start">{userVenue.name}</Card.Title>

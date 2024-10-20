@@ -10,8 +10,6 @@ function VenueBookingForm({
   handleGuestChange,
   onReserveClick,
 }) {
-  console.log(venue);
-
   return (
     <>
       <VenueBookingPicker
@@ -19,7 +17,6 @@ function VenueBookingForm({
         onDateChange={(dates) => setSelectedDates(dates)}
         value={selectedDates}
       />
-      {/* Guest Selection */}
 
       <Form.Group controlId="guestInput">
         <Form.Label>Guests (Max: {venue?.maxGuests})</Form.Label>
@@ -31,7 +28,7 @@ function VenueBookingForm({
           max={venue?.maxGuests}
         />
       </Form.Group>
-      {/* Reserve Button */}
+
       <Button
         variant="primary"
         className="mt-3"

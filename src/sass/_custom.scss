@@ -6,3 +6,7 @@ $secondary: getColour("secondary-background-color");
 
 $border-radius: 3px !default;
 $border-radius-sm: 3px !default;
+
+$carousel-control-color: getColour("primary-color") !default;
+$carousel-control-width: 5% !default;
+$carousel-control-opacity: 0.9 !default;

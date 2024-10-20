@@ -32,7 +32,7 @@ function VenuePage() {
 
   const postBooking = accessToken
     ? useMutationDataAuth(base_Url + "holidaze/bookings", "POST")
-    : null; // Set to null if no accessToken
+    : null;
 
   const {
     isPending,
@@ -48,22 +48,18 @@ function VenuePage() {
   const [guests, setGuests] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
-  // Handle form input changes for guests
   const handleGuestChange = (e) => {
     setGuests(e.target.value);
   };
 
-  // Handle reservation button click (opens the modal)
   const handleReserveClick = () => {
     if (!accessToken) {
-      // Show login/register alert when not logged in
       alert("Please login or register to make a booking.");
     } else {
       setShowModal(true);
     }
   };
 
-  // Handle confirmation and booking submission
   const handleBookingConfirmation = () => {
     const bookingDetails = {
       dateFrom: new Date(selectedDates[0]),

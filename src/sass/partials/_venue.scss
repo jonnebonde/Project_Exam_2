@@ -3,6 +3,15 @@
     width: 100%;
     height: auto;
     object-fit: cover;
-    max-height: 500px;
+    height: 300px;
+
+    @media screen and (min-width: get-breakpoint(md)) {
+      height: 500px;
+    }
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    background-color: getColour("primary-background-color") !important;
   }
 }
