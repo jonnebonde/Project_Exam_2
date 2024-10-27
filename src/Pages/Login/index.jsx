@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useSubmitForm } from "../../Hooks/Api/NoAuth/Post/LoginRegisterForm";
 import { base_Url } from "../../Constants/API";
+import { Helmet } from "react-helmet-async";
 
 const schema = yup
   .object({
@@ -51,6 +52,13 @@ function LoginPage() {
         height: "100vh",
       }}
     >
+      <Helmet>
+        <title>Login | Holidaze</title>
+        <meta
+          name="description"
+          content="Login to your account to access all the features of the website"
+        />
+      </Helmet>
       <Form
         className="login-form bg-white p-4 rounded-1"
         onSubmit={handleSubmit(onSubmit)}

@@ -135,7 +135,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     setLoading(true);
     postNewVenue.mutate(data, {
       onSuccess: (responseData) => {
-        console.log(responseData);
         setNewVenueId(responseData.data.id);
         setLoading(false);
         setCreateEditStatus("success");

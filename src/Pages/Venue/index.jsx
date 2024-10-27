@@ -10,6 +10,7 @@ import VenueDetails from "../../Components/SpecificVenue/VenueDetails";
 import VenueBookingForm from "../../Components/SpecificVenue/VenueBookingForm";
 import VenueConfirmationModal from "../../Components/SpecificVenue/BookingModal";
 import ImageSlider from "../../Components/SpecificVenue/ImageSlider";
+import { Helmet } from "react-helmet-async";
 
 function VenuePage() {
   const { id } = useParams();
@@ -57,6 +58,13 @@ function VenuePage() {
 
   return (
     <Container>
+      <Helmet>
+        <title>{venue?.data?.name || "Venue"} | Holidaze</title>
+        <meta
+          name="description"
+          content="Explore this unique venue, complete with detailed amenities, photos, and booking options. Perfect for your next event, whether big or small."
+        />
+      </Helmet>
       <Row>
         <Col>
           <HeadLine

@@ -10,8 +10,6 @@ function BookingCards({ booking }) {
     return new Date(a.dateFrom) - new Date(b.dateFrom);
   });
 
-  console.log(sortedBooking);
-
   return (
     <Row xs={1} sm={2} md={2} lg={3} xl={4}>
       {sortedBooking?.map((bookingItem) => {
