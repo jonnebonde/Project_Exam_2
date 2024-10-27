@@ -236,7 +236,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
   };
 
   const visitNewVenue = () => {
-    window.location.href = `/venue/${newVenueId}`;
+    window.location.href = `/venues/${newVenueId}`;
   };
 
   return (
