@@ -1,28 +1,15 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { Container, Row, Col, Alert, Button } from "react-bootstrap";
 import { base_Url } from "../../Constants/API";
-import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useParams, useNavigate } from "react-router-dom";
+import useFetchData from "../../Hooks/Api/NoAuth/Get";
 import HeadLine from "../../Components/HeroSection/Headline";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { UserDataStore } from "../../Hooks/GlobalStates/UserData"; // Assuming you have globalStates for accessToken
-import useMutationDataAuth from "../../Hooks/Api/Auth/PostPutDelete";
+import { UserDataStore } from "../../Hooks/GlobalStates/UserData";
+
 import VenueDetails from "../../Components/SpecificVenue/VenueDetails";
 import VenueBookingForm from "../../Components/SpecificVenue/VenueBookingForm";
-import VenueConfirmationMOdal from "../../Components/SpecificVenue/BookingModal";
+import VenueConfirmationModal from "../../Components/SpecificVenue/BookingModal";
 import ImageSlider from "../../Components/SpecificVenue/ImageSlider";
-
-async function FetchVenueDetails(id) {
-  const response = await fetch(
-    `${base_Url}holidaze/venues/${id}?_owner=true&_bookings=true`
-  );
-
-  if (!response.ok) {
-    throw new Error("There was an error fetching the venue details");
-  }
-
-  return response.json();
-}
 
 function VenuePage() {
   const { id } = useParams();
@@ -30,60 +17,42 @@ function VenuePage() {
   const user = UserDataStore((state) => state.user);
   const accessToken = user?.accessToken;
 
-  const postBooking = accessToken
-    ? useMutationDataAuth(base_Url + "holidaze/bookings", "POST")
-    : null;
-
-  const {
-    isPending,
-    error,
-    data: venue,
-  } = useQuery({
-    queryKey: ["venue", id],
-    queryFn: () => FetchVenueDetails(id),
-    staleTime: 1000 * 60 * 5,
-  });
+  const url = `${base_Url}holidaze/venues/${id}?_owner=true&_bookings=true`;
+  const { isPending, error, data: venue } = useFetchData(url, id);
 
   const [selectedDates, setSelectedDates] = useState([null, null]);
   const [guests, setGuests] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
   const handleGuestChange = (e) => {
-    setGuests(e.target.value);
+    const guestCount = parseInt(e.target.value);
+    setGuests(isNaN(guestCount) ? 0 : guestCount);
   };
 
   const handleReserveClick = () => {
-    if (!accessToken) {
-      alert("Please login or register to make a booking.");
-    } else {
-      setShowModal(true);
-    }
+    setShowModal(true);
   };
 
-  const handleBookingConfirmation = () => {
-    const bookingDetails = {
-      dateFrom: new Date(selectedDates[0]),
-      dateTo: new Date(selectedDates[1]),
-      guests: Number(guests) || guests,
-      venueId: id,
-    };
-    console.log(bookingDetails);
-
-    postBooking.mutate(bookingDetails);
-  };
-
-  const handleCancel = () => {
-    setShowModal(false);
+  const resetBookingForm = () => {
     setSelectedDates([null, null]);
     setGuests(0);
   };
 
+  const handleCancel = () => {
+    setShowModal(false);
+  };
+
   if (isPending) {
-    return <div>Loading...</div>;
+    return <Container className="text-center">Loading...</Container>;
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return (
+      <Container className="text-center">
+        {" "}
+        Something went wrong, please try again
+      </Container>
+    );
   }
 
   return (
@@ -101,7 +70,7 @@ function VenuePage() {
         <Col className="venue-image-container">
           <ImageSlider images={venue?.data?.media} />
         </Col>
-        <Col>
+        <Col className="mt-lg-0 mt-3 d-lg-flex flex-column justify-content-between">
           <VenueDetails venue={venue} />
           {!accessToken ? (
             <Alert variant="warning" className="text-center">
@@ -131,21 +100,23 @@ function VenuePage() {
           )}
         </Col>
       </Row>
-
       <Row>
-        <Col>
+        <Col className="mt-3">
           <HeadLine level={5} className="text-black fw-semibold" text="Owner" />
-          <p>{venue?.data?.owner?.name}</p>
+          <p className="ms-3">Name: {venue?.data?.owner?.name}</p>
+          <p className="ms-3">Email: {venue?.data?.owner?.email}</p>
         </Col>
       </Row>
 
       {accessToken && (
-        <VenueConfirmationMOdal
+        <VenueConfirmationModal
           showModal={showModal}
           handleCancel={handleCancel}
-          handleBookingConfirmation={handleBookingConfirmation}
           selectedDates={selectedDates}
           guests={guests}
+          data={venue}
+          resetBookingForm={resetBookingForm}
+          user={user}
         />
       )}
     </Container>

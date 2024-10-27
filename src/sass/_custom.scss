@@ -8,5 +8,11 @@ $border-radius: 3px !default;
 $border-radius-sm: 3px !default;
 
 $carousel-control-color: getColour("primary-color") !default;
-$carousel-control-width: 5% !default;
+$carousel-control-width: 7% !default;
 $carousel-control-opacity: 0.9 !default;
+
+$carousel-indicator-width: 0px !default;
+$carousel-indicator-height: 0px !default;
+$carousel-indicator-hit-area-height: 0px !default;
+
+$btn-hover-bg-shade-amount: 0% !default;

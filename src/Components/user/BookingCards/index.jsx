@@ -22,7 +22,7 @@ function BookingCards({ booking }) {
 
         return (
           <Col key={bookingItem.id} className="text-center my-4">
-            <Card className="m-auto booking-card ">
+            <Card className="m-auto booking-card rounded-1">
               <Card.Img
                 variant="top"
                 src={bookingItem.venue.media[0].url}

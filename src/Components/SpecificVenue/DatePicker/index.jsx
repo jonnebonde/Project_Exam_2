@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-multi-date-picker";
 import dayjs from "dayjs";
@@ -9,11 +9,18 @@ dayjs.extend(isBetween);
 
 // Dealing with dates is the most frustrating thing i have done in code ever so
 // I ended up getting alot of help from chatGPT and the docs for dayjs and datepicker
+// https://www.npmjs.com/package/react-datepicker
+// https://www.npmjs.com/package/dayjs
 
 function VenueBookingPicker({ bookedDates, onDateChange, value }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [checkIn, setCheckIn] = useState(value[0] ? dayjs(value[0]) : null);
   const [checkOut, setCheckOut] = useState(value[1] ? dayjs(value[1]) : null);
+
+  useEffect(() => {
+    setCheckIn(value[0] ? dayjs(value[0]) : null);
+    setCheckOut(value[1] ? dayjs(value[1]) : null);
+  }, [value]);
 
   const isBooked = (date) => {
     return bookedDates.some(({ dateFrom, dateTo }) => {
@@ -34,7 +41,6 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
     return false;
   };
 
-  // Handle check-in date change
   const handleCheckInChange = (date) => {
     const selectedCheckIn = dayjs(date);
     setCheckIn(selectedCheckIn);
@@ -54,7 +60,6 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
     onDateChange([selectedCheckIn, checkOut]);
   };
 
-  // Handle check-out date change
   const handleCheckOutChange = (date) => {
     const selectedCheckOut = dayjs(date);
     setCheckOut(selectedCheckOut);
@@ -84,13 +89,16 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
           let props = {};
           if (isBooked(date)) {
             props.disabled = true;
-            props.style = { color: "#ccc", textDecoration: "line-through" };
+            props.style = {
+              color: "rgba(232, 76, 60, 1)",
+              textDecoration: "line-through",
+            };
           }
           return props;
         }}
         style={{ width: "100%", margin: "0 auto" }}
         format="DD/MM/YYYY"
-        placeholder="Select check-in date"
+        placeholder="Check-in date"
         minDate={dayjs().toDate()}
         highlightToday={true}
       />
@@ -103,13 +111,16 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
           let props = {};
           if (isBooked(date)) {
             props.disabled = true;
-            props.style = { color: "#ccc", textDecoration: "line-through" };
+            props.style = {
+              color: "rgba(232, 76, 60, 1)",
+              textDecoration: "line-through",
+            };
           }
           return props;
         }}
         style={{ width: "100%", margin: "0 auto", marginTop: "10px" }}
         format="DD/MM/YYYY"
-        placeholder="Select check-out date"
+        placeholder="Check-out date"
         minDate={checkIn ? checkIn.add(1, "day").toDate() : dayjs().toDate()}
         highlightToday={true}
       />

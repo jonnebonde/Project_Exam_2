@@ -116,7 +116,7 @@ function EditUserFormModal({ user, showModal, setShowModal }) {
   };
 
   return (
-    <Modal show={showModal} onHide={handleClose}>
+    <Modal show={showModal} onHide={handleClose} className="rounded-1">
       <Modal.Header closeButton>
         <Modal.Title>Edit Profile</Modal.Title>
       </Modal.Header>

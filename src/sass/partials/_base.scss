@@ -31,3 +31,11 @@ body,
 .padding {
   padding: 12px;
 }
+
+button {
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: underline !important;
+  }
+}
