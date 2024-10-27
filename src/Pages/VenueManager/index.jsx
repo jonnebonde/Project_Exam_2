@@ -65,13 +65,11 @@ function VenueManagerPage() {
           <Button onClick={handleCreateVenue}>Create Venue</Button>
         </Col>
       </Row>
-      <Row>
-        <MyVenuesCards
-          venues={myVenues?.data}
-          onEditVenue={handleEditVenue}
-          onViewBookings={handleViewBookings}
-        />
-      </Row>
+      <MyVenuesCards
+        venues={myVenues?.data}
+        onEditVenue={handleEditVenue}
+        onViewBookings={handleViewBookings}
+      />
 
       <NewVenueForm
         showModal={showNewVenueModal}

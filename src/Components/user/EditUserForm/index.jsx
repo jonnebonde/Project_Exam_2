@@ -124,6 +124,7 @@ function EditUserFormModal({ user, showModal, setShowModal }) {
       </Modal.Header>
       <Modal.Body className="d-flex flex-column align-items-center">
         <Image
+          className="rounded-1"
           src={previewImage || "https://via.placeholder.com/100"}
           alt={user?.avatar?.alt || "Preview image"}
           style={{
@@ -158,6 +159,11 @@ function EditUserFormModal({ user, showModal, setShowModal }) {
               placeholder="Describe the image"
               {...register("avatar.alt")}
             />
+            {errors.avatar?.alt && (
+              <Form.Control.Feedback type="invalid">
+                {errors.avatar?.alt.message}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check

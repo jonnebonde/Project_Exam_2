@@ -5,7 +5,6 @@ import {
   Row,
   Col,
   Alert,
-  Image,
   InputGroup,
   Container,
   Card,
@@ -21,13 +20,43 @@ import { isValidImageUrl } from "../../../Utilities/ValidateImage";
 
 const schema = yup
   .object({
-    name: yup.string().required("Name is required"),
-    description: yup.string().required("Description is required"),
-    price: yup.number().required("Price is required"),
-    maxGuests: yup.number().required("Max Guests is required"),
+    name: yup
+      .string()
+      .max(30, "Name must be at most 30 characters")
+      .min(2, "Name must be at least 2 characters")
+      .required("Name is required"),
+    description: yup
+      .string()
+      .max(200, "Description must be at most 200 characters")
+      .min(15, "Description must be at least 15 characters")
+      .required("Description is required"),
+    price: yup
+      .number()
+      .transform((value, originalValue) =>
+        originalValue === "" ? null : value
+      )
+      .max(18453, "Price is too high")
+      .min(1, "Price is too low")
+      .required("Price is required"),
+    maxGuests: yup
+      .number()
+      .transform((value, originalValue) =>
+        originalValue === "" ? null : value
+      )
+      .max(100, "Max Guests is too high")
+      .min(1, "Max Guests is too low")
+      .required("Max Guests is required"),
     location: yup.object({
-      country: yup.string().required("Country is required"),
-      city: yup.string().required("City is required"),
+      country: yup
+        .string()
+        .max(40, "Country must be at most 40 characters")
+        .min(2, "Country must be at least 2 characters")
+        .required("Country is required"),
+      city: yup
+        .string()
+        .max(40, "City must be at most 40 characters")
+        .min(2, "City must be at least 2 characters")
+        .required("City is required"),
     }),
     meta: yup
       .object({
@@ -59,8 +88,10 @@ const schema = yup
   .required();
 
 function NewVenueForm({ showModal, setShowModal, venue }) {
-  const [alertStatus, setAlertStatus] = useState(null);
+  const [createEditStatus, setCreateEditStatus] = useState(null);
   const [imageInput, setImageInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [newVenueId, setNewVenueId] = useState(null);
 
   const postNewVenue = useMutationDataAuth(
     base_Url + (venue ? `holidaze/venues/${venue.id}` : "holidaze/venues"),
@@ -101,15 +132,17 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
   });
 
   const onSubmit = (data) => {
-    console.log("Submitting data:", data);
-
+    setLoading(true);
     postNewVenue.mutate(data, {
-      onSuccess: () => {
-        setAlertStatus("success");
-        handleClose();
+      onSuccess: (responseData) => {
+        console.log(responseData);
+        setNewVenueId(responseData.data.id);
+        setLoading(false);
+        setCreateEditStatus("success");
       },
       onError: () => {
-        setAlertStatus("error");
+        setCreateEditStatus("error");
+        setLoading(false);
       },
     });
   };
@@ -167,14 +200,14 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     const isValid = await isValidImageUrl(imageInput);
 
     if (!isValid) {
-      setAlertStatus("invalid-image");
+      setCreateEditStatus("invalid-image");
     } else if (fields.length >= 8) {
-      setAlertStatus("limit");
+      setCreateEditStatus("limit");
     } else {
       append({ url: imageInput, alt: "Venue image" });
       setImageInput("");
       clearErrors("media");
-      setAlertStatus(null);
+      setCreateEditStatus(null);
     }
   };
 
@@ -185,11 +218,11 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     if (confirmed) {
       deleteVenueMutation.mutate(null, {
         onSuccess: () => {
-          setAlertStatus("deleted");
-          handleClose();
+          setCreateEditStatus("deleted");
+          setShowModal(false);
         },
         onError: () => {
-          setAlertStatus("delete-error");
+          setCreateEditStatus("delete-error");
         },
       });
     }
@@ -197,13 +230,22 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
 
   const handleClose = () => {
     reset();
-    setAlertStatus(null);
+    setCreateEditStatus(null);
     setShowModal(false);
     setImageInput("");
+    setNewVenueId(null);
+  };
+
+  const visitNewVenue = () => {
+    window.location.href = `/venue/${newVenueId}`;
   };
 
   return (
-    <Modal show={showModal} onHide={handleClose}>
+    <Modal
+      show={showModal}
+      onHide={handleClose}
+      className="new-venue-modal-form"
+    >
       <Modal.Header closeButton>
         <Modal.Title>{venue ? "Edit Venue" : "New Venue"}</Modal.Title>
       </Modal.Header>
@@ -220,6 +262,11 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
               {...register("name")}
               isInvalid={errors.name}
             />
+            {errors.name && (
+              <Form.Control.Feedback type="invalid">
+                {errors.name.message}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicBioText">
             <Form.Label>Venue description</Form.Label>
@@ -229,24 +276,41 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
               {...register("description")}
               isInvalid={errors.description}
             />
+            {errors.description && (
+              <Form.Control.Feedback type="invalid">
+                {errors.description.message}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicNumber">
             <Form.Label>Price/Night</Form.Label>
             <Form.Control
               type="number"
               placeholder="Price per night"
+              inputMode="numeric"
               {...register("price")}
               isInvalid={errors.price}
             />
+            {errors.price && (
+              <Form.Control.Feedback type="invalid">
+                {errors.price.message}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicNumber">
             <Form.Label>Max Guests</Form.Label>
             <Form.Control
               type="number"
+              inputMode="numeric"
               placeholder="Max number of guests"
               {...register("maxGuests")}
               isInvalid={errors.maxGuests}
             />
+            {errors.maxGuests && (
+              <Form.Control.Feedback type="invalid">
+                {errors.maxGuests.message}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicBioText">
             <Form.Label>Venue Country</Form.Label>
@@ -254,18 +318,30 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
               type="text"
               placeholder="Enter the venue country"
               {...register("location.country")}
-              isInvalid={errors.country}
+              isInvalid={!!errors.location?.country}
             />
+            {errors.location?.country && (
+              <Form.Control.Feedback type="invalid">
+                {errors.location.country.message}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
+
           <Form.Group className="mb-3" controlId="formBasicBioText">
-            <Form.Label>Venue city</Form.Label>
+            <Form.Label>Venue City</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter the venue city"
               {...register("location.city")}
-              isInvalid={errors.city}
+              isInvalid={!!errors.location?.city}
             />
+            {errors.location?.city && (
+              <Form.Control.Feedback type="invalid">
+                {errors.location.city.message}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
+
           <Row>
             <Form.Group as={Col} className="mb-3" controlId="formBasicCheckbox">
               <Form.Check
@@ -325,64 +401,73 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
           </Form.Group>
 
           <Container className="mt-4">
-            {alertStatus === "limit" && (
+            {createEditStatus === "limit" && (
               <Alert variant="warning" className="w-100">
                 You cannot add more than 8 images.
               </Alert>
             )}
-            {alertStatus === "no-images" && (
+            {createEditStatus === "no-images" && (
               <Alert variant="warning" className="w-100">
                 Please add at least one image.
               </Alert>
             )}
-            {alertStatus === "invalid-image" && (
+            {createEditStatus === "invalid-image" && (
               <Alert variant="warning" className="w-100">
                 The URL does not point to a valid image.
               </Alert>
             )}
-            {alertStatus === "limit" && (
+            {createEditStatus === "limit" && (
               <Alert variant="warning" className="w-100">
                 You cannot add more than 8 images.
               </Alert>
             )}
-            <Row className="g-2" xs={4}>
+            <Row xs="auto" className="mb-5 mx-auto justify-content-center">
               {fields.map((image, index) => (
-                <Col key={image.id} className="mb-4">
-                  <Card className="position-relative">
-                    <Image src={image.url} thumbnail />
-                    <Button
-                      variant="danger"
-                      size="xs"
-                      className="position-absolute top-0 end-0"
-                      onClick={() => remove(index)}
-                    >
-                      X
-                    </Button>
+                <Col key={image.id} className="w-auto p-0 rounded-1 me-2 my-1">
+                  <Card className="position-relative w-100 rounded-1 ">
+                    <Card.Img
+                      variant="top"
+                      src={image.url}
+                      alt={image.alt || "No alt text"}
+                      className="d-block w-100 rounded-1"
+                    />
+                    <Card.ImgOverlay className="">
+                      <Button
+                        variant="danger"
+                        size="xs"
+                        className="position-absolute top-0 end-0"
+                        onClick={() => remove(index)}
+                      >
+                        X
+                      </Button>
+                    </Card.ImgOverlay>
                   </Card>
                 </Col>
               ))}
             </Row>
           </Container>
-
-          {alertStatus === "success" && (
-            <Alert variant="success" className="w-100">
-              Venue successfully added.
-            </Alert>
+          {createEditStatus === "success" ? (
+            <>
+              <Button variant="primary" onClick={visitNewVenue}>
+                Visit New Venue
+              </Button>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </>
+          ) : (
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={loading || postNewVenue.status === "loading"}
+            >
+              {loading || postNewVenue.status === "loading"
+                ? "Loading..."
+                : "Submit"}
+            </Button>
           )}
-          {alertStatus === "error" && (
-            <Alert variant="danger" className="w-100">
-              Something went wrong while adding the venue.
-            </Alert>
-          )}
 
-          <Button
-            variant="primary"
-            type="submit"
-            disabled={postNewVenue.status === "loading"}
-          >
-            {postNewVenue.status === "loading" ? "Loading..." : "Submit"}
-          </Button>
-          {venue && (
+          {venue && createEditStatus !== "deleted" && (
             <Button
               variant="danger"
               className="mt-5 w-50 m-auto"

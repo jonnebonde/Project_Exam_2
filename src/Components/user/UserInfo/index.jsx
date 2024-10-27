@@ -9,7 +9,7 @@ function UserInfo(user) {
         src={user?.user.avatar?.url || "https://via.placeholder.com/150"}
         alt={user?.user.avatar?.alt || "no alt text provided im afraid"}
         fluid
-        className="d-block w-75 m-auto rounded-1"
+        className="d-block w-50 m-auto rounded-1"
         style={{
           maxHeight: "250px",
           objectFit: "cover",

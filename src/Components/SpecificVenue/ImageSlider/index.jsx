@@ -50,7 +50,7 @@ function ImageSlider({ images }) {
               </Carousel.Item>
             ))}
           </Carousel>
-          <Row xs="auto" className="thumbnail-row mt-3 ms-auto">
+          <Row xs="auto" className=" mt-3 ms-auto">
             {images.map((image, idx) => (
               <Col key={idx} className="w-auto p-0 rounded-1">
                 <Image
