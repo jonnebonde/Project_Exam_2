@@ -2,3 +2,22 @@ $font-primary: "Poppins", sans-serif;
 $font-secondary: "Roboto", serif;
 
 $primary: getColour("primary-color");
+$secondary: getColour("secondary-background-color");
+
+$border-radius: 3px !default;
+$border-radius-sm: 3px !default;
+
+$carousel-control-color: getColour("primary-color") !default;
+$carousel-control-width: 7% !default;
+$carousel-control-opacity: 0.9 !default;
+
+$carousel-indicator-width: 0px !default;
+$carousel-indicator-height: 0px !default;
+$carousel-indicator-hit-area-height: 0px !default;
+
+$card-box-shadow: 0 0.5rem 1rem getColour(black, 0.15) !default;
+
+$btn-hover-bg-shade-amount: 0% !default;
+$btn-border-radius: $border-radius !default;
+
+$modal-content-border-radius: $border-radius !default;

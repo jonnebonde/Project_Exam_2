@@ -22,7 +22,6 @@
     .nav-link-login,
     .nav-link-register {
       font-family: $font-secondary;
-      border-radius: 5px;
       width: 72px;
       height: 32px;
       text-decoration: none;
@@ -55,21 +54,20 @@
 .profile-dropdown {
   cursor: pointer;
   border: none !important;
-  width: 40px !important;
-  height: 40px !important;
+  width: 60px !important;
+  height: 60px !important;
   border-radius: 100% !important;
   background-color: transparent !important;
   padding: 0 !important;
 
   &::after {
-    display: none;
+    display: none !important;
   }
 
   img {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
-    border-radius: 50%;
     border: 2px solid #ddd;
 
     &:hover {

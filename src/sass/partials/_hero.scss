@@ -1,15 +1,32 @@
 .search-bar-container {
+  position: relative;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   height: 300px;
 
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3%;
+    width: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(245, 245, 245, 0) 0%,
+      white 100%
+    );
+    pointer-events: none;
+  }
+
   @media screen and (min-width: get-breakpoint(lg)) {
-    height: 400px;
+    height: 500px;
   }
 
   .input-group {
     width: 100% !important;
+    max-width: 600px !important;
     padding: 1rem !important;
     background-color: white !important;
 

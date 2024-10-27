@@ -3,14 +3,17 @@ import formatDate from "../../../Utilities/DateFormat/index";
 import { PropTypes } from "prop-types";
 import { Link } from "react-router-dom";
 import calculateDaysBetween from "../../../Utilities/DateRange";
+import placeHolder from "../../../assets/Images/placeholder.jpg";
 
 function BookingCards({ booking }) {
   const sortedBooking = booking?.sort((a, b) => {
     return new Date(a.dateFrom) - new Date(b.dateFrom);
   });
 
+  console.log(sortedBooking);
+
   return (
-    <Row xs={1} sm={2} md={2} lg={3} className="cards g-4">
+    <Row xs={1} sm={2} md={2} lg={3} xl={4}>
       {sortedBooking?.map((bookingItem) => {
         const formattedDateFrom = formatDate(bookingItem?.dateFrom);
         const formattedDateTo = formatDate(bookingItem?.dateTo);
@@ -25,8 +28,24 @@ function BookingCards({ booking }) {
             <Card className="m-auto booking-card ">
               <Card.Img
                 variant="top"
-                src={bookingItem.venue.media[0].url}
-                alt={bookingItem.venue.media[0].alt_text}
+                src={
+                  bookingItem.venue.media &&
+                  bookingItem.venue.media[0] &&
+                  bookingItem.venue.media[0].url
+                    ? bookingItem.venue.media[0].url
+                    : placeHolder
+                }
+                alt={
+                  bookingItem.venue.media &&
+                  bookingItem.venue.media[0] &&
+                  bookingItem.venue.media[0].alt_text
+                    ? bookingItem.venue.media[0].alt_text
+                    : "No alt text provided"
+                }
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = placeHolder;
+                }}
               />
               <Card.Body className="flex flex-row">
                 <Card.Title>{bookingItem.venue.name}</Card.Title>

@@ -3,6 +3,64 @@
     width: 100%;
     height: auto;
     object-fit: cover;
-    max-height: 500px;
+    height: 280px;
+
+    @media screen and (min-width: get-breakpoint(md)) {
+      height: 500px;
+    }
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    background-color: getColour("primary-background-color") !important;
+    height: 50px !important;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    width: 30px !important;
+
+    @media screen and (min-width: get-breakpoint(md)) {
+      width: 50px !important;
+    }
+  }
+
+  .carousel-control-next {
+    border-radius: 3px 0 0 3px !important;
+  }
+
+  .carousel-control-prev {
+    border-radius: 0 3px 3px 0 !important;
+  }
+
+  .thumbnail-image {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+
+  .selected-thumbnail {
+    border-color: #007bff;
+    border-radius: 3px;
+  }
+}
+
+.venue-booking-form {
+  input {
+    max-width: 200px !important;
+    height: 35px !important;
+  }
+
+  button {
+    max-width: 400px !important;
+  }
+}
+
+.venue-booking-confirmation-modal {
+  .modal-body {
+    img {
+      max-height: 125px;
+      object-fit: cover;
+    }
   }
 }

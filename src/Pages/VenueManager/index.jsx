@@ -2,16 +2,15 @@ import { useParams } from "react-router-dom";
 import { base_Url } from "../../Constants/API";
 import { Col, Container, Row, Button } from "react-bootstrap";
 import useGetDataAuth from "../../Hooks/Api/Auth/Get";
-import { useVenueManagerStore } from "../../Hooks/GlobalStates/VenueManagerVenues";
 import MyVenuesCards from "../../Components/VenueManager/MyVenuesCards";
 import HeadLine from "../../Components/HeroSection/Headline";
 import NewVenueForm from "../../Components/VenueManager/NewVenueForm";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import MyVenuesBookings from "../../Components/VenueManager/MyVenuesBookings";
 
 function VenueManagerPage() {
   const { name } = useParams();
-  const setManagerVenues = useVenueManagerStore((state) => state.setVenues);
+
   const [showNewVenueModal, setShowNewVenueModal] = useState(false);
   const [editingVenue, setEditingVenue] = useState(null);
   const [showBookings, setShowBookings] = useState(false);
@@ -21,16 +20,26 @@ function VenueManagerPage() {
     isPending,
     error,
     data: myVenues,
+    refetch,
   } = useGetDataAuth(
     `${base_Url}holidaze/profiles/${name}/venues?_bookings=true`,
     "myVenues"
   );
 
-  useEffect(() => {
-    if (myVenues?.data) {
-      setManagerVenues(myVenues.data);
-    }
-  }, [myVenues, setManagerVenues]);
+  const handleEditVenue = (venue) => {
+    setEditingVenue(venue);
+    setShowNewVenueModal(true);
+  };
+
+  const handleCreateVenue = () => {
+    setEditingVenue(null);
+    setShowNewVenueModal(true);
+  };
+
+  const handleViewBookings = (bookings) => {
+    setVenueBookings(bookings);
+    setShowBookings(true);
+  };
 
   if (isPending) {
     return <Container className="text-center">Loading...</Container>;
@@ -44,21 +53,6 @@ function VenueManagerPage() {
     );
   }
 
-  const handleEditVenue = (venue) => {
-    setEditingVenue(venue); // Set the venue to edit
-    setShowNewVenueModal(true); // Open the modal
-  };
-
-  const handleCreateVenue = () => {
-    setEditingVenue(null); // No venue means creating a new one
-    setShowNewVenueModal(true);
-  };
-
-  const handleViewBookings = (bookings) => {
-    setVenueBookings(bookings);
-    setShowBookings(true);
-  };
-
   return (
     <Container>
       <Row>
@@ -71,17 +65,17 @@ function VenueManagerPage() {
           <Button onClick={handleCreateVenue}>Create Venue</Button>
         </Col>
       </Row>
-      <Row>
-        <MyVenuesCards
-          onEditVenue={handleEditVenue}
-          onViewBookings={handleViewBookings}
-        />
-      </Row>
+      <MyVenuesCards
+        venues={myVenues?.data}
+        onEditVenue={handleEditVenue}
+        onViewBookings={handleViewBookings}
+      />
 
       <NewVenueForm
         showModal={showNewVenueModal}
         setShowModal={setShowNewVenueModal}
         venue={editingVenue}
+        refetchVenues={refetch}
       />
 
       <MyVenuesBookings

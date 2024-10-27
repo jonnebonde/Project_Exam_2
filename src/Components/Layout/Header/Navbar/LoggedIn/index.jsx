@@ -22,15 +22,16 @@ function NavbarLoggedIn() {
   return (
     <Nav>
       <Dropdown align="end">
+        <span className="profile-name ">{user.name}</span>
         <Dropdown.Toggle
           id="dropdown-basic"
           as="button"
-          className="profile-dropdown"
+          className="profile-dropdown rounded-1"
         >
           <Image
             src={user.avatar.url}
             alt={user.avatar.alt}
-            className="profile-image rounded-circle"
+            className="profile-image rounded-1"
           />
         </Dropdown.Toggle>
         <Dropdown.Menu className="navbar-dropdown-menu text-align-start">

@@ -4,13 +4,14 @@ import Container from "react-bootstrap/Container";
 import HeroSection from "../../Components/HeroSection";
 import { useState } from "react";
 import VenueCards from "../../Components/VenuesCards";
+import HeadLine from "../../Components/HeroSection/Headline";
 
 function Home() {
+  const [search, setSearch] = useState("");
   const url =
     base_Url + "holidaze/venues?_owner=true&_bookings=true&sortOrder=asc";
 
   const { isPending, error, data: venues } = useFetchData(url, "venues");
-  const [search, setSearch] = useState("");
 
   const handleSearchFieldChange = (event) => {
     setSearch(event.target.value);
@@ -46,18 +47,25 @@ function Home() {
   }
 
   return (
-    <Container>
+    <>
       <HeroSection
         search={search}
         resetSearch={resetSearch}
         handleSearchFieldChange={handleSearchFieldChange}
       />
-      {filteredVenues.length === 0 ? (
-        <p className="text-center">No venues matched your search.</p>
-      ) : (
-        <VenueCards data={filteredVenues} />
-      )}
-    </Container>
+      <HeadLine
+        level={1}
+        text="Explore our venues"
+        className="text-center fw-bold mb-4"
+      />
+      <Container>
+        {filteredVenues.length === 0 ? (
+          <p className="text-center">No venues matched your search.</p>
+        ) : (
+          <VenueCards data={filteredVenues} />
+        )}
+      </Container>
+    </>
   );
 }
 

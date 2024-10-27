@@ -1,19 +1,16 @@
 import { Modal, Button, Table } from "react-bootstrap";
 import PropTypes from "prop-types";
 import formatDate from "../../../Utilities/DateFormat";
-import calculateDaysBetween from "../../../Utilities/DateRange"; // Assuming you have a utility to format the date
+import calculateDaysBetween from "../../../Utilities/DateRange";
 
 function MyVenuesBookings({ showModal, setShowModal, venueBookings }) {
   const handleClose = () => setShowModal(false);
 
-  console.log(venueBookings);
-
-  // If there are no bookings
   if (!venueBookings?.bookings?.length) {
     return (
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Bookings for {venueBookings?.name}</Modal.Title>
+          <Modal.Title>Bookings for </Modal.Title>
         </Modal.Header>
         <Modal.Body>No bookings available for this venue.</Modal.Body>
         <Modal.Footer>
@@ -28,7 +25,7 @@ function MyVenuesBookings({ showModal, setShowModal, venueBookings }) {
   return (
     <Modal show={showModal} onHide={handleClose} size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Bookings for {venueBookings?.name}</Modal.Title>
+        <Modal.Title>Bookings for </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Table striped bordered hover responsive>
@@ -43,7 +40,7 @@ function MyVenuesBookings({ showModal, setShowModal, venueBookings }) {
             </tr>
           </thead>
           <tbody>
-            {venueBookings?.bookings?.map((booking) => (
+            {venueBookings?.bookings.map((booking) => (
               <tr key={booking.id}>
                 <td>{booking.customer.name}</td>
                 <td>{booking.guests}</td>
@@ -55,7 +52,7 @@ function MyVenuesBookings({ showModal, setShowModal, venueBookings }) {
                 <td>
                   £
                   {venueBookings.price *
-                    calculateDaysBetween(booking.dateFrom, booking.dateTo)}{" "}
+                    calculateDaysBetween(booking.dateFrom, booking.dateTo)}
                 </td>
               </tr>
             ))}
@@ -74,7 +71,7 @@ function MyVenuesBookings({ showModal, setShowModal, venueBookings }) {
 MyVenuesBookings.propTypes = {
   showModal: PropTypes.bool.isRequired,
   setShowModal: PropTypes.func.isRequired,
-  venueBookings: PropTypes.object.isRequired,
+  venueBookings: PropTypes.object,
 };
 
 export default MyVenuesBookings;

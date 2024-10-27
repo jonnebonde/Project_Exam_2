@@ -1,5 +1,6 @@
 html,
-body {
+body,
+#root {
   height: 100%;
   background-color: getColour("primary-background-color");
 }
@@ -7,7 +8,6 @@ body {
 #root {
   display: flex;
   flex-direction: column;
-  height: 100%;
   font-family: $font-primary;
 }
 
@@ -30,4 +30,24 @@ body {
 
 .padding {
   padding: 12px;
+}
+
+.card {
+  box-shadow: 0 3px 3px getColour(black, 0.15) !important;
+}
+
+button {
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: underline !important;
+  }
+}
+
+a {
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: underline !important;
+  }
 }

@@ -5,7 +5,7 @@ import UserInfo from "../../Components/user/UserInfo";
 import EditUserFormModal from "../../Components/user/EditUserForm";
 import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 import { useParams } from "react-router-dom";
-import BookingCards from "../../Components/user/BookingCards";
+import BookingCards from "../../Components/User/BookingCards";
 import HeadLine from "../../Components/HeroSection/Headline";
 
 function UserPage() {
@@ -45,22 +45,22 @@ function UserPage() {
             Edit Profile
           </Button>
         </Col>
-        <HeadLine level={3} text="My Bookings" className="text-center mt-3" />
-        {userData?.data.bookings && userData?.data.bookings.length > 0 ? (
-          <BookingCards booking={userData?.data.bookings} />
-        ) : (
-          <HeadLine
-            level={4}
-            text="No bookings found"
-            className="text-center mt-3"
-          />
-        )}
-        <EditUserFormModal
-          user={userData?.data}
-          showModal={showEditUserModal}
-          setShowModal={setShowEditUserModal}
-        />
       </Row>
+      <HeadLine level={3} text="My Bookings" className="text-center mt-3" />
+      {userData?.data.bookings && userData?.data.bookings.length > 0 ? (
+        <BookingCards booking={userData?.data.bookings} />
+      ) : (
+        <HeadLine
+          level={4}
+          text="No bookings found"
+          className="text-center mt-3"
+        />
+      )}
+      <EditUserFormModal
+        user={userData?.data}
+        showModal={showEditUserModal}
+        setShowModal={setShowEditUserModal}
+      />
     </Container>
   );
 }

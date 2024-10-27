@@ -10,41 +10,41 @@ function VenueBookingForm({
   handleGuestChange,
   onReserveClick,
 }) {
-  console.log(venue);
-
   return (
     <>
-      <VenueBookingPicker
-        bookedDates={venue?.bookings}
-        onDateChange={(dates) => setSelectedDates(dates)}
-        value={selectedDates}
-      />
-      {/* Guest Selection */}
-
-      <Form.Group controlId="guestInput">
-        <Form.Label>Guests (Max: {venue?.maxGuests})</Form.Label>
-        <Form.Control
-          type="number"
-          value={guests}
-          onChange={handleGuestChange}
-          placeholder="Enter number of guests"
-          max={venue?.maxGuests}
+      <Form className="d-flex flex-column venue-booking-form">
+        {" "}
+        <VenueBookingPicker
+          bookedDates={venue?.bookings}
+          onDateChange={(dates) => setSelectedDates(dates)}
+          value={selectedDates}
         />
-      </Form.Group>
-      {/* Reserve Button */}
-      <Button
-        variant="primary"
-        className="mt-3"
-        onClick={onReserveClick}
-        disabled={
-          !selectedDates[0] ||
-          !selectedDates[1] ||
-          guests < 1 ||
-          guests > venue?.maxGuests
-        }
-      >
-        Reserve
-      </Button>
+        <Form.Group controlId="guestInput">
+          <Form.Label>Guests (Max: {venue?.maxGuests})</Form.Label>
+          <Form.Control
+            type="number"
+            min={1}
+            inputMode="numeric"
+            value={guests}
+            onChange={handleGuestChange}
+            placeholder="Enter number of guests"
+            max={venue?.maxGuests}
+          />
+        </Form.Group>
+        <Button
+          variant="primary"
+          className="mt-3"
+          onClick={onReserveClick}
+          disabled={
+            !selectedDates[0] ||
+            !selectedDates[1] ||
+            guests < 1 ||
+            guests > venue?.maxGuests
+          }
+        >
+          Reserve
+        </Button>
+      </Form>
     </>
   );
 }

@@ -13,6 +13,7 @@ const schema = yup
     name: yup
       .string()
       .min(2, "Name must be at least 2 characters")
+      .max(30, "Name must be at most 30 characters")
       .required("Please enter your name."),
     email: yup
       .string()
@@ -72,9 +73,9 @@ function RegisterPage() {
             {...register("name")}
             isInvalid={errors.name}
           />
-          {errors.username && (
+          {errors.name && (
             <Form.Control.Feedback type="invalid">
-              {errors.username.message}
+              {errors.name.message}
             </Form.Control.Feedback>
           )}
         </Form.Group>
