@@ -236,7 +236,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
   };
 
   const visitNewVenue = () => {
-    window.location.href = `/venues/${newVenueId}`;
+    window.location.href = base_Url + `holidaze/venues/${newVenueId}`;
   };
 
   return (
