@@ -7,13 +7,13 @@ function MyVenuesCards({ venues, onEditVenue, onViewBookings }) {
   }
 
   return (
-    <Row xs={1} sm={2} md={2} lg={3} className="cards g-4">
+    <Row xs={1} sm={2} md={2} lg={3} className="cards g-4 ">
       {venues?.map((userVenue, index) => {
         const venueId = userVenue.id || `temp-${index}`;
 
         return (
-          <Col key={venueId} className="text-center my-4">
-            <Card className="m-auto booking-card">
+          <Col key={venueId} className="my-4 ">
+            <Card className=" booking-card ">
               <Card.Img
                 variant="top"
                 src={userVenue.media[0]?.url || "path/to/placeholder-image.jpg"}

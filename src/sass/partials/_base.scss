@@ -32,7 +32,19 @@ body,
   padding: 12px;
 }
 
+.card {
+  box-shadow: 0 3px 3px getColour(black, 0.15) !important;
+}
+
 button {
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: underline !important;
+  }
+}
+
+a {
   &:hover,
   &:focus,
   &:active {

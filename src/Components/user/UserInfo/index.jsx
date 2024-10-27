@@ -9,9 +9,9 @@ function UserInfo(user) {
         src={user?.user.avatar?.url || "https://via.placeholder.com/150"}
         alt={user?.user.avatar?.alt || "no alt text provided im afraid"}
         fluid
-        className="d-block w-100 rounded-1"
+        className="d-block w-75 m-auto rounded-1"
         style={{
-          maxHeight: "200px",
+          maxHeight: "250px",
           objectFit: "cover",
         }}
       />
@@ -22,7 +22,7 @@ function UserInfo(user) {
         <ListGroupItem></ListGroupItem>
         {user?.user.venueManager ? (
           <ListGroupItem>
-            <HeadLine level={5} text="Im a venue manager" />
+            <HeadLine level={5} text="You are a venue manager" />
           </ListGroupItem>
         ) : (
           ""

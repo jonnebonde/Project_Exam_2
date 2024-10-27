@@ -31,7 +31,7 @@ function NavbarLoggedIn() {
           <Image
             src={user.avatar.url}
             alt={user.avatar.alt}
-            className="profile-image rounded-1 "
+            className="profile-image rounded-1"
           />
         </Dropdown.Toggle>
         <Dropdown.Menu className="navbar-dropdown-menu text-align-start">

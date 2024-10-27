@@ -87,8 +87,12 @@ function VenueConfirmationModal({
           {calculateDaysBetween(selectedDates[0], selectedDates[1]) *
             data?.data?.price}
         </p>
-        {bookingMessage === "success" && <p>Your booking was successfull!</p>}
-        {bookingMessage === "error" && <p>Booking failed. Please try again.</p>}
+        {bookingMessage === "success" && (
+          <p className="text-success">Your booking was successfull!</p>
+        )}
+        {bookingMessage === "error" && (
+          <p className="text-danger">Booking failed. Please try again.</p>
+        )}
       </Modal.Body>
       <Modal.Footer>
         {loading ? (

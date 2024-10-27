@@ -49,6 +49,7 @@ function EditUserFormModal({ user, showModal, setShowModal }) {
     handleSubmit,
     reset,
     watch,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -67,8 +68,9 @@ function EditUserFormModal({ user, showModal, setShowModal }) {
   useEffect(() => {
     if (watchAvatarUrl) {
       setPreviewImage(watchAvatarUrl);
+      setValue("avatar.alt", "");
     }
-  }, [watchAvatarUrl]);
+  }, [watchAvatarUrl, setValue]);
 
   useEffect(() => {
     if (showModal) {
