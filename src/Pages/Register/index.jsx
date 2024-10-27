@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useSubmitForm } from "../../Hooks/Api/NoAuth/Post/LoginRegisterForm";
 import { base_Url } from "../../Constants/API";
+import { Helmet } from "react-helmet-async";
 
 // Define validation schema for registration
 const schema = yup
@@ -59,8 +60,15 @@ function RegisterPage() {
         height: "100vh",
       }}
     >
+      <Helmet>
+        <title>Register | Holidaze</title>
+        <meta
+          name="description"
+          content="Register for Holidaze. Register as a venue manager or a regular user."
+        />
+      </Helmet>
       <Form
-        className="register-form bg-white p-4"
+        className="register-form bg-white p-4 rounded-1"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="register-title mb-3 text-center">Register</h1>

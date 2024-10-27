@@ -5,6 +5,7 @@ import HeroSection from "../../Components/HeroSection";
 import { useState } from "react";
 import VenueCards from "../../Components/VenuesCards";
 import HeadLine from "../../Components/HeroSection/Headline";
+import { Helmet } from "react-helmet-async";
 
 function Home() {
   const [search, setSearch] = useState("");
@@ -48,6 +49,16 @@ function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>Home | Holidaze</title>
+        <meta
+          name="description"
+          content="Discover top-rated venues for any occasion. Book easily and manage your venues seamlessly. 
+                  Explore unique options that cater to all your event needs.
+                  Find the perfect venue for your event! Browse from a wide selection of spaces,
+                  each with verified details and user reviews for the best experience."
+        />
+      </Helmet>
       <HeroSection
         search={search}
         resetSearch={resetSearch}

@@ -7,6 +7,7 @@ import HeadLine from "../../Components/HeroSection/Headline";
 import NewVenueForm from "../../Components/VenueManager/NewVenueForm";
 import { useState } from "react";
 import MyVenuesBookings from "../../Components/VenueManager/MyVenuesBookings";
+import { Helmet } from "react-helmet-async";
 
 function VenueManagerPage() {
   const { name } = useParams();
@@ -55,6 +56,13 @@ function VenueManagerPage() {
 
   return (
     <Container>
+      <Helmet>
+        <title>My Venues | Holidaze</title>
+        <meta
+          name="description"
+          content="Seamlessly organize venues and bookings all in one place."
+        />
+      </Helmet>
       <Row>
         <Col>
           <HeadLine level={1} text="My Venues" className="text-center mt-5" />

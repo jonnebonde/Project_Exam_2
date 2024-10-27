@@ -7,6 +7,7 @@ import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 import { useParams } from "react-router-dom";
 import BookingCards from "../../Components/user/BookingCards";
 import HeadLine from "../../Components/HeroSection/Headline";
+import { Helmet } from "react-helmet-async";
 
 function UserPage() {
   const { name } = useParams();
@@ -35,6 +36,13 @@ function UserPage() {
   }
   return (
     <Container>
+      <Helmet>
+        <title>My Profile | Holidaze</title>
+        <meta
+          name="description"
+          content="Manage your profile, view bookings, and customize preferences."
+        />
+      </Helmet>
       <Row>
         <Col className="text-center">
           <UserInfo
