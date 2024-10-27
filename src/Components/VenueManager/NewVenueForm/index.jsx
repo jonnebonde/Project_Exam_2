@@ -17,6 +17,7 @@ import useMutationDataAuth from "../../../Hooks/Api/Auth/PostPutDelete";
 import { base_Url } from "../../../Constants/API";
 import { useState, useEffect } from "react";
 import { isValidImageUrl } from "../../../Utilities/ValidateImage";
+import { Link } from "react-router-dom";
 
 const schema = yup
   .object({
@@ -235,10 +236,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     setNewVenueId(null);
   };
 
-  const visitNewVenue = () => {
-    window.location.href = base_Url + `holidaze/venues/${newVenueId}`;
-  };
-
   return (
     <Modal
       show={showModal}
@@ -447,7 +444,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
           </Container>
           {createEditStatus === "success" ? (
             <>
-              <Button variant="primary" onClick={visitNewVenue}>
+              <Button variant="primary" as={Link} to={`/venue/${newVenueId}`}>
                 Visit New Venue
               </Button>
               <Button variant="secondary" onClick={handleClose}>
