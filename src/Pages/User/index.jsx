@@ -5,7 +5,7 @@ import UserInfo from "../../Components/user/UserInfo";
 import EditUserFormModal from "../../Components/user/EditUserForm";
 import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 import { useParams } from "react-router-dom";
-import BookingCards from "../../Components/User/BookingCards";
+import BookingCards from "../../Components/user/BookingCards";
 import HeadLine from "../../Components/HeroSection/Headline";
 
 function UserPage() {
