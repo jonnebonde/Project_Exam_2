@@ -48,19 +48,13 @@ function BookingCards({ booking }) {
               <Card.Body className="flex flex-row">
                 <Card.Title>{bookingItem.venue.name}</Card.Title>
 
-                <Card.Text className="text-truncate text-start">
+                <Card.Text
+                  className={`text-truncate ${!bookingItem.venue.location.city && !bookingItem.venue.location.country ? "empty-location" : ""}`}
+                >
                   {bookingItem.venue.location.city ||
                   bookingItem.venue.location.country
-                    ? `${
-                        bookingItem.venue.location.city
-                          ? bookingItem.venue.location.city
-                          : ""
-                      }${
-                        bookingItem.venue.location.country
-                          ? `, ${bookingItem.venue.location.country}`
-                          : ""
-                      }`
-                    : "Location not available"}
+                    ? `${bookingItem.venue.location.city ? bookingItem.venue.location.city : ""}${bookingItem.venue.location.country ? `, ${bookingItem.venue.location.country}` : ""}`
+                    : ""}
                 </Card.Text>
                 <Card.Text className="text-start">
                   Checkin: {formattedDateFrom}{" "}

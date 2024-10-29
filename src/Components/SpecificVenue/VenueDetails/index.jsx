@@ -9,8 +9,9 @@ function VenueDetails({ venue }) {
       <HeadLine level={4} className="text-black fw-semibold" text="Amenities" />
       <AmenitiesList amenities={venue?.data?.meta} />
       <p>
-        Location: {venue?.data?.location?.city},{" "}
-        {venue?.data?.location?.country}
+        {venue?.data?.location.city || venue?.data?.location?.country
+          ? `Location: ${venue?.data?.location.city}, ${venue?.data?.location?.country}`
+          : ""}
       </p>
       <p>Max total guests: {venue?.data?.maxGuests}</p>
       <p>${venue?.data?.price}/night</p>

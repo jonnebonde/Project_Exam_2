@@ -138,7 +138,7 @@ function EditUserFormModal({ user, showModal, setShowModal }) {
           className="w-100 d-flex flex-column"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Form.Group className="mb-3" controlId="formBasicImage">
+          <Form.Group className="mb-3" controlId="formBasicUserAvatarImage">
             <Form.Label>Avatar URL</Form.Label>
             <Form.Control
               type="text"
@@ -152,7 +152,7 @@ function EditUserFormModal({ user, showModal, setShowModal }) {
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicAltText">
+          <Form.Group className="mb-3" controlId="formBasicUserAvatarAlt">
             <Form.Label>Avatar Alt Text - Optional</Form.Label>
             <Form.Control
               type="text"
@@ -165,7 +165,10 @@ function EditUserFormModal({ user, showModal, setShowModal }) {
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Group
+            className="mb-3"
+            controlId="formBasicCheckboxVenueManager"
+          >
             <Form.Check
               type="checkbox"
               label="Venue manager"

@@ -41,7 +41,7 @@ function RegisterPage() {
     resolver: yupResolver(schema),
   });
 
-  const { mutate, isError, status } = useSubmitForm();
+  const { mutate, isError, status, error } = useSubmitForm();
 
   const onSubmit = (formData) => {
     const url = base_Url + "auth/register";
@@ -87,7 +87,7 @@ function RegisterPage() {
             </Form.Control.Feedback>
           )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Group className="mb-3" controlId="formBasicRegisterEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
@@ -101,7 +101,7 @@ function RegisterPage() {
             </Form.Control.Feedback>
           )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-3" controlId="formBasicRegisterPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -115,7 +115,7 @@ function RegisterPage() {
             </Form.Control.Feedback>
           )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formConfirmPassword">
+        <Form.Group className="mb-3" controlId="formRegisterConfirmPassword">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type="password"
@@ -129,7 +129,10 @@ function RegisterPage() {
             </Form.Control.Feedback>
           )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        <Form.Group
+          className="mb-3"
+          controlId="formBasicRegisterCheckboxVenueManager"
+        >
           <Form.Check
             type="checkbox"
             label="Set me as a venue manager"
@@ -145,7 +148,7 @@ function RegisterPage() {
         </Button>
         {isError && (
           <div className="text-danger mt-2">
-            {"An error occurred, please try again."}
+            {error?.message || "An error occurred, please try again."}
           </div>
         )}
         <div className="text-center mt-5">

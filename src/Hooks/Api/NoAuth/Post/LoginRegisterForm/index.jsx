@@ -17,8 +17,13 @@ export function useSubmitForm() {
         body: JSON.stringify(formData),
       });
 
+      console.log(response);
+
       if (!response.ok) {
-        throw new Error("Request failed");
+        const errorData = await response.json();
+        const errorMessage = errorData.errors?.[0]?.message || "Request failed";
+        console.log(errorMessage);
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -49,6 +54,9 @@ export function useSubmitForm() {
     });
 
     if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.errors[0] || "Request failed";
+      console.log(errorMessage);
       throw new Error("Login failed");
     }
 

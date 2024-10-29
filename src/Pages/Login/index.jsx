@@ -10,6 +10,7 @@ import * as yup from "yup";
 import { useSubmitForm } from "../../Hooks/Api/NoAuth/Post/LoginRegisterForm";
 import { base_Url } from "../../Constants/API";
 import { Helmet } from "react-helmet-async";
+import HeadLine from "../../Components/HeroSection/Headline";
 
 const schema = yup
   .object({
@@ -33,7 +34,9 @@ function LoginPage() {
     resolver: yupResolver(schema),
   });
 
-  const { mutate, isError, status } = useSubmitForm();
+  const { mutate, isError, status, error } = useSubmitForm();
+
+  console.log(isError, status, error);
 
   const onSubmit = (formData) => {
     const url = base_Url + "auth/login";
@@ -63,9 +66,9 @@ function LoginPage() {
         className="login-form bg-white p-4 rounded-1"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="login-title mb-3 text-center">Login</h1>
+        <HeadLine level={1} text="Login" className="mb-3 text-center" />
 
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Group className="mb-3" controlId="formBasicLoginEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
@@ -80,7 +83,7 @@ function LoginPage() {
           )}
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-3" controlId="formBasicLoginPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -105,7 +108,7 @@ function LoginPage() {
 
         {isError && (
           <div className="text-danger mt-2">
-            {"An error occurred, please try again"}
+            {error?.message || "There was an error logging in"}
           </div>
         )}
 

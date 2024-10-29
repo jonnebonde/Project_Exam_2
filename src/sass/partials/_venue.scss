@@ -64,3 +64,12 @@
     }
   }
 }
+
+.booked-date {
+  text-decoration: line-through;
+  color: #ccc;
+}
+
+.available-date {
+  color: getColour("black");
+}

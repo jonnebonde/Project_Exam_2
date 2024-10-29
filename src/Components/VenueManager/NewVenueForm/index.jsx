@@ -250,7 +250,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
           className="w-100 d-flex flex-column venue-manager-form"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Form.Group className="mb-3" controlId="formBasicNameText">
+          <Form.Group className="mb-3" controlId="formBasicVenueName">
             <Form.Label>Venue name</Form.Label>
             <Form.Control
               type="text"
@@ -264,7 +264,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicBioText">
+          <Form.Group className="mb-3" controlId="formBasicVenueDescription">
             <Form.Label>Venue description</Form.Label>
             <Form.Control
               type="text"
@@ -278,7 +278,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicNumber">
+          <Form.Group className="mb-3" controlId="formBasicVenuePrice">
             <Form.Label>Price/Night</Form.Label>
             <Form.Control
               type="number"
@@ -293,7 +293,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicNumber">
+          <Form.Group className="mb-3" controlId="formBasicMaxGuests">
             <Form.Label>Max Guests</Form.Label>
             <Form.Control
               type="number"
@@ -308,7 +308,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicBioText">
+          <Form.Group className="mb-3" controlId="formBasicCountry">
             <Form.Label>Venue Country</Form.Label>
             <Form.Control
               type="text"
@@ -323,7 +323,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
             )}
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicBioText">
+          <Form.Group className="mb-3" controlId="formBasicCity">
             <Form.Label>Venue City</Form.Label>
             <Form.Control
               type="text"
@@ -339,14 +339,22 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
           </Form.Group>
 
           <Row>
-            <Form.Group as={Col} className="mb-3" controlId="formBasicCheckbox">
+            <Form.Group
+              as={Col}
+              className="mb-3"
+              controlId="formBasicCheckboxWifi"
+            >
               <Form.Check
                 type="checkbox"
                 label="Wifi"
                 {...register("meta.wifi")}
               />
             </Form.Group>
-            <Form.Group as={Col} className="mb-3" controlId="formBasicCheckbox">
+            <Form.Group
+              as={Col}
+              className="mb-3"
+              controlId="formBasicCheckboxParking"
+            >
               <Form.Check
                 type="checkbox"
                 label="Parking"
@@ -355,14 +363,22 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
             </Form.Group>
           </Row>
           <Row>
-            <Form.Group as={Col} className="mb-3" controlId="formBasicCheckbox">
+            <Form.Group
+              as={Col}
+              className="mb-3"
+              controlId="formBasicCheckboxBreakfast"
+            >
               <Form.Check
                 type="checkbox"
                 label="Breakfast"
                 {...register("meta.breakfast")}
               />
             </Form.Group>
-            <Form.Group as={Col} className="mb-3" controlId="formBasicCheckbox">
+            <Form.Group
+              as={Col}
+              className="mb-3"
+              controlId="formBasicCheckboxPets"
+            >
               <Form.Check
                 type="checkbox"
                 label="Pets"
@@ -370,7 +386,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
               />
             </Form.Group>
           </Row>
-          <Form.Group className="mb-3" controlId="formBasicImage">
+          <Form.Group className="mb-3" controlId="formBasicVenueImage">
             <Form.Label>Venue Image URL</Form.Label>
             <InputGroup>
               <Form.Control

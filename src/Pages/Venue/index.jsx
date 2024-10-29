@@ -11,6 +11,7 @@ import VenueBookingForm from "../../Components/SpecificVenue/VenueBookingForm";
 import VenueConfirmationModal from "../../Components/SpecificVenue/BookingModal";
 import ImageSlider from "../../Components/SpecificVenue/ImageSlider";
 import { Helmet } from "react-helmet-async";
+import VenueAvailabilityCalendar from "../../Components/SpecificVenue/AvailabilityCalendar";
 
 function VenuePage() {
   const { id } = useParams();
@@ -69,7 +70,7 @@ function VenuePage() {
         <Col>
           <HeadLine
             level={1}
-            className="text-black fw-semibold text-center mt-5 mb-2"
+            className="text-black fw-semibold text-center mt-5 mb-4"
             text={venue?.data?.name}
           />
         </Col>
@@ -108,7 +109,17 @@ function VenuePage() {
           )}
         </Col>
       </Row>
-      <Row>
+      <Row xs={1} sm={1} md={1} lg={2} className="mt-5 flex-row-reverse">
+        <Col className="mt-3 ">
+          <HeadLine
+            level={5}
+            className="text-black fw-semibold text-center"
+            text="Availability"
+          />
+          <VenueAvailabilityCalendar bookedDates={venue?.data?.bookings}>
+            {" "}
+          </VenueAvailabilityCalendar>
+        </Col>
         <Col className="mt-3">
           <HeadLine level={5} className="text-black fw-semibold" text="Owner" />
           <p className="ms-3">Name: {venue?.data?.owner?.name}</p>

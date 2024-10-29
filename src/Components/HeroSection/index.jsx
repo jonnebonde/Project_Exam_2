@@ -17,7 +17,7 @@ function HeroSection({ search, resetSearch, handleSearchFieldChange }) {
     >
       <Headline level={1} className="text-white" text="Holidaze" />
       <Headline
-        level={5}
+        level={3}
         className="text-white"
         text="Find your Dream Venue."
       />
