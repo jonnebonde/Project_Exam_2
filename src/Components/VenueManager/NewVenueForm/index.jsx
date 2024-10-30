@@ -18,6 +18,7 @@ import { base_Url } from "../../../Constants/API";
 import { useState, useEffect } from "react";
 import { isValidImageUrl } from "../../../Utilities/ValidateImage";
 import { Link } from "react-router-dom";
+import ConfirmModal from "../../Shared/ConfirmModal";
 
 const schema = yup
   .object({
@@ -93,6 +94,9 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
   const [imageInput, setImageInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [newVenueId, setNewVenueId] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  console.log(showConfirmModal);
 
   const postNewVenue = useMutationDataAuth(
     base_Url + (venue ? `holidaze/venues/${venue.id}` : "holidaze/venues"),
@@ -212,20 +216,23 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
   };
 
   const handleDelete = () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this venue?"
-    );
-    if (confirmed) {
-      deleteVenueMutation.mutate(null, {
-        onSuccess: () => {
-          setCreateEditStatus("deleted");
-          setShowModal(false);
-        },
-        onError: () => {
-          setCreateEditStatus("delete-error");
-        },
-      });
-    }
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirm = () => {
+    deleteVenueMutation.mutate(null, {
+      onSuccess: () => {
+        setCreateEditStatus("deleted");
+        setShowModal(false);
+      },
+      onError: () => {
+        setCreateEditStatus("delete-error");
+      },
+    });
+  };
+
+  const handleCancel = () => {
+    setShowConfirmModal(false);
   };
 
   const handleClose = () => {
@@ -240,7 +247,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     <Modal
       show={showModal}
       onHide={handleClose}
-      className="new-venue-modal-form"
+      className={`new-venue-modal-form ${showConfirmModal === true ? "darken" : ""}`}
     >
       <Modal.Header closeButton>
         <Modal.Title>{venue ? "Edit Venue" : "New Venue"}</Modal.Title>
@@ -402,7 +409,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
                 onClick={handleAddImage}
                 disabled={fields.length >= 8}
               >
-                Add Image
+                {fields.length <= 0 ? "Add an image" : "Add image"}
               </Button>
               {errors.media && (
                 <Form.Control.Feedback type="invalid">
@@ -493,6 +500,12 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
           )}
         </Form>
       </Modal.Body>
+      <ConfirmModal
+        show={showConfirmModal}
+        onConfirm={handleConfirm}
+        onHide={handleCancel}
+        message="Are you sure you want to delete this venue?"
+      />
     </Modal>
   );
 }

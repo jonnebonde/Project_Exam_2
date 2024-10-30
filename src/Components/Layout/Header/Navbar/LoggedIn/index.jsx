@@ -2,6 +2,8 @@ import { Nav, Image, Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { UserDataStore } from "../../../../../Hooks/GlobalStates/UserData";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import ConfirmModal from "../../../../Shared/ConfirmModal";
 
 function NavbarLoggedIn() {
   const logout = UserDataStore((state) => state.logout);
@@ -9,14 +11,21 @@ function NavbarLoggedIn() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const logOut = () => {
-    const confirmed = window.confirm("Are you sure you want to log out?");
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-    if (confirmed) {
-      queryClient.clear();
-      logout();
-      navigate("/");
-    }
+  const logOut = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirm = () => {
+    logout();
+    queryClient.invalidateQueries();
+    navigate("/");
+    setShowConfirmModal(false);
+  };
+
+  const handleCancel = () => {
+    setShowConfirmModal(false);
   };
 
   return (
@@ -46,6 +55,12 @@ function NavbarLoggedIn() {
           <Dropdown.Item onClick={logOut}>Logout</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
+      <ConfirmModal
+        show={showConfirmModal}
+        onHide={handleCancel}
+        onConfirm={handleConfirm}
+        message="Are you sure you want to log out?"
+      />
     </Nav>
   );
 }

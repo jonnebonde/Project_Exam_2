@@ -51,7 +51,7 @@ function MyVenuesCards({ venues, onEditVenue, onViewBookings }) {
               </Card.Body>
               <Button
                 variant="primary"
-                className="w-100 mb-4"
+                className="w-100 mb-4 rounded-0"
                 onClick={() => onEditVenue(userVenue)}
               >
                 Edit
@@ -59,6 +59,7 @@ function MyVenuesCards({ venues, onEditVenue, onViewBookings }) {
               <Button
                 variant="primary"
                 onClick={() => onViewBookings(userVenue)}
+                className="w-100 rounded-bottom rounded-0"
               >
                 View Bookings
               </Button>

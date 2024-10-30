@@ -1,4 +1,8 @@
 .new-venue-modal-form {
+  &.darken .modal-content {
+    filter: brightness(0.5);
+    transition: filter 0.3s ease-in-out;
+  }
   .card {
     width: 90px !important;
     height: 90px !important;
