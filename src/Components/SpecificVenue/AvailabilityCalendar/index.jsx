@@ -19,6 +19,7 @@ function VenueAvailabilityCalendar({ bookedDates }) {
 
   return (
     <Calendar
+      tileDisabled={() => true}
       tileClassName={tileClassName}
       prev2Label={null}
       next2Label={null}

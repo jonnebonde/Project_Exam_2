@@ -241,6 +241,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     setShowModal(false);
     setImageInput("");
     setNewVenueId(null);
+    setShowConfirmModal(false);
   };
 
   return (

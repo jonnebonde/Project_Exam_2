@@ -75,10 +75,10 @@
   }
   .booked-date {
     text-decoration: line-through;
-    color: #ccc;
+    color: getColour("error-message-color");
   }
 
   .available-date {
-    color: getColour("black");
+    color: black;
   }
 }
