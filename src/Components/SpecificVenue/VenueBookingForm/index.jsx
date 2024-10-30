@@ -25,7 +25,7 @@ function VenueBookingForm({
             type="number"
             min={1}
             inputMode="numeric"
-            value={guests}
+            value={guests || ""}
             onChange={handleGuestChange}
             placeholder="Enter number of guests"
             max={venue?.maxGuests}
