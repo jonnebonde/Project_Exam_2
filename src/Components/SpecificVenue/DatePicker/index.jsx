@@ -3,12 +3,16 @@ import PropTypes from "prop-types";
 import DatePicker from "react-multi-date-picker";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import "react-multi-date-picker/styles/colors/teal.css";
 
 dayjs.extend(isBetween);
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 // Dealing with dates is the most frustrating thing i have done in code ever so
-// I ended up getting alot of help from chatGPT and the docs for dayjs and datepicker
+// I ended up getting alot of help from chatGPT and the docs for dayjs and datepicker but i learned alot still.
 // https://www.npmjs.com/package/react-datepicker
 // https://www.npmjs.com/package/dayjs
 
@@ -30,34 +34,19 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
     });
   };
 
-  const isRangeBooked = (startDate, endDate) => {
-    let currentDate = dayjs(startDate).add(1, "day");
-    while (currentDate.isBefore(endDate) || currentDate.isSame(endDate)) {
-      if (isBooked(currentDate)) {
-        return true;
-      }
-      currentDate = currentDate.add(1, "day");
-    }
-    return false;
-  };
-
   const handleCheckInChange = (date) => {
     const selectedCheckIn = dayjs(date);
     setCheckIn(selectedCheckIn);
     setErrorMessage("");
 
-    if (
-      checkOut &&
-      (isRangeBooked(selectedCheckIn, checkOut) ||
-        selectedCheckIn.isSame(checkOut))
-    ) {
-      setErrorMessage(
-        "You cannot select the same date for check-in and check-out or a range that includes booked dates."
-      );
-      return;
+    const newCheckOut = selectedCheckIn.add(1, "day");
+    if (isBooked(newCheckOut)) {
+      setErrorMessage("Checkout date cannot be within booked dates.");
+      setCheckOut(null);
+    } else {
+      setCheckOut(newCheckOut);
+      onDateChange([selectedCheckIn, newCheckOut]);
     }
-
-    onDateChange([selectedCheckIn, checkOut]);
   };
 
   const handleCheckOutChange = (date) => {
@@ -65,18 +54,13 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
     setCheckOut(selectedCheckOut);
     setErrorMessage("");
 
-    if (
-      checkIn &&
-      (isRangeBooked(checkIn, selectedCheckOut) ||
-        checkIn.isSame(selectedCheckOut))
-    ) {
-      setErrorMessage(
-        "You cannot select the same date for check-in and check-out or a range that includes booked dates."
-      );
-      return;
+    if (checkIn && checkIn.isSameOrAfter(selectedCheckOut)) {
+      setErrorMessage("Checkout date must be after check-in date.");
+    } else if (isBooked(selectedCheckOut)) {
+      setErrorMessage("Selected checkout date is within booked dates.");
+    } else {
+      onDateChange([checkIn, selectedCheckOut]);
     }
-
-    onDateChange([checkIn, selectedCheckOut]);
   };
 
   return (
@@ -109,7 +93,10 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
         mobile={true}
         mapDays={({ date }) => {
           let props = {};
-          if (isBooked(date)) {
+          if (
+            isBooked(date) ||
+            (checkIn && dayjs(date).isSameOrBefore(checkIn))
+          ) {
             props.disabled = true;
             props.style = {
               color: "rgba(232, 76, 60, 1)",

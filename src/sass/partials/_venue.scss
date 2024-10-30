@@ -65,11 +65,20 @@
   }
 }
 
-.booked-date {
-  text-decoration: line-through;
-  color: #ccc;
-}
+.availability-calendar-container {
+  .react-calendar {
+    margin: 0 auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 3px;
+    border: none;
+  }
+  .booked-date {
+    text-decoration: line-through;
+    color: #ccc;
+  }
 
-.available-date {
-  color: getColour("black");
+  .available-date {
+    color: getColour("black");
+  }
 }

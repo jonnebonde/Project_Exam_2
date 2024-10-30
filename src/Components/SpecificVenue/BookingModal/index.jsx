@@ -26,6 +26,11 @@ function VenueConfirmationModal({
     "POST"
   );
 
+  const resetBookingMessage = () => {
+    setBookingMessage(null);
+    resetBookingForm();
+  };
+
   const handleBookingConfirmation = () => {
     setLoading(true);
     const bookingDetails = {
@@ -39,7 +44,6 @@ function VenueConfirmationModal({
       onSuccess: () => {
         setBookingMessage("success");
         setLoading(false);
-        resetBookingForm();
       },
       onError: () => {
         setBookingMessage("error");
@@ -54,6 +58,7 @@ function VenueConfirmationModal({
     <Modal
       show={showModal}
       onHide={handleCancel}
+      onExited={resetBookingMessage}
       className="venue-booking-confirmation-modal"
     >
       <Modal.Header closeButton>

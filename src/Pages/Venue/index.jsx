@@ -110,15 +110,13 @@ function VenuePage() {
         </Col>
       </Row>
       <Row xs={1} sm={1} md={1} lg={2} className="mt-5 flex-row-reverse">
-        <Col className="mt-3 ">
+        <Col className="availability-calendar-container">
           <HeadLine
             level={5}
-            className="text-black fw-semibold text-center"
+            className="fw-semibold text-center"
             text="Availability"
           />
-          <VenueAvailabilityCalendar bookedDates={venue?.data?.bookings}>
-            {" "}
-          </VenueAvailabilityCalendar>
+          <VenueAvailabilityCalendar bookedDates={venue?.data?.bookings} />
         </Col>
         <Col className="mt-3">
           <HeadLine level={5} className="text-black fw-semibold" text="Owner" />
