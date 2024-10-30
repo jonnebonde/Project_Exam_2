@@ -72,7 +72,13 @@
     margin-bottom: 1rem;
     border-radius: 3px;
     border: none;
+
+    &__navigation__label {
+      pointer-events: none;
+      cursor: default;
+    }
   }
+
   .booked-date {
     text-decoration: line-through;
     color: getColour("error-message-color");
@@ -81,4 +87,8 @@
   .available-date {
     color: black;
   }
+}
+
+.react-calendar__navigation_label {
+  background-color: red !important;
 }

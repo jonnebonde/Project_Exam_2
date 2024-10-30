@@ -23,6 +23,8 @@ function VenueAvailabilityCalendar({ bookedDates }) {
       tileClassName={tileClassName}
       prev2Label={null}
       next2Label={null}
+      showNavigation={true}
+      onClickDay={() => {}}
     />
   );
 }

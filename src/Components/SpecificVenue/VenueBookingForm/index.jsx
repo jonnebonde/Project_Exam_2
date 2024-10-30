@@ -27,7 +27,7 @@ function VenueBookingForm({
             inputMode="numeric"
             value={guests || ""}
             onChange={handleGuestChange}
-            placeholder="Enter number of guests"
+            placeholder="Number of guests"
             max={venue?.maxGuests}
           />
         </Form.Group>
