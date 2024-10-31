@@ -69,8 +69,10 @@ function VenueManagerPage() {
         </Col>
       </Row>
       <Row>
-        <Col>
-          <Button onClick={handleCreateVenue}>Create Venue</Button>
+        <Col className="text-center text-lg-start">
+          <Button onClick={handleCreateVenue} className="primary">
+            Create Venue
+          </Button>
         </Col>
       </Row>
       <MyVenuesCards

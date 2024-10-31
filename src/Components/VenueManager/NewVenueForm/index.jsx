@@ -188,6 +188,8 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
         location: venue.location || {
           country: venue.location?.country || "",
           city: venue.location?.city || "",
+          lat: venue.location?.lat || "",
+          lng: venue.location?.lng || "",
         },
         meta: venue.meta || {
           wifi: false,

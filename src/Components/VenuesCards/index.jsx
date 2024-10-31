@@ -32,7 +32,9 @@ function VenueCards(data) {
                 }}
               />
               <Card.Body>
-                <Card.Title className="text-truncate">{venue.name}</Card.Title>
+                <Card.Title className="text-truncate text-capitalize">
+                  {venue.name}
+                </Card.Title>
                 <Card.Text
                   className={`text-truncate ${!venue.location.city && !venue.location.country ? "empty-location" : ""}`}
                 >

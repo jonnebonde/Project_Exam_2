@@ -12,6 +12,7 @@ import VenueConfirmationModal from "../../Components/SpecificVenue/BookingModal"
 import ImageSlider from "../../Components/SpecificVenue/ImageSlider";
 import { Helmet } from "react-helmet-async";
 import VenueAvailabilityCalendar from "../../Components/SpecificVenue/AvailabilityCalendar";
+import VenueMap from "../../Components/SpecificVenue/VenueMap";
 
 function VenuePage() {
   const { id } = useParams();
@@ -56,6 +57,8 @@ function VenuePage() {
       </Container>
     );
   }
+
+  console.log(venue);
 
   return (
     <Container>
@@ -122,6 +125,17 @@ function VenuePage() {
           <HeadLine level={5} className="text-black fw-semibold" text="Owner" />
           <p className="ms-3">Name: {venue?.data?.owner?.name}</p>
           <p className="ms-3">Email: {venue?.data?.owner?.email}</p>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {(venue?.data?.location?.lat && venue?.data?.location?.lng && (
+            <VenueMap
+              latitude={venue?.data?.location?.lat}
+              longitude={venue?.data?.location?.lng}
+            />
+          )) ||
+            ""}
         </Col>
       </Row>
 

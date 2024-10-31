@@ -31,7 +31,7 @@ function NavbarLoggedIn() {
   return (
     <Nav>
       <Dropdown align="end">
-        <span className="profile-name ">{user.name}</span>
+        <span className="profile-name me-2 text-capitalize">{user.name}</span>
         <Dropdown.Toggle
           id="dropdown-basic"
           as="button"
