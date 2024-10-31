@@ -141,7 +141,7 @@ function RegisterPage() {
         </Form.Group>
         <Button
           type="submit"
-          className="w-100 mt-3"
+          className="w-100 mt-3 register-form-submit-button"
           disabled={status === "pending"}
         >
           {status === "pending" ? "Registering..." : "Register"}
