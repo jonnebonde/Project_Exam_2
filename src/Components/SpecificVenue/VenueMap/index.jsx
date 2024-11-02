@@ -6,7 +6,7 @@ function VenueMap({ latitude, longitude }) {
   return (
     <MapContainer
       center={[latitude, longitude]}
-      zoom={13}
+      zoom={23}
       style={{ height: "300px", width: "100%" }}
     >
       <TileLayer
