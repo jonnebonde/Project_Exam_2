@@ -1,11 +1,11 @@
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Button } from "react-bootstrap";
 import formatDate from "../../../Utilities/DateFormat/index";
 import { PropTypes } from "prop-types";
 import { Link } from "react-router-dom";
 import calculateDaysBetween from "../../../Utilities/DateRange";
 import placeHolder from "../../../assets/Images/placeholder.jpg";
 
-function BookingCards({ booking }) {
+function BookingCards({ booking, handleDelete }) {
   const sortedBooking = booking?.sort((a, b) => {
     return new Date(a.dateFrom) - new Date(b.dateFrom);
   });
@@ -46,7 +46,9 @@ function BookingCards({ booking }) {
                 }}
               />
               <Card.Body className="flex flex-row">
-                <Card.Title>{bookingItem.venue.name}</Card.Title>
+                <Card.Title className="text-truncate">
+                  {bookingItem.venue.name}
+                </Card.Title>
 
                 <Card.Text
                   className={`text-truncate ${!bookingItem.venue.location.city && !bookingItem.venue.location.country ? "empty-location" : ""}`}
@@ -71,13 +73,24 @@ function BookingCards({ booking }) {
                 <Card.Text className="text-start">
                   Total price: £{bookingItem.venue.price * daysBetween}
                 </Card.Text>
-                <Link
-                  className="btn btn-primary"
-                  to={`/venue/${bookingItem.venue.id}`}
-                  variant="primary"
-                >
-                  View
-                </Link>
+                <div className="d-flex justify-content-between">
+                  {" "}
+                  <Link
+                    className="btn btn-primary d-flex align-items-center justify-content-center w-50"
+                    to={`/venue/${bookingItem.venue.id}`}
+                    variant="primary"
+                  >
+                    View
+                  </Link>
+                  <Button
+                    className="btn btn-secondary border-2 border-primary text-primary"
+                    onClick={() => {
+                      handleDelete(bookingItem.id);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </Card.Body>
             </Card>
           </Col>
@@ -89,6 +102,7 @@ function BookingCards({ booking }) {
 
 BookingCards.propTypes = {
   booking: PropTypes.array,
+  handleDelete: PropTypes.func,
 };
 
 export default BookingCards;

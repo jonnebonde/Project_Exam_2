@@ -8,9 +8,14 @@ import { useParams } from "react-router-dom";
 import BookingCards from "../../Components/user/BookingCards";
 import HeadLine from "../../Components/HeroSection/Headline";
 import { Helmet } from "react-helmet-async";
+import useMutationDataAuth from "../../Hooks/Api/Auth/PostPutDelete";
+import ConfirmModal from "../../Components/Shared/ConfirmModal";
 
 function UserPage() {
   const { name } = useParams();
+  const [showEditUserModal, setShowEditUserModal] = useState(false);
+  const [bookingId, setBookingId] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const {
     isPending,
@@ -21,7 +26,10 @@ function UserPage() {
     "userData"
   );
 
-  const [showEditUserModal, setShowEditUserModal] = useState(false);
+  const deleteUserBooking = useMutationDataAuth(
+    `${base_Url}holidaze/bookings/${bookingId}`,
+    "DELETE"
+  );
 
   if (isPending) {
     return <Container className="text-center">Loading...</Container>;
@@ -34,6 +42,28 @@ function UserPage() {
       </Container>
     );
   }
+
+  function handleDeleteBooking(bookingId) {
+    setShowConfirmModal(true);
+    setBookingId(bookingId);
+  }
+
+  function handleConfirm() {
+    deleteUserBooking.mutate(null, {
+      onSuccess: () => {
+        setShowConfirmModal(false);
+      },
+      onError: () => {
+        setShowConfirmModal(false);
+      },
+    });
+    setShowConfirmModal(false);
+  }
+
+  function handleCancel() {
+    setShowConfirmModal(false);
+  }
+
   return (
     <Container>
       <Helmet>
@@ -56,7 +86,10 @@ function UserPage() {
       </Row>
       <HeadLine level={3} text="My Bookings" className="text-center mt-3" />
       {userData?.data.bookings && userData?.data.bookings.length > 0 ? (
-        <BookingCards booking={userData?.data.bookings} />
+        <BookingCards
+          booking={userData?.data.bookings}
+          handleDelete={handleDeleteBooking}
+        />
       ) : (
         <HeadLine
           level={4}
@@ -68,6 +101,12 @@ function UserPage() {
         user={userData?.data}
         showModal={showEditUserModal}
         setShowModal={setShowEditUserModal}
+      />
+      <ConfirmModal
+        show={showConfirmModal}
+        onHide={handleCancel}
+        onConfirm={handleConfirm}
+        message="Are you sure you want to delete this booking?"
       />
     </Container>
   );

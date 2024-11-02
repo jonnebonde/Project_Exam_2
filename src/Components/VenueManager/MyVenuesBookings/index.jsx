@@ -25,7 +25,7 @@ function MyVenuesBookings({ showModal, setShowModal, venueBookings }) {
   return (
     <Modal show={showModal} onHide={handleClose} size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Bookings for </Modal.Title>
+        <Modal.Title>Bookings for {venueBookings.name} </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Table striped bordered hover responsive>

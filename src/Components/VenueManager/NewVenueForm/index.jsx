@@ -96,8 +96,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
   const [newVenueId, setNewVenueId] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  console.log(showConfirmModal);
-
   const postNewVenue = useMutationDataAuth(
     base_Url + (venue ? `holidaze/venues/${venue.id}` : "holidaze/venues"),
     venue ? "PUT" : "POST"
