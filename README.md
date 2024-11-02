@@ -1,6 +1,6 @@
 <h1 align="center">Holidaze</h1>
 
-![image](https://github.com/jonnebonde/frontend_frameworks_ca/assets/71976475/f5706fa4-62f8-4d99-a95e-a8d0aaa16988)
+![image](https://github.com/jonnebonde/Project_Exam_2/blob/master/src/assets/Images/screenshot-homepage.jpg)
 
 <!-- ABOUT THE PROJECT -->
 
