@@ -8,6 +8,7 @@ import NewVenueForm from "../../Components/VenueManager/NewVenueForm";
 import { useState } from "react";
 import MyVenuesBookings from "../../Components/VenueManager/MyVenuesBookings";
 import { Helmet } from "react-helmet-async";
+import Loader from "../../Components/Shared/Loader";
 
 function VenueManagerPage() {
   const { name } = useParams();
@@ -43,7 +44,11 @@ function VenueManagerPage() {
   };
 
   if (isPending) {
-    return <Container className="text-center">Loading...</Container>;
+    return (
+      <Container className="text-center">
+        <Loader />
+      </Container>
+    );
   }
 
   if (error) {

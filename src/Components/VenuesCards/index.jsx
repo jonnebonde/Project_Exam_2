@@ -42,7 +42,6 @@ function VenueCards(data) {
                     ? `${venue.location.city ? venue.location.city : ""}${venue.location.country ? `, ${venue.location.country}` : ""}`
                     : ""}
                 </Card.Text>
-
                 <Card.Text>£{venue.price}/night</Card.Text>
               </Card.Body>
             </Link>

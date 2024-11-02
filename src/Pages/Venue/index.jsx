@@ -13,6 +13,7 @@ import ImageSlider from "../../Components/SpecificVenue/ImageSlider";
 import { Helmet } from "react-helmet-async";
 import VenueAvailabilityCalendar from "../../Components/SpecificVenue/AvailabilityCalendar";
 import VenueMap from "../../Components/SpecificVenue/VenueMap";
+import Loader from "../../Components/Shared/Loader";
 
 function VenuePage() {
   const { id } = useParams();
@@ -46,7 +47,11 @@ function VenuePage() {
   };
 
   if (isPending) {
-    return <Container className="text-center">Loading...</Container>;
+    return (
+      <Container className="text-center">
+        <Loader />
+      </Container>
+    );
   }
 
   if (error) {

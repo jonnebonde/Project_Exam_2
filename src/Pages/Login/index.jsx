@@ -36,8 +36,6 @@ function LoginPage() {
 
   const { mutate, isError, status, error } = useSubmitForm();
 
-  console.log(isError, status, error);
-
   const onSubmit = (formData) => {
     const url = base_Url + "auth/login";
     mutate({ url, formData, isRegistration: false });

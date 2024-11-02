@@ -10,6 +10,7 @@ import HeadLine from "../../Components/HeroSection/Headline";
 import { Helmet } from "react-helmet-async";
 import useMutationDataAuth from "../../Hooks/Api/Auth/PostPutDelete";
 import ConfirmModal from "../../Components/Shared/ConfirmModal";
+import Loader from "../../Components/Shared/Loader";
 
 function UserPage() {
   const { name } = useParams();
@@ -32,7 +33,11 @@ function UserPage() {
   );
 
   if (isPending) {
-    return <Container className="text-center">Loading...</Container>;
+    return (
+      <Container className="text-center">
+        <Loader />
+      </Container>
+    );
   }
 
   if (error) {
