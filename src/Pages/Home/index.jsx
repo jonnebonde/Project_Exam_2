@@ -1,48 +1,90 @@
 import { base_Url } from "../../Constants/API";
-import useFetchData from "../../Hooks/Api/NoAuth/Get";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import Container from "react-bootstrap/Container";
 import HeroSection from "../../Components/HeroSection";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import VenueCards from "../../Components/VenuesCards";
 import HeadLine from "../../Components/HeroSection/Headline";
 import { Helmet } from "react-helmet-async";
+import Loader from "../../Components/Shared/Loader";
+import Button from "react-bootstrap/Button";
 
 function Home() {
+  const [inputSearch, setInputSearch] = useState("");
   const [search, setSearch] = useState("");
-  const url =
-    base_Url + "holidaze/venues?_owner=true&_bookings=true&sortOrder=asc";
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  const limit = 10;
 
-  const { isPending, error, data: venues } = useFetchData(url, "venues");
+  // I used the docs from tanstack query and chatGPT to make this work for infinite scrolling and searching
+  const fetchVenues = async ({ pageParam = 1 }) => {
+    const url = search
+      ? `${base_Url}holidaze/venues/search?q=${encodeURIComponent(search)}&limit=${limit}&page=${pageParam}&sortOrder=asc`
+      : `${base_Url}holidaze/venues?_owner=true&_bookings=true&sortOrder=asc&limit=${limit}&page=${pageParam}`;
 
-  const handleSearchFieldChange = (event) => {
-    setSearch(event.target.value);
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  };
+
+  const { data, fetchNextPage, hasNextPage, isFetching, isLoading, error } =
+    useInfiniteQuery({
+      queryKey: ["venues", search],
+      queryFn: fetchVenues,
+      getNextPageParam: (lastPage) => lastPage.meta.nextPage || undefined,
+    });
+
+  const handleSearch = () => {
+    setSearch(inputSearch);
   };
 
   const resetSearch = () => {
+    setInputSearch("");
     setSearch("");
   };
 
-  const filteredVenues = search
-    ? venues?.data?.filter((venue) => {
-        const query = search.toLowerCase();
-        const venueTitle = venue.name.toLowerCase().includes(query);
-        const venueCity =
-          venue.location?.city?.toLowerCase().includes(query) || false;
-        const venueCountry =
-          venue.location?.country?.toLowerCase().includes(query) || false;
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 400) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
 
-        return venueTitle || venueCity || venueCountry;
-      })
-    : venues?.data;
+      if (
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 500 &&
+        hasNextPage &&
+        !isFetching
+      ) {
+        fetchNextPage();
+      }
+    };
 
-  if (isPending) {
-    return <Container>Loading...</Container>;
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [fetchNextPage, hasNextPage, isFetching]);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <Container className="text-center my-5">
+        <Loader />
+      </Container>
+    );
   }
 
   if (error) {
     return (
       <Container className="text-center my-5">
-        an error has occurred, please try again
+        An error has occurred, please try again.
       </Container>
     );
   }
@@ -53,16 +95,14 @@ function Home() {
         <title>Home | Holidaze</title>
         <meta
           name="description"
-          content="Discover top-rated venues for any occasion. Book easily and manage your venues seamlessly. 
-                  Explore unique options that cater to all your event needs.
-                  Find the perfect venue for your event! Browse from a wide selection of spaces,
-                  each with verified details and user reviews for the best experience."
+          content="Discover top-rated venues for any occasion."
         />
       </Helmet>
       <HeroSection
-        search={search}
+        inputSearch={inputSearch}
         resetSearch={resetSearch}
-        handleSearchFieldChange={handleSearchFieldChange}
+        handleSearch={handleSearch}
+        setInputSearch={setInputSearch}
       />
       <HeadLine
         level={1}
@@ -70,12 +110,28 @@ function Home() {
         className="text-center fw-bold mb-4"
       />
       <Container>
-        {filteredVenues.length === 0 ? (
+        {data.pages.flatMap((page) => page.data).length === 0 ? (
           <p className="text-center">No venues matched your search.</p>
         ) : (
-          <VenueCards data={filteredVenues} />
+          <VenueCards data={data.pages.flatMap((page) => page.data)} />
         )}
       </Container>
+      {isFetching && <Loader />}
+
+      {showScrollButton && (
+        <Button
+          onClick={scrollToTop}
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            zIndex: 1000,
+          }}
+          variant="primary"
+        >
+          Go to Top
+        </Button>
+      )}
     </>
   );
 }

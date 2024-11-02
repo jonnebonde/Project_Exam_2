@@ -468,11 +468,21 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
           </Container>
           {createEditStatus === "success" ? (
             <>
-              <Button variant="primary" as={Link} to={`/venue/${newVenueId}`}>
-                Visit New Venue
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={loading || postNewVenue.status === "loading"}
+              >
+                {loading || postNewVenue.status === "loading"
+                  ? "Loading..."
+                  : "Submit"}
               </Button>
+
               <Button variant="secondary" onClick={handleClose}>
                 Close
+              </Button>
+              <Button variant="primary" as={Link} to={`/venue/${newVenueId}`}>
+                Visit New Venue
               </Button>
             </>
           ) : (
