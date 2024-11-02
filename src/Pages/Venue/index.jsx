@@ -58,8 +58,6 @@ function VenuePage() {
     );
   }
 
-  console.log(venue);
-
   return (
     <Container>
       <Helmet>
