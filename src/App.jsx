@@ -9,6 +9,7 @@ import VenueManagerPage from "./Pages/VenueManager";
 import { ProtectedRoute } from "./Utilities/Routes/ProtectedRoutes";
 import { PublicRoute } from "./Utilities/Routes/PublicRoutes";
 import { HelmetProvider } from "react-helmet-async";
+import NotFound from "./Pages/NotFound404";
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="venue/:id" element={<VenuePage />} />
+          <Route path="*" element={<NotFound />} />
+
           <Route
             path="register"
             element={
