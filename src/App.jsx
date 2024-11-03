@@ -18,7 +18,6 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="venue/:id" element={<VenuePage />} />
-          <Route path="*" element={<NotFound />} />
 
           <Route
             path="register"
@@ -56,6 +55,7 @@ function App() {
             }
           />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </HelmetProvider>
   );
