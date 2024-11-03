@@ -8,7 +8,7 @@ const NotFound = () => {
       <HeadLine level={1} text="Oops! Where are you off to?" />
       <Image
         src={Notfound}
-        alt="Lost in the tropics"
+        alt="Lost on the beach"
         className="fluid w-75 rounded-1 mb-3"
       />
       <p className="fs-5">
