@@ -45,6 +45,12 @@ function Home() {
   };
 
   useEffect(() => {
+    if (inputSearch === "") {
+      resetSearch();
+    }
+  }, [inputSearch]);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY >= 400) {
         setShowScrollButton(true);

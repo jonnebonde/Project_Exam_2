@@ -132,13 +132,10 @@ function VenuePage() {
       </Row>
       <Row>
         <Col>
-          {(venue?.data?.location?.lat && venue?.data?.location?.lng && (
-            <VenueMap
-              latitude={venue?.data?.location?.lat}
-              longitude={venue?.data?.location?.lng}
-            />
-          )) ||
-            ""}
+          <VenueMap
+            latitude={venue?.data?.location?.lat || 26.357896}
+            longitude={venue?.data?.location?.lng || 127.783809}
+          />
         </Col>
       </Row>
 

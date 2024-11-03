@@ -455,7 +455,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
                       <Button
                         variant="danger"
                         size="xs"
-                        className="position-absolute top-0 end-0"
+                        className="position-absolute top-0 end-0 text-white"
                         onClick={() => remove(index)}
                       >
                         X
@@ -478,7 +478,11 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
                   : "Submit"}
               </Button>
 
-              <Button variant="secondary" onClick={handleClose}>
+              <Button
+                variant="secondary"
+                onClick={handleClose}
+                className="my-2 w-25 m-auto"
+              >
                 Close
               </Button>
               <Button variant="primary" as={Link} to={`/venue/${newVenueId}`}>
@@ -500,7 +504,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
           {venue && createEditStatus !== "deleted" && (
             <Button
               variant="danger"
-              className="mt-5 w-50 m-auto"
+              className="mt-5 w-50 m-auto text-white"
               onClick={handleDelete}
               disabled={deleteVenueMutation.status === "loading"}
             >
