@@ -3,6 +3,7 @@ import "leaflet/dist/leaflet.css";
 import PropTypes from "prop-types";
 
 function VenueMap({ latitude, longitude }) {
+  console.log(latitude, longitude);
   return (
     <MapContainer
       center={[latitude, longitude]}
