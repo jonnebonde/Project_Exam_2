@@ -34,7 +34,9 @@ function VenuePage() {
   };
 
   const handleReserveClick = () => {
-    setShowModal(true);
+    if (selectedDates[0] && selectedDates[1]) {
+      setShowModal(true);
+    }
   };
 
   const resetBookingForm = () => {
@@ -57,7 +59,6 @@ function VenuePage() {
   if (error) {
     return (
       <Container className="text-center">
-        {" "}
         Something went wrong, please try again
       </Container>
     );
