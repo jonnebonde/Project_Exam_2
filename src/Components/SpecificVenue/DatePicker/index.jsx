@@ -6,6 +6,7 @@ import isBetween from "dayjs/plugin/isBetween";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import "react-multi-date-picker/styles/colors/teal.css";
+import opacity from "react-element-popper/animations/opacity";
 
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
@@ -16,15 +17,22 @@ dayjs.extend(isSameOrAfter);
 // https://www.npmjs.com/package/react-datepicker
 // https://www.npmjs.com/package/dayjs
 
-function VenueBookingPicker({ bookedDates, onDateChange, value }) {
+function VenueBookingPicker({
+  bookedDates,
+  onDateChange,
+  value,
+  onValidityChange,
+}) {
   const [errorMessage, setErrorMessage] = useState("");
   const [checkIn, setCheckIn] = useState(value[0] ? dayjs(value[0]) : null);
   const [checkOut, setCheckOut] = useState(value[1] ? dayjs(value[1]) : null);
+  const [isValidDateRange, setIsValidDateRange] = useState(true);
 
   useEffect(() => {
     setCheckIn(value[0] ? dayjs(value[0]) : null);
     setCheckOut(value[1] ? dayjs(value[1]) : null);
-  }, [value]);
+    onValidityChange(isValidDateRange);
+  }, [value, isValidDateRange, onValidityChange]);
 
   const isBooked = (date) => {
     return bookedDates.some(({ dateFrom, dateTo }) => {
@@ -34,19 +42,34 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
     });
   };
 
+  const isRangeBooked = (start, end) => {
+    return bookedDates.some(({ dateFrom, dateTo }) => {
+      const from = dayjs(dateFrom);
+      const to = dayjs(dateTo);
+      return (
+        (start.isBefore(to) && end.isAfter(from)) ||
+        (start.isSameOrBefore(to) && end.isSameOrAfter(from))
+      );
+    });
+  };
+
   const handleCheckInChange = (date) => {
     const selectedCheckIn = dayjs(date);
     setCheckIn(selectedCheckIn);
     setErrorMessage("");
 
     const newCheckOut = selectedCheckIn.add(1, "day");
-    if (isBooked(newCheckOut)) {
-      setErrorMessage("Checkout date cannot be within booked dates.");
+
+    if (isRangeBooked(selectedCheckIn, newCheckOut)) {
+      setErrorMessage("Selected dates are within booked dates.");
       setCheckOut(null);
+      setIsValidDateRange(false);
     } else {
       setCheckOut(newCheckOut);
       onDateChange([selectedCheckIn, newCheckOut]);
+      setIsValidDateRange(true);
     }
+    onValidityChange(isValidDateRange);
   };
 
   const handleCheckOutChange = (date) => {
@@ -56,11 +79,15 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
 
     if (checkIn && checkIn.isSameOrAfter(selectedCheckOut)) {
       setErrorMessage("Checkout date must be after check-in date.");
-    } else if (isBooked(selectedCheckOut)) {
+      setIsValidDateRange(false);
+    } else if (isRangeBooked(checkIn, selectedCheckOut)) {
       setErrorMessage("Selected checkout date is within booked dates.");
+      setIsValidDateRange(false);
     } else {
       onDateChange([checkIn, selectedCheckOut]);
+      setIsValidDateRange(true);
     }
+    onValidityChange(isValidDateRange);
   };
 
   return (
@@ -85,6 +112,7 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
         placeholder="Check-in date"
         minDate={dayjs().toDate()}
         highlightToday={true}
+        animations={[opacity()]}
       />
 
       <DatePicker
@@ -110,6 +138,7 @@ function VenueBookingPicker({ bookedDates, onDateChange, value }) {
         placeholder="Check-out date"
         minDate={checkIn ? checkIn.add(1, "day").toDate() : dayjs().toDate()}
         highlightToday={true}
+        animations={[opacity()]}
       />
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -123,9 +152,10 @@ VenueBookingPicker.propTypes = {
       dateFrom: PropTypes.string.isRequired,
       dateTo: PropTypes.string.isRequired,
     })
-  ),
+  ).isRequired,
   onDateChange: PropTypes.func.isRequired,
   value: PropTypes.array.isRequired,
+  onValidityChange: PropTypes.func.isRequired, // Expect onValidityChange prop
 };
 
 export default VenueBookingPicker;
