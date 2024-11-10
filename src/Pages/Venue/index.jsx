@@ -5,7 +5,6 @@ import useFetchData from "../../Hooks/Api/NoAuth/Get";
 import HeadLine from "../../Components/HeroSection/Headline";
 import { useState } from "react";
 import { UserDataStore } from "../../Hooks/GlobalStates/UserData";
-
 import VenueDetails from "../../Components/SpecificVenue/VenueDetails";
 import VenueBookingForm from "../../Components/SpecificVenue/VenueBookingForm";
 import VenueConfirmationModal from "../../Components/SpecificVenue/BookingModal";
@@ -23,9 +22,9 @@ function VenuePage() {
 
   const url = `${base_Url}holidaze/venues/${id}?_owner=true&_bookings=true`;
   const { isPending, error, data: venue } = useFetchData(url, id);
-
   const [selectedDates, setSelectedDates] = useState([null, null]);
   const [guests, setGuests] = useState(0);
+
   const [showModal, setShowModal] = useState(false);
 
   const handleGuestChange = (e) => {

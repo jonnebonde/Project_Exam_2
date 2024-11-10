@@ -1,15 +1,14 @@
+import dayjs from "dayjs";
+
 function calculateDaysBetween(date1, date2) {
-  // Convert both dates to milliseconds
-  const date1Millis = new Date(date1).getTime();
-  const date2Millis = new Date(date2).getTime();
+  const startDate = dayjs(date1);
+  const endDate = dayjs(date2);
 
-  // Calculate the difference in milliseconds
-  const differenceMillis = Math.abs(date2Millis - date1Millis);
+  const differenceBetweenDays = Math.abs(endDate.diff(startDate, "day", true));
 
-  // Convert back to days
-  const differenceDays = Math.ceil(differenceMillis / (1000 * 60 * 60 * 24));
+  const differenceBetweenDaysRoundUp = Math.ceil(differenceBetweenDays);
 
-  return differenceDays;
+  return differenceBetweenDaysRoundUp;
 }
 
 export default calculateDaysBetween;
