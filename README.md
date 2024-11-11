@@ -41,6 +41,7 @@ According to their brief they wanted a modern looking site which is responsive a
 4. You can register a user\admin with a email that ends with @stud.noroff.no.
    Example "home@stud.noroff.no" The mail doesnt need to be real.
    Then you explore\test the site further.
+5. When running locally you must have an API key. It can be provided here [Api-Key](https://docs.noroff.dev/docs/v2/auth/api-key#api-key-tool)
 
 <!-- LICENSE -->
 
