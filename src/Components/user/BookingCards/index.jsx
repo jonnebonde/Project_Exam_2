@@ -6,13 +6,9 @@ import calculateDaysBetween from "../../../Utilities/DateRange";
 import placeHolder from "../../../assets/Images/placeholder.jpg";
 
 function BookingCards({ booking, handleDelete }) {
-  const sortedBooking = booking?.sort((a, b) => {
-    return new Date(a.dateFrom) - new Date(b.dateFrom);
-  });
-
   return (
     <Row xs={1} sm={2} md={2} lg={3} xl={4}>
-      {sortedBooking?.map((bookingItem) => {
+      {booking?.map((bookingItem) => {
         const formattedDateFrom = formatDate(bookingItem?.dateFrom);
         const formattedDateTo = formatDate(bookingItem?.dateTo);
 
