@@ -2,7 +2,7 @@ import { useState } from "react";
 import { base_Url } from "../../Constants/API";
 import { Container, Row, Col, Button, Tabs, Tab } from "react-bootstrap";
 import UserInfo from "../../Components/user/UserInfo";
-import EditUserFormModal from "../../Components/user/EditUserForm";
+import EditUserFormModal from "../../Components/User/EditUserForm";
 import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 import { useParams } from "react-router-dom";
 import BookingCards from "../../Components/user/BookingCards";
@@ -11,14 +11,14 @@ import { Helmet } from "react-helmet-async";
 import useMutationDataAuth from "../../Hooks/Api/Auth/PostPutDelete";
 import ConfirmModal from "../../Components/Shared/ConfirmModal";
 import Loader from "../../Components/Shared/Loader";
-import dayjs from "dayjs"; // Import dayjs for date handling
+import dayjs from "dayjs";
 
 function UserPage() {
   const { name } = useParams();
   const [showEditUserModal, setShowEditUserModal] = useState(false);
   const [bookingId, setBookingId] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [key, setKey] = useState("upcoming"); // State to control the active tab
+  const [key, setKey] = useState("upcoming");
 
   const {
     isPending,

@@ -115,7 +115,7 @@ function VenuePage() {
           )}
         </Col>
       </Row>
-      <Row xs={1} sm={1} md={1} lg={2} className="mt-5 flex-row-reverse">
+      <Row xs={1} sm={1} md={1} lg={2} className="my-5 flex-row-reverse ">
         <Col className="availability-calendar-container">
           <HeadLine
             level={5}

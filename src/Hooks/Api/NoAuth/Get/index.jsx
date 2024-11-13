@@ -14,7 +14,6 @@ function useFetchData(url, queryKey) {
     staleTime: 1000 * 60 * 5,
     retry: 2,
     getNextPageParam: (lastPage) => {
-      console.log(lastPage);
       return lastPage.nextPage ? lastPage.page + 1 : undefined;
     },
   });

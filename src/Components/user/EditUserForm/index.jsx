@@ -9,8 +9,6 @@ import { UserDataStore } from "../../../Hooks/GlobalStates/UserData";
 import { useEffect, useState } from "react";
 import { isValidImageUrl } from "../../../Utilities/ValidateImage";
 
-// Function to validate if a URL is an image
-
 const schema = yup
   .object({
     avatar: yup

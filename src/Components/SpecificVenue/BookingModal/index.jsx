@@ -20,7 +20,6 @@ function VenueConfirmationModal({
   const [bookingMessage, setBookingMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Initialize booking mutation
   const postBooking = useMutationDataAuth(
     base_Url + "holidaze/bookings",
     "POST"
