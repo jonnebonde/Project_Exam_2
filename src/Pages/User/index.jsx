@@ -2,7 +2,7 @@ import { useState } from "react";
 import { base_Url } from "../../Constants/API";
 import { Container, Row, Col, Button, Tabs, Tab } from "react-bootstrap";
 import UserInfo from "../../Components/user/UserInfo";
-import EditUserFormModal from "../../Components/User/EditUserForm";
+import EditUserFormModal from "../../Components/user/EditUserForm";
 import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 import { useParams } from "react-router-dom";
 import BookingCards from "../../Components/user/BookingCards";
