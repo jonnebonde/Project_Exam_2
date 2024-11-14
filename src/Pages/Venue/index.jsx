@@ -3,7 +3,7 @@ import { base_Url } from "../../Constants/API";
 import { useParams, useNavigate } from "react-router-dom";
 import useFetchData from "../../Hooks/Api/NoAuth/Get";
 import HeadLine from "../../Components/HeroSection/Headline";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { UserDataStore } from "../../Hooks/GlobalStates/UserData";
 import VenueDetails from "../../Components/SpecificVenue/VenueDetails";
 import VenueBookingForm from "../../Components/SpecificVenue/VenueBookingForm";
@@ -13,6 +13,8 @@ import { Helmet } from "react-helmet-async";
 import VenueAvailabilityCalendar from "../../Components/SpecificVenue/AvailabilityCalendar";
 import VenueMap from "../../Components/SpecificVenue/VenueMap";
 import Loader from "../../Components/Shared/Loader";
+import dayjs from "dayjs";
+import UpcomingBookingToast from "../../Components/SpecificVenue/BookingToast";
 
 function VenuePage() {
   const { id } = useParams();
@@ -24,8 +26,27 @@ function VenuePage() {
   const { isPending, error, data: venue } = useFetchData(url, id);
   const [selectedDates, setSelectedDates] = useState([null, null]);
   const [guests, setGuests] = useState(0);
-
+  const [showBookingToast, setShowBookingToast] = useState(false);
+  const [upComingBooking, setUpComingBooking] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const hasShownBookingToast = useRef(false);
+
+  useEffect(() => {
+    if (!hasShownBookingToast.current && venue?.data?.bookings && user) {
+      const today = dayjs().startOf("day");
+      const userBookings = venue?.data?.bookings.filter((booking) => {
+        const hasUserBooked = booking.customer.name === user.name;
+        const hasUserUpcoming = dayjs(booking.dateFrom).isSameOrAfter(today);
+        return hasUserBooked && hasUserUpcoming;
+      });
+
+      if (userBookings.length > 0) {
+        setUpComingBooking(userBookings[0]);
+        setShowBookingToast(true);
+        hasShownBookingToast.current = true;
+      }
+    }
+  }, [venue, user]);
 
   const handleGuestChange = (e) => {
     const guestCount = parseInt(e.target.value);
@@ -62,6 +83,8 @@ function VenuePage() {
       </Container>
     );
   }
+
+  console.log(venue?.data);
 
   return (
     <Container>
@@ -148,6 +171,13 @@ function VenuePage() {
           data={venue}
           resetBookingForm={resetBookingForm}
           user={user}
+        />
+      )}
+      {upComingBooking && (
+        <UpcomingBookingToast
+          show={showBookingToast}
+          onClose={() => setShowBookingToast(false)}
+          booking={upComingBooking}
         />
       )}
     </Container>
