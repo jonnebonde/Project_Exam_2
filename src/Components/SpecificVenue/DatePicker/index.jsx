@@ -12,7 +12,7 @@ dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
-// Dealing with dates is the most frustrating thing i have done in code ever so
+// Dealing with dates is the most frustrating thing i have done in code ever.
 // I ended up getting alot of help from chatGPT and the docs for dayjs and datepicker but i learned alot still.
 // https://www.npmjs.com/package/react-datepicker
 // https://www.npmjs.com/package/dayjs
@@ -155,7 +155,7 @@ VenueBookingPicker.propTypes = {
   ).isRequired,
   onDateChange: PropTypes.func.isRequired,
   value: PropTypes.array.isRequired,
-  onValidityChange: PropTypes.func.isRequired, // Expect onValidityChange prop
+  onValidityChange: PropTypes.func.isRequired,
 };
 
 export default VenueBookingPicker;

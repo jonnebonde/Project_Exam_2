@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { base_Url } from "../../Constants/API";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Tabs, Tab } from "react-bootstrap";
 import UserInfo from "../../Components/user/UserInfo";
-import EditUserFormModal from "../../Components/user/EditUserForm";
+import EditUserFormModal from "../../Components/User/EditUserForm";
 import useGetDataAuth from "../../Hooks/Api/Auth/Get";
 import { useParams } from "react-router-dom";
 import BookingCards from "../../Components/user/BookingCards";
@@ -11,12 +11,14 @@ import { Helmet } from "react-helmet-async";
 import useMutationDataAuth from "../../Hooks/Api/Auth/PostPutDelete";
 import ConfirmModal from "../../Components/Shared/ConfirmModal";
 import Loader from "../../Components/Shared/Loader";
+import dayjs from "dayjs";
 
 function UserPage() {
   const { name } = useParams();
   const [showEditUserModal, setShowEditUserModal] = useState(false);
   const [bookingId, setBookingId] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [key, setKey] = useState("upcoming");
 
   const {
     isPending,
@@ -62,12 +64,34 @@ function UserPage() {
         setShowConfirmModal(false);
       },
     });
-    setShowConfirmModal(false);
   }
 
   function handleCancel() {
     setShowConfirmModal(false);
   }
+
+  // Filter bookings into upcoming and past
+  const today = dayjs().startOf("day");
+
+  const upcomingBookings = userData?.data.bookings.filter((booking) =>
+    dayjs(booking.dateFrom).isSameOrAfter(today)
+  );
+
+  const sortedUpcomingBookings = [...upcomingBookings].sort((a, b) => {
+    const dateA = dayjs(a.dateFrom);
+    const dateB = dayjs(b.dateFrom);
+    return dateA.isBefore(dateB) ? -1 : 1;
+  });
+
+  const pastBookings = userData?.data.bookings.filter((booking) =>
+    dayjs(booking.dateFrom).isBefore(today)
+  );
+
+  const sortedPastBookings = [...pastBookings].sort((a, b) => {
+    const dateA = dayjs(a.dateFrom);
+    const dateB = dayjs(b.dateFrom);
+    return dateA.isAfter(dateB) ? -1 : 1;
+  });
 
   return (
     <Container>
@@ -90,18 +114,42 @@ function UserPage() {
         </Col>
       </Row>
       <HeadLine level={3} text="My Bookings" className="text-center mt-3" />
-      {userData?.data.bookings && userData?.data.bookings.length > 0 ? (
-        <BookingCards
-          booking={userData?.data.bookings}
-          handleDelete={handleDeleteBooking}
-        />
-      ) : (
-        <HeadLine
-          level={4}
-          text="No bookings found"
-          className="text-center mt-3"
-        />
-      )}
+      <Tabs
+        id="bookings-tabs"
+        activeKey={key}
+        onSelect={(k) => setKey(k)}
+        className="mt-3"
+      >
+        <Tab eventKey="upcoming" title="Upcoming Bookings">
+          {upcomingBookings && upcomingBookings.length > 0 ? (
+            <BookingCards
+              booking={sortedUpcomingBookings}
+              handleDelete={handleDeleteBooking}
+            />
+          ) : (
+            <HeadLine
+              level={4}
+              text="No upcoming bookings found"
+              className="text-center mt-3"
+            />
+          )}
+        </Tab>
+        <Tab eventKey="past" title="Past Bookings">
+          {pastBookings && pastBookings.length > 0 ? (
+            <BookingCards
+              booking={sortedPastBookings}
+              handleDelete={handleDeleteBooking}
+            />
+          ) : (
+            <HeadLine
+              level={4}
+              text="No past bookings found"
+              className="text-center mt-3"
+            />
+          )}
+        </Tab>
+      </Tabs>
+
       <EditUserFormModal
         user={userData?.data}
         showModal={showEditUserModal}

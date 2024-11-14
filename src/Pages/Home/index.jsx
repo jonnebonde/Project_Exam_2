@@ -13,7 +13,7 @@ function Home() {
   const [inputSearch, setInputSearch] = useState("");
   const [search, setSearch] = useState("");
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const limit = 10;
+  const limit = 100;
 
   // I used the docs from tanstack query and chatGPT to make this work for infinite scrolling and searching
   const fetchVenues = async ({ pageParam = 1 }) => {

@@ -17,8 +17,6 @@ export function useSubmitForm() {
         body: JSON.stringify(formData),
       });
 
-      console.log(response);
-
       if (!response.ok) {
         const errorData = await response.json();
         const errorMessage = errorData.errors?.[0]?.message || "Request failed";

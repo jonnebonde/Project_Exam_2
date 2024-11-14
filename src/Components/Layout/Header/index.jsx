@@ -3,10 +3,9 @@ import { Container } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
 import NavbarNotLoggedIn from "./Navbar/NotLoggedIn";
 import NavbarLoggedIn from "./Navbar/LoggedIn";
-import { UserDataStore } from "../../../Hooks/GlobalStates/UserData"; // Use Zustand store for authentication
+import { UserDataStore } from "../../../Hooks/GlobalStates/UserData";
 
 function Header() {
-  // Access the user from Zustand (it will pull from localStorage on initial load if available)
   const user = UserDataStore((state) => state.user);
 
   return (

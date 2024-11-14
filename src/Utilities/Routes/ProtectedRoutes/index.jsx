@@ -2,6 +2,8 @@ import { Navigate } from "react-router-dom";
 import { UserDataStore } from "../../../Hooks/GlobalStates/UserData";
 import PropTypes from "prop-types";
 
+// ProtectedRoute component from https://www.angularminds.com/blog/protected-routes-in-react-router-authentication-and-authorization and help by ChatGPT
+
 export const ProtectedRoute = ({
   children,
   isAuthRequired,

@@ -18,7 +18,6 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="venue/:id" element={<VenuePage />} />
-
           <Route
             path="register"
             element={

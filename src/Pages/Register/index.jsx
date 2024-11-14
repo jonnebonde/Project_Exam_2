@@ -8,7 +8,6 @@ import { useSubmitForm } from "../../Hooks/Api/NoAuth/Post/LoginRegisterForm";
 import { base_Url } from "../../Constants/API";
 import { Helmet } from "react-helmet-async";
 
-// Define validation schema for registration
 const schema = yup
   .object({
     name: yup
