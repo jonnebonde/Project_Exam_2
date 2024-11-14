@@ -5,7 +5,12 @@ import dayjs from "dayjs";
 function UpcomingBookingToast({ show, onClose, booking }) {
   return (
     <ToastContainer position="bottom-end" className="p-3">
-      <Toast show={show} onClose={onClose} animation={true}>
+      <Toast
+        show={show}
+        onClose={onClose}
+        animation={true}
+        className="rounded-1"
+      >
         <Toast.Header
           className="bg-primary text-white"
           closeLabel="Close booking reminder"
