@@ -4,7 +4,10 @@ import dayjs from "dayjs";
 
 function UpcomingBookingToast({ show, onClose, booking }) {
   return (
-    <ToastContainer position="bottom-end" className="p-3">
+    <ToastContainer
+      position="bottom-end"
+      className="p-3 position-fixed bottom-0"
+    >
       <Toast
         show={show}
         onClose={onClose}

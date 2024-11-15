@@ -32,20 +32,24 @@ function VenuePage() {
   const hasShownBookingToast = useRef(false);
 
   useEffect(() => {
-    if (!hasShownBookingToast.current && venue?.data?.bookings && user) {
-      const today = dayjs().startOf("day");
-      const userBookings = venue?.data?.bookings.filter((booking) => {
-        const hasUserBooked = booking.customer.name === user.name;
-        const hasUserUpcoming = dayjs(booking.dateFrom).isSameOrAfter(today);
-        return hasUserBooked && hasUserUpcoming;
-      });
+    const delayToastMessage = setTimeout(() => {
+      if (!hasShownBookingToast.current && venue?.data?.bookings && user) {
+        const today = dayjs().startOf("day");
+        const userBookings = venue?.data?.bookings.filter((booking) => {
+          const hasUserBooked = booking.customer.name === user.name;
+          const hasUserUpcoming = dayjs(booking.dateFrom).isSameOrAfter(today);
+          return hasUserBooked && hasUserUpcoming;
+        });
 
-      if (userBookings.length > 0) {
-        setUpComingBooking(userBookings[0]);
-        setShowBookingToast(true);
-        hasShownBookingToast.current = true;
+        if (userBookings.length > 0) {
+          setUpComingBooking(userBookings[0]);
+          setShowBookingToast(true);
+          hasShownBookingToast.current = true;
+        }
       }
-    }
+    }, 2000);
+
+    return () => clearTimeout(delayToastMessage);
   }, [venue, user]);
 
   const handleGuestChange = (e) => {
