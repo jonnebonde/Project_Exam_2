@@ -12,4 +12,16 @@
     width: 100% !important;
     height: 100% !important;
   }
+
+  .preview-image-delete-button {
+    border-radius: 0px 3px 0px 3px !important;
+  }
+
+  .draggable-item {
+    touch-action: none;
+
+    &.dragging {
+      opacity: 0.5;
+    }
+  }
 }

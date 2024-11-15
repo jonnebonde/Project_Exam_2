@@ -19,6 +19,21 @@ import { useState, useEffect } from "react";
 import { isValidImageUrl } from "../../../Utilities/ValidateImage";
 import { Link } from "react-router-dom";
 import ConfirmModal from "../../Shared/ConfirmModal";
+import {
+  DndContext,
+  closestCenter,
+  useSensor,
+  useSensors,
+  PointerSensor,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  useSortable,
+  rectSortingStrategy,
+} from "@dnd-kit/sortable";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
+import { CSS } from "@dnd-kit/utilities";
+import { v4 as uuidv4 } from "uuid";
 
 const schema = yup
   .object({
@@ -149,11 +164,6 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     });
   };
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "media",
-  });
-
   useEffect(() => {
     if (venue === null) {
       reset({
@@ -200,6 +210,17 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     }
   }, [venue, reset]);
 
+  const { fields, append, remove, move } = useFieldArray({
+    control,
+    name: "media",
+  });
+
+  const [mediaItems, setMediaItems] = useState(fields.map((field) => field.id));
+
+  useEffect(() => {
+    setMediaItems(fields.map((field) => field.id));
+  }, [fields]);
+
   const handleAddImage = async () => {
     const isValid = await isValidImageUrl(imageInput);
 
@@ -208,7 +229,7 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     } else if (fields.length >= 8) {
       setCreateEditStatus("limit");
     } else {
-      append({ url: imageInput, alt: "Venue image" });
+      append({ id: uuidv4(), url: imageInput, alt: "Venue image" });
       setImageInput("");
       clearErrors("media");
       setCreateEditStatus(null);
@@ -242,6 +263,26 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
     setImageInput("");
     setNewVenueId(null);
     setShowConfirmModal(false);
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 50,
+        tolerance: 5,
+      },
+    })
+  );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      const oldIndex = fields.findIndex((item) => item.id === active.id);
+      const newIndex = fields.findIndex((item) => item.id === over.id);
+
+      move(oldIndex, newIndex);
+    }
   };
 
   return (
@@ -441,30 +482,33 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
                 You cannot add more than 8 images.
               </Alert>
             )}
-            <Row xs="auto" className="mb-5 mx-auto justify-content-center">
-              {fields.map((image, index) => (
-                <Col key={image.id} className="w-auto p-0 rounded-1 me-2 my-1">
-                  <Card className="position-relative w-100 rounded-1 ">
-                    <Card.Img
-                      variant="top"
-                      src={image.url}
-                      alt={image.alt || "No alt text"}
-                      className="d-block w-100 rounded-1"
+
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+              modifiers={[restrictToParentElement]}
+            >
+              <small className="text-muted">
+                Drag and drop to reorder images
+              </small>
+              <SortableContext
+                items={mediaItems}
+                strategy={rectSortingStrategy}
+              >
+                <Row xs="auto" className="mb-5 mx-auto justify-content-center">
+                  {fields.map((image, index) => (
+                    <SortableItem
+                      key={image.id}
+                      id={image.id}
+                      index={index}
+                      image={image}
+                      remove={remove}
                     />
-                    <Card.ImgOverlay className="">
-                      <Button
-                        variant="danger"
-                        size="xs"
-                        className="position-absolute top-0 end-0 text-white"
-                        onClick={() => remove(index)}
-                      >
-                        X
-                      </Button>
-                    </Card.ImgOverlay>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
+                  ))}
+                </Row>
+              </SortableContext>
+            </DndContext>
           </Container>
           {createEditStatus === "success" ? (
             <>
@@ -525,11 +569,71 @@ function NewVenueForm({ showModal, setShowModal, venue }) {
   );
 }
 
+function SortableItem({ id, index, image, remove }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 9999 : "auto",
+  };
+
+  return (
+    <Col
+      ref={setNodeRef}
+      style={style}
+      className="w-auto p-0 rounded-1 me-2 my-1 draggable-item"
+    >
+      <div {...attributes} {...listeners}>
+        <Card className="position-relative w-100 rounded-1">
+          <Card.Img
+            variant="top"
+            src={image.url}
+            alt={image.alt || "No alt text"}
+            className="d-block w-100 rounded-1"
+          />
+          <Card.ImgOverlay>
+            <Button
+              variant="danger"
+              size="xs"
+              className="position-absolute top-0 end-0 text-white"
+              onClick={(e) => {
+                e.stopPropagation();
+                remove(index);
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}
+            >
+              X
+            </Button>
+          </Card.ImgOverlay>
+        </Card>
+      </div>
+    </Col>
+  );
+}
+
 NewVenueForm.propTypes = {
   showModal: PropTypes.bool,
   handleClose: PropTypes.func,
   setShowModal: PropTypes.func,
   venue: PropTypes.object,
+};
+
+SortableItem.propTypes = {
+  id: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+  image: PropTypes.object.isRequired,
+  remove: PropTypes.func.isRequired,
 };
 
 export default NewVenueForm;
