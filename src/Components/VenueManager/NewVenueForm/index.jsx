@@ -35,7 +35,7 @@ import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
 import { v4 as uuidv4 } from "uuid";
 
-// This ended up being a big component, but i didnt manage to break it down into logical smaller components without breaking it or making it too complex.
+// I used DND for drag and drop functionality with some help from chatGPT to get it working.
 
 const schema = yup
   .object({

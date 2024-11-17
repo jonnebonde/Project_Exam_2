@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import calculateDaysBetween from "../../../Utilities/DateRange";
 import placeHolder from "../../../assets/Images/placeholder.jpg";
 
-function BookingCards({ booking, handleDelete }) {
+function BookingCards({ booking, handleDelete, isPast }) {
   return (
     <Row xs={1} sm={2} md={2} lg={3} xl={4}>
       {booking?.map((bookingItem) => {
@@ -29,6 +29,12 @@ function BookingCards({ booking, handleDelete }) {
           locationText = city;
         } else if (country) {
           locationText = country;
+        }
+
+        let pastButtonText = "Cancel";
+
+        if (isPast) {
+          pastButtonText = "Delete";
         }
 
         return (
@@ -83,7 +89,7 @@ function BookingCards({ booking, handleDelete }) {
                       handleDelete(bookingItem.id);
                     }}
                   >
-                    Cancel
+                    {pastButtonText}
                   </Button>
                 </div>
               </Card.Body>
@@ -98,6 +104,7 @@ function BookingCards({ booking, handleDelete }) {
 BookingCards.propTypes = {
   booking: PropTypes.array,
   handleDelete: PropTypes.func,
+  isPast: PropTypes.bool,
 };
 
 export default BookingCards;

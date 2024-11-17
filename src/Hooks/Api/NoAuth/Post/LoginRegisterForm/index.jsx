@@ -26,7 +26,7 @@ export function useSubmitForm() {
 
       const data = await response.json();
 
-      // Log in user after successful registration
+      // automatically log in user after a successful registration
       if (isRegistration) {
         const { email, password } = formData;
         await loginUser({ email, password });
