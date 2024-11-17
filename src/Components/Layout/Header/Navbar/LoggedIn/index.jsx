@@ -19,7 +19,7 @@ function NavbarLoggedIn() {
 
   const handleConfirm = () => {
     logout();
-    queryClient.invalidateQueries();
+    queryClient.clear();
     navigate("/");
     setShowConfirmModal(false);
   };

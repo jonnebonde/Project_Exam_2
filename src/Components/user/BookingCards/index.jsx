@@ -17,25 +17,27 @@ function BookingCards({ booking, handleDelete }) {
           bookingItem?.dateTo
         );
 
+        const { city, country } = bookingItem.venue.location;
+        const imageSrc = bookingItem.venue?.media?.[0]?.url ?? placeHolder;
+        const altText =
+          bookingItem.venue?.media?.[0]?.alt_text ?? "No alt text provided";
+        let locationText = "";
+
+        if (city && country) {
+          locationText = `${city}, ${country}`;
+        } else if (city) {
+          locationText = city;
+        } else if (country) {
+          locationText = country;
+        }
+
         return (
           <Col key={bookingItem.id} className="text-center my-4">
             <Card className="m-auto booking-card ">
               <Card.Img
                 variant="top"
-                src={
-                  bookingItem.venue.media &&
-                  bookingItem.venue.media[0] &&
-                  bookingItem.venue.media[0].url
-                    ? bookingItem.venue.media[0].url
-                    : placeHolder
-                }
-                alt={
-                  bookingItem.venue.media &&
-                  bookingItem.venue.media[0] &&
-                  bookingItem.venue.media[0].alt_text
-                    ? bookingItem.venue.media[0].alt_text
-                    : "No alt text provided"
-                }
+                src={imageSrc}
+                alt={altText}
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = placeHolder;
@@ -49,10 +51,7 @@ function BookingCards({ booking, handleDelete }) {
                 <Card.Text
                   className={`text-truncate ${!bookingItem.venue.location.city && !bookingItem.venue.location.country ? "empty-location" : ""}`}
                 >
-                  {bookingItem.venue.location.city ||
-                  bookingItem.venue.location.country
-                    ? `${bookingItem.venue.location.city ? bookingItem.venue.location.city : ""}${bookingItem.venue.location.country ? `, ${bookingItem.venue.location.country}` : ""}`
-                    : ""}
+                  {locationText}
                 </Card.Text>
                 <Card.Text className="text-start">
                   Checkin: {formattedDateFrom}{" "}
