@@ -70,7 +70,6 @@ function UserPage() {
     setShowConfirmModal(false);
   }
 
-  // Filter bookings into upcoming and past
   const today = dayjs().startOf("day");
 
   const upcomingBookings = userData?.data.bookings.filter((booking) =>
@@ -92,6 +91,12 @@ function UserPage() {
     const dateB = dayjs(b.dateFrom);
     return dateA.isAfter(dateB) ? -1 : 1;
   });
+
+  let confirmationMessage = "Are you sure you want to cancel this booking?";
+
+  if (key === "past") {
+    confirmationMessage = "Are you sure you want to delete this booking?";
+  }
 
   return (
     <Container>
@@ -139,6 +144,7 @@ function UserPage() {
             <BookingCards
               booking={sortedPastBookings}
               handleDelete={handleDeleteBooking}
+              isPast={true}
             />
           ) : (
             <HeadLine
@@ -159,7 +165,7 @@ function UserPage() {
         show={showConfirmModal}
         onHide={handleCancel}
         onConfirm={handleConfirm}
-        message="Are you sure you want to delete this booking?"
+        message={confirmationMessage}
       />
     </Container>
   );

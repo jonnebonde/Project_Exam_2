@@ -43,7 +43,7 @@
     height: 45px;
     object-fit: cover;
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
   }
 
   .selected-thumbnail {
@@ -98,10 +98,6 @@
   .available-date {
     color: black;
   }
-}
-
-.react-calendar__navigation_label {
-  background-color: red !important;
 }
 
 .rmdp-calendar {

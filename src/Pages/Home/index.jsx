@@ -113,7 +113,7 @@ function Home() {
       <HeadLine
         level={1}
         text="Explore our venues"
-        className="text-center fw-bold mb-4"
+        className="text-center fw-bold my-4"
       />
       <Container>
         {data.pages.flatMap((page) => page.data).length === 0 ? (
