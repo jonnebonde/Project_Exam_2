@@ -77,7 +77,7 @@ function VenueBookingPicker({
     setCheckOut(selectedCheckOut);
     setErrorMessage("");
 
-    if (checkIn && checkIn.isSameOrAfter(selectedCheckOut)) {
+    if (checkIn?.isSameOrAfter(selectedCheckOut)) {
       setErrorMessage("Checkout date must be after check-in date.");
       setIsValidDateRange(false);
     } else if (isRangeBooked(checkIn, selectedCheckOut)) {

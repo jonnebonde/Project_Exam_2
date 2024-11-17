@@ -10,26 +10,28 @@ function MyVenuesCards({ venues, onEditVenue, onViewBookings }) {
   return (
     <Row xs={1} sm={1} md={2} lg={3} xl={4}>
       {venues?.map((userVenue) => {
-        const venueId = userVenue.id;
+        const { city, country } = userVenue.location;
+
+        const imageSrc = userVenue?.media?.[0]?.url ?? placeHolder;
+        const altText =
+          userVenue?.media?.[0]?.alt_text ?? "No alt text provided";
+        let locationText = "";
+
+        if (city && country) {
+          locationText = `${city}, ${country}`;
+        } else if (city) {
+          locationText = city;
+        } else if (country) {
+          locationText = country;
+        }
+
         return (
-          <Col key={venueId} className="my-4">
+          <Col key={userVenue.id} className="my-4">
             <Card className="booking-card m-auto ">
               <Card.Img
                 variant="top"
-                src={
-                  userVenue.media &&
-                  userVenue.media[0] &&
-                  userVenue.media[0].url
-                    ? userVenue.media[0].url
-                    : placeHolder
-                }
-                alt={
-                  userVenue.media &&
-                  userVenue.media[0] &&
-                  userVenue.media[0].alt_text
-                    ? userVenue.media[0].alt_text
-                    : "No alt text provided"
-                }
+                src={imageSrc}
+                alt={altText}
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = placeHolder;
@@ -38,9 +40,7 @@ function MyVenuesCards({ venues, onEditVenue, onViewBookings }) {
               <Card.Body className="flex flex-row">
                 <Card.Title className="text-start">{userVenue.name}</Card.Title>
                 <Card.Text className="text-truncate text-start">
-                  {userVenue.location.city || userVenue.location.country
-                    ? `${userVenue.location.city ? userVenue.location.city : ""}${userVenue.location.country ? `, ${userVenue.location.country}` : ""}`
-                    : "Location not available "}
+                  {locationText}
                 </Card.Text>
                 <Card.Text className="text-start">
                   Max guests: {userVenue.maxGuests}

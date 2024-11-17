@@ -51,7 +51,29 @@ function VenueConfirmationModal({
     });
   };
 
+  let bookingButton;
+
   const goToProfile = () => navigate(`/user/${user?.name}`);
+
+  if (bookingMessage === "success") {
+    bookingButton = (
+      <Button variant="primary" onClick={goToProfile}>
+        View Booking
+      </Button>
+    );
+  } else if (bookingMessage === "error") {
+    bookingButton = (
+      <Button variant="danger" onClick={handleBookingConfirmation}>
+        Try Again
+      </Button>
+    );
+  } else {
+    bookingButton = (
+      <Button variant="primary" onClick={handleBookingConfirmation}>
+        Confirm Booking
+      </Button>
+    );
+  }
 
   return (
     <Modal
@@ -99,33 +121,7 @@ function VenueConfirmationModal({
         )}
       </Modal.Body>
       <Modal.Footer>
-        {loading ? (
-          <Spinner animation="border" />
-        ) : (
-          <>
-            {bookingMessage === "success" ? (
-              ""
-            ) : (
-              <Button variant="secondary" onClick={handleCancel}>
-                Cancel
-              </Button>
-            )}
-
-            {bookingMessage === "success" ? (
-              <Button variant="primary" onClick={goToProfile}>
-                view booking
-              </Button>
-            ) : bookingMessage === "error" ? (
-              <Button variant="danger" onClick={handleBookingConfirmation}>
-                Try Again
-              </Button>
-            ) : (
-              <Button variant="primary" onClick={handleBookingConfirmation}>
-                Confirm Booking
-              </Button>
-            )}
-          </>
-        )}
+        {loading ? <Spinner animation="border" /> : <>{bookingButton}</>}
       </Modal.Footer>
     </Modal>
   );
@@ -134,7 +130,6 @@ function VenueConfirmationModal({
 VenueConfirmationModal.propTypes = {
   showModal: PropTypes.bool,
   handleCancel: PropTypes.func,
-  handleBookingConfirmation: PropTypes.func,
   selectedDates: PropTypes.array,
   guests: PropTypes.number,
   data: PropTypes.object,

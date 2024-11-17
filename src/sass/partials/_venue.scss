@@ -30,6 +30,14 @@
     border-radius: 0 3px 3px 0 !important;
   }
 
+  .thumbnail-button {
+    background: none;
+    border: 2px solid transparent;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
   .thumbnail-image {
     width: 45px;
     height: 45px;
@@ -39,7 +47,7 @@
   }
 
   .selected-thumbnail {
-    border-color: #007bff;
+    border: 2px solid #007bff;
     border-radius: 3px;
   }
 }
@@ -116,9 +124,6 @@
 
   .rmdp-week-day {
     width: 100%;
-  }
-
-  .rmdp-week-day {
     padding: 4px;
     font-size: 20px;
   }

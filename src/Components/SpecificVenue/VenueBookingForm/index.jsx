@@ -18,42 +18,40 @@ function VenueBookingForm({
   };
 
   return (
-    <>
-      <Form className="d-flex flex-column venue-booking-form">
-        <VenueBookingPicker
-          bookedDates={venue?.bookings}
-          onDateChange={(dates) => setSelectedDates(dates)}
-          value={selectedDates}
-          onValidityChange={handleValidityChange}
+    <Form className="d-flex flex-column venue-booking-form">
+      <VenueBookingPicker
+        bookedDates={venue?.bookings}
+        onDateChange={(dates) => setSelectedDates(dates)}
+        value={selectedDates}
+        onValidityChange={handleValidityChange}
+      />
+      <Form.Group controlId="guestInput">
+        <Form.Label>Guests (Max: {venue?.maxGuests})</Form.Label>
+        <Form.Control
+          type="number"
+          min={1}
+          inputMode="numeric"
+          value={guests || ""}
+          onChange={handleGuestChange}
+          placeholder="Number of guests"
+          max={venue?.maxGuests}
         />
-        <Form.Group controlId="guestInput">
-          <Form.Label>Guests (Max: {venue?.maxGuests})</Form.Label>
-          <Form.Control
-            type="number"
-            min={1}
-            inputMode="numeric"
-            value={guests || ""}
-            onChange={handleGuestChange}
-            placeholder="Number of guests"
-            max={venue?.maxGuests}
-          />
-        </Form.Group>
-        <Button
-          variant="primary"
-          className="mt-3"
-          onClick={onReserveClick}
-          disabled={
-            !selectedDates[0] ||
-            !selectedDates[1] ||
-            guests < 1 ||
-            guests > venue?.maxGuests ||
-            !isDateRangeValid
-          }
-        >
-          Reserve
-        </Button>
-      </Form>
-    </>
+      </Form.Group>
+      <Button
+        variant="primary"
+        className="mt-3"
+        onClick={onReserveClick}
+        disabled={
+          !selectedDates[0] ||
+          !selectedDates[1] ||
+          guests < 1 ||
+          guests > venue?.maxGuests ||
+          !isDateRangeValid
+        }
+      >
+        Reserve
+      </Button>
+    </Form>
   );
 }
 

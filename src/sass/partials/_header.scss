@@ -5,8 +5,6 @@
     color: getColour(black);
   }
 
-  // finne ut om vi kan droppe flex direction columnn hvis brukeren er logged inn
-
   &-container {
     @media screen and (max-width: get-breakpoint(xs)) {
       display: flex;

@@ -88,6 +88,41 @@ function VenuePage() {
     );
   }
 
+  let bookingSection;
+
+  if (!accessToken) {
+    bookingSection = (
+      <Alert variant="warning" className="text-center">
+        You must{" "}
+        <Button variant="link" onClick={() => navigate("/login")}>
+          login
+        </Button>{" "}
+        or{" "}
+        <Button variant="link" onClick={() => navigate("/register")}>
+          register
+        </Button>{" "}
+        to book this venue.
+      </Alert>
+    );
+  } else if (user.name === venue.data.owner.name) {
+    bookingSection = (
+      <Alert variant="warning" className="text-center">
+        You are the owner of this venue and cannot book it.
+      </Alert>
+    );
+  } else {
+    bookingSection = (
+      <VenueBookingForm
+        venue={venue.data}
+        selectedDates={selectedDates}
+        setSelectedDates={setSelectedDates}
+        guests={guests}
+        handleGuestChange={handleGuestChange}
+        onReserveClick={handleReserveClick}
+      />
+    );
+  }
+
   return (
     <Container>
       <Helmet>
@@ -112,32 +147,7 @@ function VenuePage() {
         </Col>
         <Col className="mt-lg-0 mt-3 d-lg-flex flex-column justify-content-between">
           <VenueDetails venue={venue} />
-          {!accessToken ? (
-            <Alert variant="warning" className="text-center">
-              You must{" "}
-              <Button variant="link" onClick={() => navigate("/login")}>
-                login
-              </Button>{" "}
-              or{" "}
-              <Button variant="link" onClick={() => navigate("/register")}>
-                register
-              </Button>{" "}
-              to book this venue.
-            </Alert>
-          ) : user.name === venue.data.owner.name ? (
-            <Alert variant="warning" className="text-center">
-              You are the owner of this venue and cannot book it.
-            </Alert>
-          ) : (
-            <VenueBookingForm
-              venue={venue.data}
-              selectedDates={selectedDates}
-              setSelectedDates={setSelectedDates}
-              guests={guests}
-              handleGuestChange={handleGuestChange}
-              onReserveClick={handleReserveClick}
-            />
-          )}
+          {bookingSection}
         </Col>
       </Row>
       <Row xs={1} sm={1} md={1} lg={2} className="my-5 flex-row-reverse ">
