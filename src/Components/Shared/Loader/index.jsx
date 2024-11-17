@@ -1,9 +1,8 @@
 function Loader() {
   return (
-    <div className="spinner-border text-primary" role="status">
+    <div className="spinner-border text-primary" aria-live="polite">
       <span className="visually-hidden">Loading...</span>
     </div>
   );
 }
-
 export default Loader;
